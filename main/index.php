@@ -1,124 +1,124 @@
 <?php
 session_start();
-require('includes/connection.php');
-if($_SESSION['roleID'] == 3){
-	if($_SESSION['accountID']){
-		$qaccount = $mysqli->query("SELECT * FROM `tblaccounts` WHERE id = '".$_SESSION['accountID']."' ");	
-		if($qaccount->num_rows > 0){
-			while($raccount = $qaccount->fetch_assoc()){
-				$points = $raccount['balance'];
-				// $points = 800;
-				$mobileNumber = $raccount['mobileNumber'];
-			}
-		}
-		$queryPercent = $mysqli->query("SELECT `percentToLess` FROM `tblpercentless` ORDER BY id DESC LIMIT 1");
-		$rowPercent = $queryPercent->fetch_assoc();	
-		$percentToLess = $rowPercent['percentToLess'];
-		
-		$qfight = $mysqli->query("SELECT a.`id`, a.`fightCode`, a.`fightNumber` as fightNum, ev.`eventDate`, a.`isBetting`, a.`isWinner`, b.`isBetting`  as bettingStatus, d.`winner` FROM `tblfights` a 
-		LEFT JOIN `tblbettingstatus` b ON a.isBetting = b.id 
+require 'includes/connection.php';
+if ($_SESSION['roleID'] == 3) {
+    if ($_SESSION['accountID']) {
+        $qaccount = $mysqli->query("SELECT * FROM `tblaccounts` WHERE id = '" . $_SESSION['accountID'] . "' ");
+        if ($qaccount->num_rows > 0) {
+            while ($raccount = $qaccount->fetch_assoc()) {
+                $points = $raccount['balance'];
+                // $points = 800;
+                $mobileNumber = $raccount['mobileNumber'];
+            }
+        }
+        $queryPercent = $mysqli->query("SELECT `percentToLess` FROM `tblpercentless` ORDER BY id DESC LIMIT 1");
+        $rowPercent = $queryPercent->fetch_assoc();
+        $percentToLess = $rowPercent['percentToLess'];
+
+        $qfight = $mysqli->query("SELECT a.`id`, a.`fightCode`, a.`fightNumber` as fightNum, ev.`eventDate`, a.`isBetting`, a.`isWinner`, b.`isBetting`  as bettingStatus, d.`winner` FROM `tblfights` a
+		LEFT JOIN `tblbettingstatus` b ON a.isBetting = b.id
 		LEFT JOIN `tblwinner` d ON a.isWinner = d.id
 		LEFT JOIN `tblevents` ev ON a.eventID = ev.id
 		WHERE a.id = (select max(id) from tblfights);");
-		if($qfight->num_rows > 0){
-		//isBetting = 1 means OPEN, isBetting = 2 means CLOSED
-			while($rfight = $qfight->fetch_assoc()){
-				$currentFightID = $rfight['id'];
-				$currentFightNumber = $rfight['fightNum'];
-				$currentFightCode = $rfight['fightCode'];
-				$curdate = $rfight['eventDate'];
-				$isBetting = $rfight['isBetting'];
-				$winner = $rfight['winner'];
-				$isBettingWinner = $rfight['isWinner'];
-				if($isBetting == 1){
-					$isBettingText = $rfight['bettingStatus'];
-				}else if($isBetting == 3 || $isBetting == 6){
-					$isBettingText = $rfight['bettingStatus'];	
-				}else{
-					$isBettingText = $rfight['bettingStatus'];
-				}
-			}
-			//bet details
-			$meronTotalBetAmount = 0;
-			$walaTotalBetAmount = 0;
-			$totalBetAmount = 0;
-			$threePercent = 0;
-			$totalAmountLessThreePercent = 0;
-			$totalAmountIfMeronWins = 0;
-			$totalAmountIfWalaWins = 0;
-			$pesoEquivalentIfMeronWins = 0;
-			$pesoEquivalentIfWalaWins = 0;
-			$payoutMeron = 0;
-			$payoutWala = 0;
+        if ($qfight->num_rows > 0) {
+            //isBetting = 1 means OPEN, isBetting = 2 means CLOSED
+            while ($rfight = $qfight->fetch_assoc()) {
+                $currentFightID = $rfight['id'];
+                $currentFightNumber = $rfight['fightNum'];
+                $currentFightCode = $rfight['fightCode'];
+                $curdate = $rfight['eventDate'];
+                $isBetting = $rfight['isBetting'];
+                $winner = $rfight['winner'];
+                $isBettingWinner = $rfight['isWinner'];
+                if ($isBetting == 1) {
+                    $isBettingText = $rfight['bettingStatus'];
+                } else if ($isBetting == 3 || $isBetting == 6) {
+                    $isBettingText = $rfight['bettingStatus'];
+                } else {
+                    $isBettingText = $rfight['bettingStatus'];
+                }
+            }
+            //bet details
+            $meronTotalBetAmount = 0;
+            $walaTotalBetAmount = 0;
+            $totalBetAmount = 0;
+            $threePercent = 0;
+            $totalAmountLessThreePercent = 0;
+            $totalAmountIfMeronWins = 0;
+            $totalAmountIfWalaWins = 0;
+            $pesoEquivalentIfMeronWins = 0;
+            $pesoEquivalentIfWalaWins = 0;
+            $payoutMeron = 0;
+            $payoutWala = 0;
 
-			// date
-			$currentDate = date('F j, Y');
-			
-			if($isBetting == 1 || $isBetting == 2 || $isBetting == 4){
-				$qbets = $mysqli->query("SELECT a.betType, SUM(betAmount) as bets FROM `tblbetliststemp` a LEFT JOIN `tblfights` b ON a.fightCode = b.fightCode WHERE b.fightCode = '".$currentFightCode."' AND a.isCancelled = '0' GROUP BY a.betType");
-				if($qbets->num_rows > 0){
-					while($rbets = $qbets->fetch_assoc()){
-						$betType = $rbets['betType'];
-						if($betType == 1){
-							$totalBetAmount += $rbets['bets'];
-							$meronTotalBetAmount = $rbets['bets'];
-						}else{
-							$totalBetAmount += $rbets['bets'];
-							$walaTotalBetAmount = $rbets['bets'];
-						}
-					}
-					if($meronTotalBetAmount > 0 && $walaTotalBetAmount > 0){
-						$threePercent = ($totalBetAmount * $percentToLess);
-						$totalAmountLessThreePercent = ($totalBetAmount - $threePercent);
-						$totalAmountIfMeronWins = ($totalAmountLessThreePercent - $meronTotalBetAmount);
-						$pesoEquivalentIfMeronWins = ($totalAmountIfMeronWins / $meronTotalBetAmount);
-						$payoutMeron = (($pesoEquivalentIfMeronWins * 100 ) + 100);
-											
-						$totalAmountIfWalaWins = ($totalAmountLessThreePercent - $walaTotalBetAmount);
-						$pesoEquivalentIfWalaWins = ($totalAmountIfWalaWins / $walaTotalBetAmount);
-						$payoutWala = (($pesoEquivalentIfWalaWins *100 ) +100);
-					}else{
-					}
-				}
-			}else if($isBetting == 3 || $isBetting == 5 || $isBetting == 6){
-				$qbets = $mysqli->query("SELECT a.betType, SUM(betAmount) as bets FROM `tblbetlists` a LEFT JOIN `tblfights` b ON a.fightCode = b.fightCode WHERE b.fightCode = '".$currentFightCode."' AND a.isCancelled = '0' GROUP BY a.betType");
-				if($qbets->num_rows > 0){
-					while($rbets = $qbets->fetch_assoc()){
-						$betType = $rbets['betType'];
-						if($betType == 1){
-							$totalBetAmount += $rbets['bets'];
-							$meronTotalBetAmount = $rbets['bets'];
-						}else{
-							$totalBetAmount += $rbets['bets'];
-							$walaTotalBetAmount = $rbets['bets'];
-						}
-					}
-					if($meronTotalBetAmount > 0 && $walaTotalBetAmount > 0){
-						$threePercent = ($totalBetAmount * $percentToLess);
-						$totalAmountLessThreePercent = ($totalBetAmount - $threePercent);
-						$totalAmountIfMeronWins = ($totalAmountLessThreePercent - $meronTotalBetAmount);
-						$pesoEquivalentIfMeronWins = ($totalAmountIfMeronWins / $meronTotalBetAmount);
-						$payoutMeron = (($pesoEquivalentIfMeronWins * 100 ) + 100);
-											
-						$totalAmountIfWalaWins = ($totalAmountLessThreePercent - $walaTotalBetAmount);
-						$pesoEquivalentIfWalaWins = ($totalAmountIfWalaWins / $walaTotalBetAmount);
-						$payoutWala = (($pesoEquivalentIfWalaWins *100 ) +100);
-					}else{
-					}
-				}
-			}
-			
-			$display = 1;
-		}else{
-			$display = 0;
-		}
-		
-	}else{
+            // date
+            $currentDate = date('F j, Y');
 
-	}
-		
-}else{
-	header("location: ../index.php");	
+            if ($isBetting == 1 || $isBetting == 2 || $isBetting == 4) {
+                $qbets = $mysqli->query("SELECT a.betType, SUM(betAmount) as bets FROM `tblbetliststemp` a LEFT JOIN `tblfights` b ON a.fightCode = b.fightCode WHERE b.fightCode = '" . $currentFightCode . "' AND a.isCancelled = '0' GROUP BY a.betType");
+                if ($qbets->num_rows > 0) {
+                    while ($rbets = $qbets->fetch_assoc()) {
+                        $betType = $rbets['betType'];
+                        if ($betType == 1) {
+                            $totalBetAmount += $rbets['bets'];
+                            $meronTotalBetAmount = $rbets['bets'];
+                        } else {
+                            $totalBetAmount += $rbets['bets'];
+                            $walaTotalBetAmount = $rbets['bets'];
+                        }
+                    }
+                    if ($meronTotalBetAmount > 0 && $walaTotalBetAmount > 0) {
+                        $threePercent = ($totalBetAmount * $percentToLess);
+                        $totalAmountLessThreePercent = ($totalBetAmount - $threePercent);
+                        $totalAmountIfMeronWins = ($totalAmountLessThreePercent - $meronTotalBetAmount);
+                        $pesoEquivalentIfMeronWins = ($totalAmountIfMeronWins / $meronTotalBetAmount);
+                        $payoutMeron = (($pesoEquivalentIfMeronWins * 100) + 100);
+
+                        $totalAmountIfWalaWins = ($totalAmountLessThreePercent - $walaTotalBetAmount);
+                        $pesoEquivalentIfWalaWins = ($totalAmountIfWalaWins / $walaTotalBetAmount);
+                        $payoutWala = (($pesoEquivalentIfWalaWins * 100) + 100);
+                    } else {
+                    }
+                }
+            } else if ($isBetting == 3 || $isBetting == 5 || $isBetting == 6) {
+                $qbets = $mysqli->query("SELECT a.betType, SUM(betAmount) as bets FROM `tblbetlists` a LEFT JOIN `tblfights` b ON a.fightCode = b.fightCode WHERE b.fightCode = '" . $currentFightCode . "' AND a.isCancelled = '0' GROUP BY a.betType");
+                if ($qbets->num_rows > 0) {
+                    while ($rbets = $qbets->fetch_assoc()) {
+                        $betType = $rbets['betType'];
+                        if ($betType == 1) {
+                            $totalBetAmount += $rbets['bets'];
+                            $meronTotalBetAmount = $rbets['bets'];
+                        } else {
+                            $totalBetAmount += $rbets['bets'];
+                            $walaTotalBetAmount = $rbets['bets'];
+                        }
+                    }
+                    if ($meronTotalBetAmount > 0 && $walaTotalBetAmount > 0) {
+                        $threePercent = ($totalBetAmount * $percentToLess);
+                        $totalAmountLessThreePercent = ($totalBetAmount - $threePercent);
+                        $totalAmountIfMeronWins = ($totalAmountLessThreePercent - $meronTotalBetAmount);
+                        $pesoEquivalentIfMeronWins = ($totalAmountIfMeronWins / $meronTotalBetAmount);
+                        $payoutMeron = (($pesoEquivalentIfMeronWins * 100) + 100);
+
+                        $totalAmountIfWalaWins = ($totalAmountLessThreePercent - $walaTotalBetAmount);
+                        $pesoEquivalentIfWalaWins = ($totalAmountIfWalaWins / $walaTotalBetAmount);
+                        $payoutWala = (($pesoEquivalentIfWalaWins * 100) + 100);
+                    } else {
+                    }
+                }
+            }
+
+            $display = 1;
+        } else {
+            $display = 0;
+        }
+
+    } else {
+
+    }
+
+} else {
+    header("location: ../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -145,11 +145,11 @@ if($_SESSION['roleID'] == 3){
 	<div class="flex flex-col gap-5 mt-9 px-2">
         <a class="text-sm text-gray-600  p-3 font-normal bg-blue-50 rounded-lg" href="index.php">
 			<i class="fas fa-home mr-2 text-blue-500"></i>
-			<span class="text-blue-500">Dashboard</span>							
+			<span class="text-blue-500">Dashboard</span>
         </a>
         <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountBetAddPoints.php">
             <i class="fas fa-plus mr-2 text-gray-400"></i>
-            Add Points 
+            Add Points
         </a>
         <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountBetWithdrawPoints.php">
             <i class="fas fa-minus mr-2 text-gray-400"></i>
@@ -157,7 +157,7 @@ if($_SESSION['roleID'] == 3){
         </a>
         <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountBetHistory.php">
             <i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
-            Bets History								
+            Bets History
         </a>
         <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountLogs.php">
             <i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
@@ -179,12 +179,12 @@ Account Logs
 
 		<div id="content" class="flex-1 flex flex-col overflow-hidden gap-2 bg-[#F6F8FA]">
 			<nav class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7">
-			
+
 				<p class="text-base font-mdium text-gray-700 flex items-center gap-2">
-					Welcome, 
+					Welcome,
 					<span class="text-black tracking-tighter font-semibold"><?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?> </span>
 					<img src="./assets/images/waving.png" class="w-[50px]" />
-				</p>		
+				</p>
 
 				<small><?php echo $currentDate ?></small>
 				<div class=" flex items-center gap-2">
@@ -192,7 +192,7 @@ Account Logs
 					<p class="<?php echo ($points < 10) ? 'text-red-500' : 'text-green-500'; ?> text-sm font-semibold">&#8369;<?php echo number_format($points, 2); ?></p>
 				<div>
 
-				
+
 			</nav>
 
 
@@ -222,20 +222,20 @@ Account Logs
 							<div class="flex flex-col gap-1 w-1/2">
 								<small class="text-xs text-white">Result</small>
 								<span class="text-white text-xl font-semibold">
-									<?php 
-									if($isBetting == 3 || $isBetting == 6){
-										if($isBettingWinner == 1){
-											echo 'WIN';
-										}else if($isBettingWinner == 2){
-											echo 'LOST';
-										}else{
-											echo 'DRAW';
-										}
-									}else if($isBetting == 5){
-										echo 'CANCELLED';
-									}else{
-										echo 'UNSETTLED';
-									}?>
+									<?php
+if ($isBetting == 3 || $isBetting == 6) {
+    if ($isBettingWinner == 1) {
+        echo 'WIN';
+    } else if ($isBettingWinner == 2) {
+        echo 'LOST';
+    } else {
+        echo 'DRAW';
+    }
+} else if ($isBetting == 5) {
+    echo 'CANCELLED';
+} else {
+    echo 'UNSETTLED';
+}?>
 								</span>
 							</div>
 						</div>
@@ -259,25 +259,25 @@ Account Logs
 							<div class="flex flex-col gap-1 w-1/2">
 								<small class="text-xs text-white">Result</small>
 								<span class="text-white text-xl font-semibold">
-									<?php 
-									if($isBetting == 3 || $isBetting == 6){
-										if($isBettingWinner == 1){
-											echo 'WIN';
-										}else if($isBettingWinner == 2){
-											echo 'LOST';
-										}else{
-											echo 'DRAW';
-										}
-									}else if($isBetting == 5){
-										echo 'CANCELLED';
-									}else{
-										echo 'UNSETTLED';
-									}?>
+									<?php
+if ($isBetting == 3 || $isBetting == 6) {
+    if ($isBettingWinner == 1) {
+        echo 'WIN';
+    } else if ($isBettingWinner == 2) {
+        echo 'LOST';
+    } else {
+        echo 'DRAW';
+    }
+} else if ($isBetting == 5) {
+    echo 'CANCELLED';
+} else {
+    echo 'UNSETTLED';
+}?>
 								</span>
 							</div>
 						</div>
 					</div>
-					
+
 
 					<div class="bg-white px-3 py-2 w-[44%] bg-white rounded-2xl shadow-md shadow-slate-100 flex items-center">
 						<table class="w-full">
@@ -317,117 +317,116 @@ Account Logs
 						</thead>
 						<tbody>
 						<?php
-							if($display == 1){
-								if($isBetting == 1 || $isBetting == 2 || $isBetting == 4){
-									$qbets2 = $mysqli->query("SELECT a.`betType` as betTypeID, a.betAmount, b.betType FROM `tblbetliststemp` a LEFT JOIN `tblbettypes` b ON a.betType = b.id WHERE a.fightCode = '".$currentFightCode."' AND a.accountID = '".$_SESSION['accountID']."'  ");
-									if($qbets2->num_rows > 0){
-										$possibleWinning = 0;
-										while($rbets2 = $qbets2->fetch_assoc()){
-											if($rbets2['betType'] == "MERON"){
-												$possibleWinning = ($rbets2['betAmount'] /100) * $payoutMeron;
-												echo '	
+if ($display == 1) {
+    if ($isBetting == 1 || $isBetting == 2 || $isBetting == 4) {
+        $qbets2 = $mysqli->query("SELECT a.`betType` as betTypeID, a.betAmount, b.betType FROM `tblbetliststemp` a LEFT JOIN `tblbettypes` b ON a.betType = b.id WHERE a.fightCode = '" . $currentFightCode . "' AND a.accountID = '" . $_SESSION['accountID'] . "'  ");
+        if ($qbets2->num_rows > 0) {
+            $possibleWinning = 0;
+            while ($rbets2 = $qbets2->fetch_assoc()) {
+                if ($rbets2['betType'] == "MERON") {
+                    $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutMeron;
+                    echo '
 												<tr class="h-12">';
-											}else{
-												$possibleWinning = ($rbets2['betAmount'] /100) * $payoutWala;
-												echo '	
+                } else {
+                    $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutWala;
+                    echo '
 												<tr class="h-12">';
-											}
-											
-											
-											echo '
-												<td class="text-sm text-center font-bold border-r w-[25%]">'.$rbets2['betType'].'</td>
-												<td class="text-sm text-center font-bold border-r w-[25%]">'.number_format($rbets2['betAmount']).'</td>
-												<td class="text-sm text-center font-bold border-r w-[25%]">'.number_format($possibleWinning).'</td>
-												<td class="text-sm text-center font-bold border-r w-[25%]">';
-					
-												if($isBetting == 3 || $isBetting == 6){
-													if($isBettingWinner == 1){
-														if($rbets2['betTypeID'] == 1){
-															echo 'WIN';
-														}else if($rbets2['betTypeID'] == 2){
-															echo 'LOST';
-														}else{
-															echo 'DRAW';
-														}
-														
-													}else if($isBettingWinner == 2){
-														if($rbets2['betTypeID'] == 1){
-															echo 'LOST';
-														}else if($rbets2['betTypeID'] == 2){
-															echo 'WIN';
-														}else{
-															echo 'DRAW';
-														}
-													}else{
-														echo 'DRAW';
-													}
-												}else if($isBetting == 5){
-													echo 'CANCELLED';
-												}else{
-													echo 'UNSETTLED';
-												}
-												echo '
-											</td>
-											</tr>';
-										}
-									}
+                }
 
-								}else if($isBetting == 3 || $isBetting == 5 || $isBetting == 6){
-									$qbets2 = $mysqli->query("SELECT a.`betType` as betTypeID, a.betAmount, b.betType FROM `tblbetlists` a LEFT JOIN `tblbettypes` b ON a.betType = b.id WHERE a.fightCode = '".$currentFightCode."' AND a.accountID = '".$_SESSION['accountID']."'  ");
-									if($qbets2->num_rows > 0){
-										$possibleWinning = 0;
-										while($rbets2 = $qbets2->fetch_assoc()){
-											if($rbets2['betType'] == "MERON"){
-												$possibleWinning = ($rbets2['betAmount'] /100) * $payoutMeron;
-												echo '	
-												<tr class="h-12">';
-											}else{
-												$possibleWinning = ($rbets2['betAmount'] /100) * $payoutWala;
-												echo '	
-												<tr class="h-12">';
-											}
-											echo '
-												<td ctext-sm text-center font-bold border-r w-[25%]">'.$rbets2['betType'].'</td>
-												<td ctext-sm text-center font-bold border-r w-[25%]">'.number_format($rbets2['betAmount']).'</td>
-												<td ctext-sm text-center font-bold border-r w-[25%]">'.number_format($possibleWinning).'</td>
-												<td ctext-sm text-center font-bold border-r w-[25%]">';
-					
-												if($isBetting == 3 || $isBetting == 6){
-													if($isBettingWinner == 1){
-														if($rbets2['betTypeID'] == 1){
-															echo 'WIN';
-														}else if($rbets2['betTypeID'] == 2){
-															echo 'LOST';
-														}else{
-															echo 'DRAW';
-														}
-														
-													}else if($isBettingWinner == 2){
-														if($rbets2['betTypeID'] == 1){
-															echo 'LOST';
-														}else if($rbets2['betTypeID'] == 2){
-															echo 'WIN';
-														}else{
-															echo 'DRAW';
-														}
-													}else{
-														echo 'DRAW';
-													}
-												}else if($isBetting == 5){
-													echo 'CANCELLED';
-												}else{
-													echo 'UNSETTLED';
-												}
-												echo '
+                echo '
+												<td class="text-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
+												<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
+												<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
+												<td class="text-sm text-center font-bold border-r w-[25%]">';
+
+                if ($isBetting == 3 || $isBetting == 6) {
+                    if ($isBettingWinner == 1) {
+                        if ($rbets2['betTypeID'] == 1) {
+                            echo 'WIN';
+                        } else if ($rbets2['betTypeID'] == 2) {
+                            echo 'LOST';
+                        } else {
+                            echo 'DRAW';
+                        }
+
+                    } else if ($isBettingWinner == 2) {
+                        if ($rbets2['betTypeID'] == 1) {
+                            echo 'LOST';
+                        } else if ($rbets2['betTypeID'] == 2) {
+                            echo 'WIN';
+                        } else {
+                            echo 'DRAW';
+                        }
+                    } else {
+                        echo 'DRAW';
+                    }
+                } else if ($isBetting == 5) {
+                    echo 'CANCELLED';
+                } else {
+                    echo 'UNSETTLED';
+                }
+                echo '
 											</td>
 											</tr>';
-										}
-									}
-								}
-								
-							}else{}
-							
-						?>
+            }
+        }
+
+    } else if ($isBetting == 3 || $isBetting == 5 || $isBetting == 6) {
+        $qbets2 = $mysqli->query("SELECT a.`betType` as betTypeID, a.betAmount, b.betType FROM `tblbetlists` a LEFT JOIN `tblbettypes` b ON a.betType = b.id WHERE a.fightCode = '" . $currentFightCode . "' AND a.accountID = '" . $_SESSION['accountID'] . "'  ");
+        if ($qbets2->num_rows > 0) {
+            $possibleWinning = 0;
+            while ($rbets2 = $qbets2->fetch_assoc()) {
+                if ($rbets2['betType'] == "MERON") {
+                    $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutMeron;
+                    echo '
+												<tr class="h-12">';
+                } else {
+                    $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutWala;
+                    echo '
+												<tr class="h-12">';
+                }
+                echo '
+												<td ctext-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
+												<td ctext-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
+												<td ctext-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
+												<td ctext-sm text-center font-bold border-r w-[25%]">';
+
+                if ($isBetting == 3 || $isBetting == 6) {
+                    if ($isBettingWinner == 1) {
+                        if ($rbets2['betTypeID'] == 1) {
+                            echo 'WIN';
+                        } else if ($rbets2['betTypeID'] == 2) {
+                            echo 'LOST';
+                        } else {
+                            echo 'DRAW';
+                        }
+
+                    } else if ($isBettingWinner == 2) {
+                        if ($rbets2['betTypeID'] == 1) {
+                            echo 'LOST';
+                        } else if ($rbets2['betTypeID'] == 2) {
+                            echo 'WIN';
+                        } else {
+                            echo 'DRAW';
+                        }
+                    } else {
+                        echo 'DRAW';
+                    }
+                } else if ($isBetting == 5) {
+                    echo 'CANCELLED';
+                } else {
+                    echo 'UNSETTLED';
+                }
+                echo '
+											</td>
+											</tr>';
+            }
+        }
+    }
+
+} else {}
+
+?>
 						</tbody>
 					</table>
 				</div>
@@ -449,7 +448,7 @@ Account Logs
 	<script src="design/js/sb-admin-2.min.js"></script>
 	<script type="text/javascript" src="design/js/autoNumeric.js"></script>
 	<link rel="stylesheet" href="design/dist/sweetalert.css">
-	
+
 	<script type="text/javascript">
 		jQuery(function($) {
 			$('.auto').autoNumeric('init');
@@ -458,49 +457,49 @@ Account Logs
 		function caps(element){
 			element.value = element.value.toUpperCase();
 		}
-		function reloadPage(){ 
+		function reloadPage(){
 			location.reload();
 		}
 		function checkRefresh(){
 			bettingStatusID = $("#hiddenBettingStatusID").val();
 			if(bettingStatusID == 2 || bettingStatusID == 3 || bettingStatusID == 5 || bettingStatusID == 6){
-				setInterval(function(){   
+				setInterval(function(){
 					location.reload();
 				}, 5000);
 			}else{
-				
+
 			}
-			
+
 		}
-		$(document).ready(function(){	
+		$(document).ready(function(){
 			$("#btnPlaceBet").click(function(){
-				$('#modal_placeBet').modal("show");	
+				$('#modal_placeBet').modal("show");
 			});
 			$('#modal_placeBet').on('shown.bs.modal', function () {
 				setTimeout(function (){
 					$('#txtBetAmount').focus();
 				}, 100);
-			});	
-			<?php 
-			if($isBetting == 1 || $isBetting == 2 || $isBetting == 4){
-			?>
-				setInterval(function(){   
-					$("#betsContainer").load("bets/accountBetsLoadLatestData.php");
-					
-				}, 5000);
-				
+			});
 			<?php
-			}else{
-			?>
+if ($isBetting == 1 || $isBetting == 2 || $isBetting == 4) {
+    ?>
+				setInterval(function(){
+					$("#betsContainer").load("bets/accountBetsLoadLatestData.php");
+
+				}, 5000);
+
+			<?php
+} else {
+    ?>
 				checkRefresh();
 			<?php
-			}
-			?>
+}
+?>
 		});
 	</script>
 	<?php
-		include("modalboxes.php");
-		include("accountModals.php");
-	?>
+include "modalboxes.php";
+include "accountModals.php";
+?>
 </body>
 </html>
