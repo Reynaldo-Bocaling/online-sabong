@@ -1,0 +1,13 @@
+#body_row {
+	position:absolute;
+    top:35%;
+    right:25%;
+    left:0%;
+}
+
+#box_bg{border:3px solid #66afe9;width:380px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;box-shadow:0 0 2px #dadada,inset 0 -3px 0 #e6e6e6; margin: 0 auto;}
+
+#content{padding:23px 28px; }
+
+.login{font-size:14px;color:#8e8d8d;font-family:"Droid Sans";padding:11px 15px 10px 50px;background-color:#fdfdfd;width:100%;border:3px solid #d8d8d8;margin:13px 0 -3px 0;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;box-shadow:inset 2px 2px 4px #f1f1f1}
+

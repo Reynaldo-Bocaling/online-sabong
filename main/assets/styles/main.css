@@ -1,0 +1,148 @@
+/* text */
+.textSmall {
+    font-size: 0.7rem;
+}
+
+.textNormal {
+    font-size: 0.89rem;
+}
+
+.textLarge {
+    font-size: 1.1rem;
+}
+
+.textXl {
+    font-size: 1.3rem;
+}
+
+.text2xl {
+    font-size: 1.5rem;
+}
+
+.text3xl {
+    font-size: 1.7rem;
+}
+
+.text4xl {
+    font-size: 1.9rem;
+}
+
+
+/* color */
+
+/* gray */
+.textGray {
+    color: #5c5e5f;
+}
+
+.input {
+    border-radius: 4px !important;
+}
+
+
+.flexStart {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flexEnd {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.flexBetween {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.flexColStart {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.flexColEnd {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+
+
+/* width */
+.width10 {
+    width: 10%;
+}
+
+.width20 {
+    width: 20%;
+}
+
+.width30 {
+    width: 30%;
+}
+
+.width35 {
+    width: 35%;
+}
+
+.width40 {
+    width: 40%;
+}
+
+.width50 {
+    width: 50%;
+}
+
+.width60 {
+    width: 60%;
+}
+
+.width65 {
+    width: 65%;
+}
+
+.width70 {
+    width: 70%;
+}
+
+.width80 {
+    width: 80%;
+}
+
+.width90 {
+    width: 90%;
+}
+
+.width100 {
+    width: 100%;
+}
+
+
+/* heigth */
+.heightFull {
+    height: 100vh;
+}
+
+/* shadow effect */
+.redShadow::after {
+    content: '';
+    position: absolute;
+    top: -300px;
+    left: -200px;
+    width: 700px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, hsla(0, 93%, 71%, 0.2),
+            transparent 64%);
+    z-index: .9;
+}

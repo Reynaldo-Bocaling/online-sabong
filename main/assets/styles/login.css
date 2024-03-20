@@ -1,0 +1,49 @@
+.loginImageModel {
+    max-width: 370px;
+    width: 100%;
+    filter: drop-shadow(0px, 0px 10px rgba(0, 0, 0, 0.5));
+}
+
+.loginModelRight {
+    position: relative;
+    z-index: 10;
+}
+
+
+
+.login_background {
+    background-image: url('../images//wave.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.testt {
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.2));
+}
+
+.testtt::before {
+    content: '';
+    position: absolute;
+    bottom: -300px;
+    left: -300px;
+    width: 700px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, hsla(103, 100%, 78%, 0.2),
+            transparent 64%);
+    z-index: 1;
+}
+
+.testtt::after {
+    content: '';
+    position: absolute;
+    top: -00px;
+    right: 0;
+    width: 700px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, hsla(0, 68%, 73%, 0.2),
+            transparent 64%);
+    z-index: 1;
+}
