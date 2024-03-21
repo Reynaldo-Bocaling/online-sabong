@@ -140,40 +140,40 @@ if ($_SESSION['roleID'] == 3) {
 <div id="wrapper" class="fixed top-0 left-0 w-screen">
 	<div id="content-wrapper" class="flex h-screen overflow-hidden">
 		<!-- sidebar -->
-		<div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col w-[270px]">
-    <span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
-	<div class="flex flex-col gap-5 mt-9 px-2">
-        <a class="text-sm text-gray-600  p-3 font-normal bg-blue-50 rounded-lg" href="index.php">
-			<i class="fas fa-home mr-2 text-blue-500"></i>
-			<span class="text-blue-500">Dashboard</span>
-        </a>
-        <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountBetAddPoints.php">
-            <i class="fas fa-plus mr-2 text-gray-400"></i>
-            Add Points
-        </a>
-        <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountBetWithdrawPoints.php">
-            <i class="fas fa-minus mr-2 text-gray-400"></i>
-            Withdraw Points
-        </a>
-        <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountBetHistory.php">
-            <i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
-            Bets History
-        </a>
-        <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="accountLogs.php">
-            <i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
-Account Logs
-        </a>
-        <a class="text-sm text-gray-600  py-2 px-3 font-normal" id = "changePassword">
-            <i class="fa fa-lock mr-2 text-gray-400"></i>
-            Change Password
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="text-sm text-gray-600  py-2 px-3 font-normal" href="includes/logout.php">
-            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            Logout
-        </a>
-        </div>
-</div>
+	<div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col w-[270px]">
+		<span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+		<div class="flex flex-col gap-5 mt-9 px-2">
+			<a class="text-sm text-gray-600  p-3 font-normal bg-blue-50 rounded-lg" href="index.php">
+				<i class="fas fa-home mr-2 text-blue-500"></i>
+				<span class="text-blue-500">Dashboard</span>
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="accountBetAddPoints.php">
+				<i class="fas fa-plus mr-2 text-gray-400"></i>
+				Add Points
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="accountBetWithdrawPoints.php">
+				<i class="fas fa-minus mr-2 text-gray-400"></i>
+				Withdraw Points
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="accountBetHistory.php">
+				<i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
+				Bets History
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="accountLogs.php">
+				<i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
+				Account Logs
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" id = "changePassword">
+				<i class="fa fa-lock mr-2 text-gray-400"></i>
+				Change Password
+			</a>
+			<div class="dropdown-divider"></div>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php">
+				<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+				Logout
+			</a>
+			</div>
+	</div>
 
 
 
@@ -307,16 +307,16 @@ if ($isBetting == 3 || $isBetting == 6) {
 				<div class="bg-white px-3 py-5 w-full bg-white rounded-2xl shadow-md shadow-slate-200 flex flex-col items-start justify-center mt-4">
 					<p class="mx-auto text-sm font-medium mb-7 text-blue-500">Your current bets for this fight</p>
 					<table class="w-full">
-						<thead>
-							<tr style="text-align:center;">
-								<th class="text-sm text-center font-bold border-r w-[25%]">Bet Under</th>
-								<th class="text-sm text-center font-bold border-r w-[25%]">Bet Amount</th>
-								<th class="text-sm text-center font-bold border-r w-[25%]">Possible Winning Amount</th>
-								<th class="text-sm text-center font-bold border-r w-[25%]">Result</th>
-							</tr>
-						</thead>
-						<tbody>
-						<?php
+					<thead>
+						<tr style="text-align:center;">
+							<th class="text-sm text-center font-bold border-r w-[25%]">Bet Under</th>
+							<th class="text-sm text-center font-bold border-r w-[25%]">Bet Amount</th>
+							<th class="text-sm text-center font-bold border-r w-[25%]">Possible Winning Amount</th>
+							<th class="text-sm text-center font-bold border-r w-[25%]">Result</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php
 if ($display == 1) {
     if ($isBetting == 1 || $isBetting == 2 || $isBetting == 4) {
         $qbets2 = $mysqli->query("SELECT a.`betType` as betTypeID, a.betAmount, b.betType FROM `tblbetliststemp` a LEFT JOIN `tblbettypes` b ON a.betType = b.id WHERE a.fightCode = '" . $currentFightCode . "' AND a.accountID = '" . $_SESSION['accountID'] . "'  ");
@@ -326,18 +326,18 @@ if ($display == 1) {
                 if ($rbets2['betType'] == "MERON") {
                     $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutMeron;
                     echo '
-												<tr class="h-12">';
+																		<tr class="h-12">';
                 } else {
                     $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutWala;
                     echo '
-												<tr class="h-12">';
+																		<tr class="h-12">';
                 }
 
                 echo '
-												<td class="text-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
-												<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
-												<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
-												<td class="text-sm text-center font-bold border-r w-[25%]">';
+																		<td class="text-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
+																		<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
+																		<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
+																		<td class="text-sm text-center font-bold border-r w-[25%]">';
 
                 if ($isBetting == 3 || $isBetting == 6) {
                     if ($isBettingWinner == 1) {
@@ -366,8 +366,8 @@ if ($display == 1) {
                     echo 'UNSETTLED';
                 }
                 echo '
-											</td>
-											</tr>';
+																	</td>
+																	</tr>';
             }
         }
 
@@ -379,17 +379,17 @@ if ($display == 1) {
                 if ($rbets2['betType'] == "MERON") {
                     $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutMeron;
                     echo '
-												<tr class="h-12">';
+																		<tr class="h-12">';
                 } else {
                     $possibleWinning = ($rbets2['betAmount'] / 100) * $payoutWala;
                     echo '
-												<tr class="h-12">';
+																		<tr class="h-12">';
                 }
                 echo '
-												<td ctext-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
-												<td ctext-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
-												<td ctext-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
-												<td ctext-sm text-center font-bold border-r w-[25%]">';
+																		<td ctext-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
+																		<td ctext-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
+																		<td ctext-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
+																		<td ctext-sm text-center font-bold border-r w-[25%]">';
 
                 if ($isBetting == 3 || $isBetting == 6) {
                     if ($isBettingWinner == 1) {
@@ -418,8 +418,8 @@ if ($display == 1) {
                     echo 'UNSETTLED';
                 }
                 echo '
-											</td>
-											</tr>';
+																	</td>
+																	</tr>';
             }
         }
     }
@@ -427,8 +427,8 @@ if ($display == 1) {
 } else {}
 
 ?>
-						</tbody>
-					</table>
+					</tbody>
+				</table>
 				</div>
 
 			</main>

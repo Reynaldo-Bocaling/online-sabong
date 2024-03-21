@@ -1,21 +1,21 @@
 <?php
 session_start();
-require('includes/connection.php');
-if($_SESSION['roleID'] == 3){
-	$qaccounts = $mysqli->query("SELECT `id`, `mobileNumber`, `firstname`, `lastname`, `balance` FROM `tblaccounts` WHERE id = '".$_SESSION['accountID']."' ");
-	
-	if($qaccounts->num_rows > 0){
-		while($raccounts = $qaccounts->fetch_assoc()){
-			$points = $raccounts['balance'];
-			$accountID = $raccounts['id'];
-			$firstname = $raccounts['firstname'];
-			$lastname = $raccounts['lastname'];
-			$mobileNumber = $raccounts['mobileNumber'];
-		}
-	}
+require 'includes/connection.php';
+if ($_SESSION['roleID'] == 3) {
+    $qaccounts = $mysqli->query("SELECT `id`, `mobileNumber`, `firstname`, `lastname`, `balance` FROM `tblaccounts` WHERE id = '" . $_SESSION['accountID'] . "' ");
 
-}else{
-	header("location: ../index.php");
+    if ($qaccounts->num_rows > 0) {
+        while ($raccounts = $qaccounts->fetch_assoc()) {
+            $points = $raccounts['balance'];
+            $accountID = $raccounts['id'];
+            $firstname = $raccounts['firstname'];
+            $lastname = $raccounts['lastname'];
+            $mobileNumber = $raccounts['mobileNumber'];
+        }
+    }
+
+} else {
+    header("location: ../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -28,11 +28,13 @@ if($_SESSION['roleID'] == 3){
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="./assets/styles/table.css">
 
 	<title><?php echo $_SESSION['systemName']; ?></title>
 
 	<link href="design/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	
+
 	<script src="design/dist/sweetalert.js"></script>
 
 	<!-- Custom styles for this template-->
@@ -42,92 +44,88 @@ if($_SESSION['roleID'] == 3){
 </head>
 
 <body id="page-top">
-  <!-- Page Wrapper -->
-	<div id="wrapper">
 
-    <!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-		<div id="content">
 
-        <!-- Topbar -->
-			<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-				<!-- Topbar Navbar -->
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">
-			
-					<?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?> <br/> POINTS: &nbsp;<span style="color:red;"><?php  echo number_format($points,2); ?></span><input type = "hidden" id = "hiddenPoints" value = "<?php echo $points; ?>"/>&nbsp;	
-					</li>
-					<div class="topbar-divider d-none d-sm-block"></div>
+	<div id="wrapper" class="fixed top-0 left-0 w-screen">
+	<div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col w-[270px] h-screen">
+		<span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+		<div class="flex flex-col gap-5 mt-9 px-2">
+			<a class="text-sm text-gray-600  p-3 font-normal rounded-lg" href="index.php">
+				<i class="fas fa-home mr-2"></i>
+				Dashboard
+			</a>
+			<a class="text-sm text-gray-600 p-3 font-normal" href="accountBetAddPoints.php">
+				<i class="fas fa-plus mr-2 "></i>
+				<span >Add Points</span>
+			</a>
+			<a class="text-sm   bg-blue-50 text-blue-500  p-3 font-normal rounded-lg" href="accountBetWithdrawPoints.php">
+				<i class="fas fa-minus mr-2 "></i>
+				Withdraw Points
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="accountBetHistory.php">
+				<i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
+				Bets History
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="accountLogs.php">
+				<i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
+				Account Logs
+			</a>
+			<a class="text-sm text-gray-600  p-3 font-normal" id = "changePassword">
+				<i class="fa fa-lock mr-2 text-gray-400"></i>
+				Change Password
+			</a>
+			<div class="dropdown-divider"></div>
+			<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php">
+				<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+				Logout
+			</a>
+			</div>
+	</div>
 
-					<!-- Nav Item - User Information -->
-					<li class="nav-item dropdown no-arrow">
-						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="mr-2 d-none d-lg-inline text-gray-600 small"><i class="fas fa-star"></i> <?php echo $_SESSION['systemName']; ?> <i class="fas fa-star"></i></span>
-						<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-							<i class="fa fa-star"></i><i class="fa fa-bars"></i><i class="fa fa-star"></i>
-						</button>
-					</a>
-				  <!-- Dropdown - User Information -->
-					  <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-						 <a class="dropdown-item" href="index.php">
-							<i class="fas fa-home mr-2 text-gray-400"></i>
-							Dashboard								
-						</a>
-						<a class="dropdown-item" href="accountBetAddPoints.php">
-							<i class="fas fa-plus mr-2 text-gray-400"></i>
-							Add Points 
-						</a>
-						<a class="dropdown-item" href="accountBetWithdrawPoints.php">
-							<i class="fas fa-minus mr-2 text-gray-400"></i>
-							Withdraw Points
-						</a>
-						<a class="dropdown-item" href="accountBetHistory.php">
-							<i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
-							Bets History								
-						</a>
-						<a class="dropdown-item" href="accountLogs.php">
-							<i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
-							Account Logs
-						</a>
-						<a class="dropdown-item" id = "changePassword">
-							<i class="fa fa-lock mr-2 text-gray-400"></i>
-							Change Password
-						</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="includes/logout.php">
-							<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-							Logout
-						</a>
-					  </div>
-					</li>
-				</ul>
-			</nav>
-			 <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Withdraw Points and Withdraw History</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-				<input type = "hidden" id = "hiddenMobileNumber" />
-				<input type = "hidden" id = "hiddenAccountID" />
-				<?php
-				if($points < 100){
-					echo '<h6 style="font-weight:bold; color:red;">Take Note: Points must be 100 or more to submit request for withdrawal of points! Only One Withdrawal Request at a time!</h6>';
-				}else{
-					echo '
-					<button class="btn btn-lg btn-danger btnWithdrawBalance" data-accountID = "'.$accountID.'" data-fname = "'.$firstname.'" data-lname = "'.$lastname.'" data-balance = "'.number_format($points).'" value = "'.$mobileNumber.'" style="width:100%;"><i class="fas fa-minus-circle"></i> CLICK TO WITHDRAW POINTS</button><br/><br/>';
-				}
-				?>
-				
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	<div id="content" class="flex-1 flex flex-col overflow-hidden gap-2 bg-[#F6F8FA]">
+		<nav class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7">
+			<p class="text-base font-mdium text-gray-700 flex items-center gap-2">
+				Welcome,
+				<span class="text-black tracking-tighter font-semibold"><?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?> </span>
+				<img src="./assets/images/waving.png" class="w-[50px]" />
+			</p>
+
+			<small><?php echo $currentDate ?></small>
+			<div class=" flex items-center gap-2">
+				<p class="text-sm text-gray-700">Your Points:</pc>
+				<p class="<?php echo ($points < 10) ? 'text-red-500' : 'text-green-500'; ?> text-sm font-semibold">&#8369;<?php echo number_format($points, 2); ?></p>
+			<div>
+		</nav>
+
+
+		<!-- main conutent -->
+		<main class="flex-1 overflow-x-hidden overflow-y-auto p-3">
+
+
+			<div class="flex items-center text-sm mb-3 tracking-wide gap-1">
+				<p>withdrawPoints/ </p>
+				<span class="font-semibold text-blue-500">Withdraw-Points&Withdraw-History</span>
+			</div>
+			<div class="flex flex-col pl-2 pr-5 mb-3">
+				<span class="text-lg text-black font-semibold">Withdraw Points and Withdraw History</span>
+				<div class="max-w-[600px] w-full py-1"><?php
+if ($points < 100) {
+    echo '<h6 class="text-xs font-medium text-red-500">Take Note: Points must be 100 or more to submit request for withdrawal of points! Only One Withdrawal Request at a time!</h6>';
+} else {
+    echo '
+														<button class="text-xs font-medium px-4 py-2 rounded-full bg-red-500 text-white btnWithdrawBalance" data-accountID = "' . $accountID . '" data-fname = "' . $firstname . '" data-lname = "' . $lastname . '" data-balance = "' . number_format($points) . '" value = "' . $mobileNumber . '"><i class="fas fa-minus-circle"></i> CLICK TO WITHDRAW POINTS</button><br/><br/>';
+}?>
+				</div>
+			</div>
+
+
+
+			<div class="p-3 bg-white rounded-lg border">
+				<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-						<th style="text-align:center;">#</th>		
+						<th style="text-align:center;">#</th>
 						<th style="text-align:center;">Transaction Code</th>
 						<th style="text-align:center;">Amount/Points</th>
 						<th style="text-align:center;">Status</th>
@@ -136,51 +134,59 @@ if($_SESSION['roleID'] == 3){
                     </tr>
                   </thead>
 					<?php
-						$qtrans = $mysqli->query("SELECT * FROM `tblnewbalance` WHERE `accountID` = '".$accountID."' AND transID = '2' ORDER BY id DESC");
-						if($qtrans->num_rows > 0){
-							$count = 1;
-							while($rtrans = $qtrans->fetch_assoc()){
-								if($rtrans['isProcess'] == 0){
-									$isProcess = "Proceed to Cashier";
-								}else if($rtrans['isProcess'] == 1){
-									$isProcess = "Withdrawn Successfully";
-								}else if($rtrans['isProcess'] == 5){
-									$isProcess = "Cancelled";
-								}
-								echo '
+$qtrans = $mysqli->query("SELECT * FROM `tblnewbalance` WHERE `accountID` = '" . $accountID . "' AND transID = '2' ORDER BY id DESC");
+if ($qtrans->num_rows > 0) {
+    $count = 1;
+    while ($rtrans = $qtrans->fetch_assoc()) {
+        if ($rtrans['isProcess'] == 0) {
+            $isProcess = "Proceed to Cashier";
+        } else if ($rtrans['isProcess'] == 1) {
+            $isProcess = "Withdrawn Successfully";
+        } else if ($rtrans['isProcess'] == 5) {
+            $isProcess = "Cancelled";
+        }
+        echo '
 								<tr  style="text-align:center;">
-									<td>'.$count.'</td>
-									
-									<td>'.$rtrans['transCode'].'</td>
-									<td style="text-align:right;">'.number_format($rtrans['transAmount']).'</td>
-									<td>'.$isProcess.'</td>
-									<td>'.$rtrans['transDate'].'</td>
-									<td><button class="btn btn-primary withdrawShowBarcode" value = "'.$rtrans['transCode'].'" data-accountID = "'.$rtrans['accountID'].'" data-id = "'.$rtrans['id'].'">SHOW CODE</button</td>
+									<td>' . $count . '</td>
+
+									<td>' . $rtrans['transCode'] . '</td>
+									<td style="text-align:right;">' . number_format($rtrans['transAmount']) . '</td>
+									<td>' . $isProcess . '</td>
+									<td>' . $rtrans['transDate'] . '</td>
+									<td><button class="px-4 py-2 rounded-full bg-blue-500 text-white withdrawShowBarcode" value = "' . $rtrans['transCode'] . '" data-accountID = "' . $rtrans['accountID'] . '" data-id = "' . $rtrans['id'] . '">SHOW CODE</button</td>
 								</tr>
 								';
-								
-								$count++;
-							}
-						}
-					?>
+
+        $count++;
+    }
+}
+?>
                   <tbody>
-                  
+
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
 
-        </div>
-        <!-- /.container-fluid -->
-			
-			
-			
-		</div>
-      <!-- End of Main Content -->
-    </div>
-    <!-- End of Content Wrapper -->
+			</div>
+
+
+
+
+		</main>
+
+	</div>
+
+
+
+
 </div>
+
+
+
+
+
+
+
+
   <!-- End of Page Wrapper -->
   <!-- Bootstrap core JavaScript-->
   <!-- Bootstrap core JavaScript-->
@@ -210,19 +216,19 @@ if($_SESSION['roleID'] == 3){
 		function caps(element){
 			element.value = element.value.toUpperCase();
 		}
-		function reloadPage(){ 
+		function reloadPage(){
 			location.reload();
 		}
 		$(document).ready(function(){
 			$("#btnPlaceBet").click(function(){
-				$('#modal_placeBet').modal("show");	
+				$('#modal_placeBet').modal("show");
 			});
 			$('#modal_placeBet').on('shown.bs.modal', function () {
 				setTimeout(function (){
 					$('#txtBetAmount').focus();
 				}, 100);
-			});	
-			
+			});
+
 			$(".btnWithdrawBalance").click(function(){
 				mobileNumberVal = $(this).val();
 				accountIDVal = $(this).attr("data-accountID");
@@ -231,9 +237,9 @@ if($_SESSION['roleID'] == 3){
 				balanceVal = $(this).attr("data-balance");
 				$("#hiddenMobileNumber").val(mobileNumberVal);
 				$("#hiddenAccountID").val(accountIDVal);
-				
+
 				$("#modal_accountWithdrawBalance").modal("show");
-				
+
 				$("#spanWithdrawFname").text(fnameVal);
 				$("#spanWithdrawLname").text(lnameVal);
 				$("#spanWithdrawMobileNumber").text(mobileNumberVal);
@@ -244,32 +250,32 @@ if($_SESSION['roleID'] == 3){
 					$('#txtWithdrawBalance').val("");
 					$('#txtWithdrawBalance').focus();
 				}, 100);
-			});	
-			
+			});
+
 			$(".withdrawShowBarcode").click(function(){
 				tcode = $(this).val();
 				accountIDVal = $(this).attr("data-accountID");
 				idVal = $(this).attr("data-id");
 				$.post("accounts/showBarcodeWithdraw.php", {transCode:tcode, accountID:accountIDVal, id:idVal}, function(res){
 					if(res == 0){
-						swal("An error occured! Refresh the page and try again or system developer assistance is required!", "", "error");	
+						swal("An error occured! Refresh the page and try again or system developer assistance is required!", "", "error");
 					}else if(res == 2){
-						swal("Please logout and relogin your account!", "", "error");	
+						swal("Please logout and relogin your account!", "", "error");
 					}else if(res == 3){
-						swal("Transaction Code does not exist! Refresh the page and try again.", "", "error");	
-					}else{		
+						swal("Transaction Code does not exist! Refresh the page and try again.", "", "error");
+					}else{
 						$("#modal_barcodeWithdraw").modal("show");
 						$("#barcodeValWithdraw").html(res);
-				
+
 					}
 				});
 			});
 		});
 	</script>
 	<?php
-		include("modalboxes.php");
-		include("accountModals.php");
-	?>
+include "modalboxes.php";
+include "accountModals.php";
+?>
 </body>
 
 </html>

@@ -1,32 +1,31 @@
 <?php
-	session_start();
-	require('main/includes/connection.php');	
-	$qcs = $mysqli->query("CALL checkSystem(); ");
-	$count = $qcs->num_rows;
-	if($count > 0){
-		while($rcs = $qcs->fetch_assoc()){
-		
-			$systemName = $rcs['systemName'];
-			$systemLocation = $rcs['systemLocation'];
-			$systemAdministrator = $rcs['systemAdministrator'];
-			$tellerWala = $rcs['tellerWala'];
-			$tellerMeron = $rcs['tellerMeron'];
-			
-			if(($systemName == "") || ($systemLocation == "") || ($systemAdministrator == 0) || ($tellerWala == 0) || ($tellerMeron == 0)){
-				header('location: systemMessage.php');
-			}else{
-				$_SESSION['systemName'] = $systemName;
-				$_SESSION['systemLocation'] = $systemLocation;
-				$_SESSION['systemAdministrator'] = $systemAdministrator;
-				$_SESSION['tellerWala'] = $tellerWala;	
-				$_SESSION['tellerMeron'] = $tellerMeron;
-			}
-		}
-	}else{
-		header('location: systemMessage.php');
-	}
-	
-	
+session_start();
+require 'main/includes/connection.php';
+$qcs = $mysqli->query("CALL checkSystem(); ");
+$count = $qcs->num_rows;
+if ($count > 0) {
+    while ($rcs = $qcs->fetch_assoc()) {
+
+        $systemName = $rcs['systemName'];
+        $systemLocation = $rcs['systemLocation'];
+        $systemAdministrator = $rcs['systemAdministrator'];
+        $tellerWala = $rcs['tellerWala'];
+        $tellerMeron = $rcs['tellerMeron'];
+
+        if (($systemName == "") || ($systemLocation == "") || ($systemAdministrator == 0) || ($tellerWala == 0) || ($tellerMeron == 0)) {
+            header('location: systemMessage.php');
+        } else {
+            $_SESSION['systemName'] = $systemName;
+            $_SESSION['systemLocation'] = $systemLocation;
+            $_SESSION['systemAdministrator'] = $systemAdministrator;
+            $_SESSION['tellerWala'] = $tellerWala;
+            $_SESSION['tellerMeron'] = $tellerMeron;
+        }
+    }
+} else {
+    header('location: systemMessage.php');
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +37,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  	<script src="https://cdn.tailwindcss.com"></script>
+
 
   <title><?php echo $_SESSION['systemName']; ?></title>
 
@@ -48,16 +49,78 @@
   <!-- Custom styles for this template-->
   <link rel="stylesheet" type="text/css" href="main/design/dist/sweetalert.css">
   <link href="main/design/css/sb-admin-2.min.css" rel="stylesheet">
+	<link href="main/assets/styles/register.css" rel="stylesheet">
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="regitration_container relative flex items-center justify-center h-screen z-10 overflow-hidden">
 
-  <div class="container">
+
+
+
+<div class="absolute top-2 max-w-[80%] w-full flex items-center justify-between">
+		<div class=" text-xl text-black font-bold tracking-tight">
+			<span class="text-2xl text-red-600">$</span>ABONG
+		</div>
+		<div class="flex items-center gap-4">
+			<span class=" text-sm text-white font-medium"><?php echo $systemName ?></span>
+			<img src="./main/assets/images/facebook.png" class="w-[20px]" />
+			<img src="./main/assets/images/gmail.png" class="w-[20px]" />
+		</div>
+	</div>
+
+	<div class="testtt container flex items-center justify-start bg-red- w-full pl-24 mt-5">
+		<div class="w-[400px] relative z-10 -ml-8">
+			<div>
+				<h1 class="text-black text-xl font-extrabold ">Welcome Back!</h1>
+				<small class="text-sm text-gray-600 tracking-wide" >Registration form</small>
+			</div>
+			<form class="user my-4 ">
+				<div class="form-group pr-4">
+					<input type="text" id="txtMobileUser" class="text-sm form-control fieldChecker rounded-xl py-6 shadow-md" placeholder="First Name"  maxlength="32" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false" >
+				</div>
+				<div class="form-group pr-4">
+					<input type="text" id="txtMobileUser" class="text-sm form-control fieldChecker rounded-xl py-6 shadow-md" placeholder="Lastname"  maxlength="32" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false" >
+				</div>
+				<div class="form-group pr-4">
+					<input type="text" id="txtMobileUser" class="text-sm form-control fieldChecker rounded-xl py-6 shadow-md" placeholder="Mobile Number / Username"  maxlength="32" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false" >
+				</div>
+
+				<div class="form-group pr-4 flex gap-3">
+					<input type="password" id="txtPassword" class="text-sm form-control rounded-xl py-6  shadow-md" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false"  placeholder="Password">
+					<input type="password" id="txtPassword" class="text-sm form-control rounded-xl py-6  shadow-md" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false"  placeholder="Password">
+				</div>
+				<div class="flex items-center gap-3 mt-6">
+					<input type='button' id = "btnLogin" value = "Register" class="text-sm text-white font-medium rounded-xl py-[12px] bg-gradient-to-r from-violet-600 to-indigo-600 w-1/3"/>
+
+					<div class="w-1/1 text-sm flex items-center">
+					<p>Already have an account?</p>
+					</div>
+					<a href="index.php" class="text-blue-500 font-medium -ml-2">
+						  Login
+					</a>
+				</div>
+			</form>
+
+		</div>
+		<div class=" relative z-10">
+
+		<!-- </div>
+			<img src='./main/assets/images/login_model.png' class="absolute top-1/2 right-32 -translate-y-1/2 testt w-[420px] mt-10 ml-20 z-50"/>
+			<img src='./main/assets/images/transparent_loginImg.png' class="absolute -top-16 left-7  testt w-[520px] opacity-5 z-"/>
+
+
+	</div> -->
+
+
+
+
+
+
+  <!-- <div class="container mt-[200px]">
 
     <div class="card o-hidden border-0 shadow-lg my-5">
       <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
         <div class="row">
           <div class="col-lg-2"></div>
           <div class="col-lg-8">
@@ -98,7 +161,7 @@
       </div>
     </div>
 
-  </div>
+  </div> -->
 
   <!-- Bootstrap core JavaScript-->
   <script src="main/design/vendor/jquery/jquery.min.js"></script>
@@ -115,7 +178,7 @@
 		function caps(element){
 			element.value = element.value.toUpperCase();
 		}
-		$(document).ready(function(){	
+		$(document).ready(function(){
 			$("#addFirstname").focus();
 			var input = document.getElementById("addRepeatPassword");
 
@@ -205,8 +268,8 @@
 		});
 		</script>
 		<?php
-			include("modalboxes.php");
-		?>
+include "modalboxes.php";
+?>
 </body>
 
 </html>

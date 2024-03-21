@@ -1,15 +1,15 @@
 <?php
 session_start();
-require('includes/connection.php');
-if($_SESSION['roleID'] == 3){
-	$qaccount = $mysqli->query("SELECT * FROM `tblaccounts` WHERE id = '".$_SESSION['accountID']."' ");	
-	if($qaccount->num_rows > 0){
-		while($raccount = $qaccount->fetch_assoc()){
-			$points = $raccount['balance'];
-		}
-	}
-}else{
-	header("location: ../index.php");
+require 'includes/connection.php';
+if ($_SESSION['roleID'] == 3) {
+    $qaccount = $mysqli->query("SELECT * FROM `tblaccounts` WHERE id = '" . $_SESSION['accountID'] . "' ");
+    if ($qaccount->num_rows > 0) {
+        while ($raccount = $qaccount->fetch_assoc()) {
+            $points = $raccount['balance'];
+        }
+    }
+} else {
+    header("location: ../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -33,7 +33,7 @@ if($_SESSION['roleID'] == 3){
 				<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">
-						<?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?> <br/> POINTS: &nbsp;<span style="color:red;"><?php  echo number_format($points,2); ?></span><input type = "hidden" id = "hiddenPoints" value = "<?php echo $points; ?>"/>&nbsp;	
+						<?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?> <br/> POINTS: &nbsp;<span style="color:red;"><?php echo number_format($points, 2); ?></span><input type = "hidden" id = "hiddenPoints" value = "<?php echo $points; ?>"/>&nbsp;
 						</li>
 						 <div class="topbar-divider d-none d-sm-block"></div>
 						<li class="nav-item dropdown no-arrow">
@@ -46,11 +46,11 @@ if($_SESSION['roleID'] == 3){
 						  <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 							<a class="dropdown-item" href="index.php">
 								<i class="fas fa-home mr-2 text-gray-400"></i>
-								Dashboard								
+								Dashboard
 							</a>
 							<a class="dropdown-item" href="accountBetAddPoints.php">
 								<i class="fas fa-plus mr-2 text-gray-400"></i>
-								Add Points 
+								Add Points
 							</a>
 							<a class="dropdown-item" href="accountBetWithdrawPoints.php">
 								<i class="fas fa-minus mr-2 text-gray-400"></i>
@@ -58,7 +58,7 @@ if($_SESSION['roleID'] == 3){
 							</a>
 							<a class="dropdown-item" href="accountBetHistory.php">
 								<i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
-								Bets History								
+								Bets History
 							</a>
 							<a class="dropdown-item" href="accountLogs.php">
 								<i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
@@ -80,7 +80,7 @@ if($_SESSION['roleID'] == 3){
 				<div class="container-fluid">
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">Finished Fights Bets History: Current Fight Bets is not yet displayed here</h6>
+							<h6 class="m-0 font-weight-bold text-primary">Finished Fights Bets History: Current Fight Bets is not yet displayed here 2</h6>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -104,108 +104,108 @@ if($_SESSION['roleID'] == 3){
 									</thead>
 									<tbody>
 									<?php
-										$oddsMeron = 0;
-										$oddsWala = 0;
-										$totalPayout = 0;
-									   $qbets = $mysqli->query("SELECT a.`betCode`, a.`betType`, a.`betAmount`, a.`isClaim`, a.`betRoleID`, a.`accountID`, a.`isReturned`, b.`fightCode`, b.`fightNumber`, b.`isWinner`, b.`isBetting`, b.`payoutMeron`, b.`payoutWala`, c.`betType` as betTypeStatus, d.`isBetting` as bettingStatus, e.`winner`, ev.`eventDate` FROM `tblbetlists` a 
-									   LEFT JOIN `tblfights` b ON a.fightCode = b.fightCode 
-									   LEFT JOIN `tblbettypes` c ON a.betType = c.id 
-									   LEFT JOIN `tblbettingstatus` d ON b.isBetting = d.id 
-									   LEFT JOIN `tblwinner` e ON b.isWinner = e.id 
+$oddsMeron = 0;
+$oddsWala = 0;
+$totalPayout = 0;
+$qbets = $mysqli->query("SELECT a.`betCode`, a.`betType`, a.`betAmount`, a.`isClaim`, a.`betRoleID`, a.`accountID`, a.`isReturned`, b.`fightCode`, b.`fightNumber`, b.`isWinner`, b.`isBetting`, b.`payoutMeron`, b.`payoutWala`, c.`betType` as betTypeStatus, d.`isBetting` as bettingStatus, e.`winner`, ev.`eventDate` FROM `tblbetlists` a
+									   LEFT JOIN `tblfights` b ON a.fightCode = b.fightCode
+									   LEFT JOIN `tblbettypes` c ON a.betType = c.id
+									   LEFT JOIN `tblbettingstatus` d ON b.isBetting = d.id
+									   LEFT JOIN `tblwinner` e ON b.isWinner = e.id
 									   LEFT JOIN tblaccounts f ON a.accountID = f.id
 									   LEFT JOIN `tblevents` ev ON b.eventID = ev.id
-										WHERE a.accountID = '".$_SESSION['accountID']."'
+										WHERE a.accountID = '" . $_SESSION['accountID'] . "'
 									   ORDER BY a.id DESC ");
-									   if($qbets->num_rows > 0){
-										   $count = 1;
-										   while($rbets = $qbets->fetch_assoc()){
-											   $oddsMeron = $rbets['payoutMeron'];
-												$oddsWala = $rbets['payoutWala'];
-											  echo '
+if ($qbets->num_rows > 0) {
+    $count = 1;
+    while ($rbets = $qbets->fetch_assoc()) {
+        $oddsMeron = $rbets['payoutMeron'];
+        $oddsWala = $rbets['payoutWala'];
+        echo '
 											 <tr>
-												<td style="text-align:center;">'.$count.'</td>
-												<td style="text-align:center;">'.$rbets['fightCode'].'</td>
-												<td>'.$rbets['betCode'].'</td>
-												<td style="text-align:center;">'.$rbets['betTypeStatus'].'</td>
-												<td style="text-align:right;">'.number_format($rbets['betAmount']).'</td>
-												<td style="text-align:center;">'.$rbets['bettingStatus'].'</td>';
-													if($rbets['isWinner'] == 0){
-														if($rbets['bettingStatus'] == "CANCELLED"){
-															echo '
+												<td style="text-align:center;">' . $count . '</td>
+												<td style="text-align:center;">' . $rbets['fightCode'] . '</td>
+												<td>' . $rbets['betCode'] . '</td>
+												<td style="text-align:center;">' . $rbets['betTypeStatus'] . '</td>
+												<td style="text-align:right;">' . number_format($rbets['betAmount']) . '</td>
+												<td style="text-align:center;">' . $rbets['bettingStatus'] . '</td>';
+        if ($rbets['isWinner'] == 0) {
+            if ($rbets['bettingStatus'] == "CANCELLED") {
+                echo '
 															<td style="text-align:center;">CANCELLED</td>';
-														}else{
-															echo '
+            } else {
+                echo '
 															<td style="text-align:center;">UNSETTLED</td>';
-														}
-															echo '													
+            }
+            echo '
 															<td style="text-align:center;"></td>
 															<td style="text-align:center;"></td>';
-														}else if($rbets['isWinner'] == 3){
-														echo '
-															<td style="text-align:center;">'.$rbets['winner'].'</td>													
+        } else if ($rbets['isWinner'] == 3) {
+            echo '
+															<td style="text-align:center;">' . $rbets['winner'] . '</td>
 															<td style="text-align:center;"></td>
-															<td style="text-align:center;"></td>';	
-													}else{ 
-														if($rbets['betTypeStatus'] == $rbets['winner']){
-															echo '
+															<td style="text-align:center;"></td>';
+        } else {
+            if ($rbets['betTypeStatus'] == $rbets['winner']) {
+                echo '
 															<td style="text-align:center;">WIN</td>';
-															if($rbets['betType'] == 1){
-																echo '
-																<td style="text-align:center;">'.number_format($oddsMeron,2).'</td>';
-																$totalPayout = ($rbets['betAmount'] / 100) * $oddsMeron;
-															}else if($rbets['betType'] == 2){
-																echo '<td style="text-align:center;">'.number_format($oddsWala,2).'</td>';
-																$totalPayout = ($rbets['betAmount'] / 100) * $oddsWala;
-															}
-																echo'
-																<td style="text-align:center;">'.number_format($totalPayout,2).'</td>';
-														}else{
-															echo '
+                if ($rbets['betType'] == 1) {
+                    echo '
+																<td style="text-align:center;">' . number_format($oddsMeron, 2) . '</td>';
+                    $totalPayout = ($rbets['betAmount'] / 100) * $oddsMeron;
+                } else if ($rbets['betType'] == 2) {
+                    echo '<td style="text-align:center;">' . number_format($oddsWala, 2) . '</td>';
+                    $totalPayout = ($rbets['betAmount'] / 100) * $oddsWala;
+                }
+                echo '
+																<td style="text-align:center;">' . number_format($totalPayout, 2) . '</td>';
+            } else {
+                echo '
 															<td style="text-align:center;">LOST</td>';
-															if($rbets['betType'] == 1){
-																echo '
-																<td style="text-align:center;">'.number_format($oddsMeron,2).'</td>';
-															}else if($rbets['betType'] == 2){
-																 echo '
-																<td style="text-align:center;">'.number_format($oddsWala,2).'</td>';
-															}else{	
-																echo '<td style="text-align:center;"></td>';
-															}
-															echo '<td style="text-align:center;"></td>';
-														}
-													}
-												
-												if($rbets['betRoleID'] == 3){
-													if($rbets['isClaim'] == 0){
-													echo '
+                if ($rbets['betType'] == 1) {
+                    echo '
+																<td style="text-align:center;">' . number_format($oddsMeron, 2) . '</td>';
+                } else if ($rbets['betType'] == 2) {
+                    echo '
+																<td style="text-align:center;">' . number_format($oddsWala, 2) . '</td>';
+                } else {
+                    echo '<td style="text-align:center;"></td>';
+                }
+                echo '<td style="text-align:center;"></td>';
+            }
+        }
+
+        if ($rbets['betRoleID'] == 3) {
+            if ($rbets['isClaim'] == 0) {
+                echo '
 													<td style="text-align:center;">NO</td>';
-													}else{
-													echo '
+            } else {
+                echo '
 													<td style="text-align:center;">YES</td>';
-													}
-												}else{
-													echo '
+            }
+        } else {
+            echo '
 													<td style="text-align:center;">WALK-IN</td>';
-												}
-												
-												if($rbets['bettingStatus'] == "CANCELLED" || $rbets['isWinner'] == 3){
-													if($rbets['isReturned'] == 1){
-														echo '
+        }
+
+        if ($rbets['bettingStatus'] == "CANCELLED" || $rbets['isWinner'] == 3) {
+            if ($rbets['isReturned'] == 1) {
+                echo '
 														<td style="text-align:center;">RETURNED</td>';
-													}else{
-														echo '
+            } else {
+                echo '
 														<td style="text-align:center;">FOR REFUND</td>';
-													}
-												}else{
-													echo '
+            }
+        } else {
+            echo '
 													<td style="text-align:center;"></td>';
-												}
-												echo '
+        }
+        echo '
 											</tr>';
-											$count++;
-										   }
-									   }
-									 ?>
+        $count++;
+    }
+}
+?>
 									</tbody>
 								</table>
 							</div>
@@ -231,24 +231,24 @@ if($_SESSION['roleID'] == 3){
 		function caps(element){
 			element.value = element.value.toUpperCase();
 		}
-		function reloadPage(){ 
+		function reloadPage(){
 			location.reload();
 		}
 		$(document).ready(function(){
-			
+
 			$("#btnPlaceBet").click(function(){
-				$('#modal_placeBet').modal("show");	
+				$('#modal_placeBet').modal("show");
 			});
 			$('#modal_placeBet').on('shown.bs.modal', function () {
 				setTimeout(function (){
 					$('#txtBetAmount').focus();
 				}, 100);
-			});	
+			});
 		});
 	</script>
 	<?php
-		include("modalboxes.php");
-		include("accountModals.php");
-	?>
+include "modalboxes.php";
+include "accountModals.php";
+?>
 </body>
 </html>
