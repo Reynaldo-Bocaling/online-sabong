@@ -1,38 +1,3 @@
-<?php
-session_start();
-require('includes/connection.php');
-if($_SESSION['roleID'] == 13){
-	
-}else{
-	header("location: ../index.php");
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<title><?php echo $_SESSION['systemName']; ?></title>
-	<link href="design/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">	
-	<link href="design/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	<link href="design/css/sb-admin-2.min.css" rel="stylesheet">
-	<script src="https://cdn.tailwindcss.com"></script>
-	  <link rel="stylesheet"
-  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-</head>
-<body id="page-top">
-<style>
-
-::-webkit-scrollbar {
-  width: 0;
-}
-
-</style>	
 <div id="wrapper" class="fixed top-0 left-0 w-screen h-screen overflow-y-auto">
     <div id="content-wrapper" class="flex h-screen overflow-hidden">
 
@@ -121,12 +86,12 @@ if($_SESSION['roleID'] == 13){
 			<main class="flex-1 overflow-x-auto overflow-y-auto p-3">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center text-sm mb-3 tracking-wide gap-1">
-                    <p>Cash/ </p>
-                    <span class="font-semibold text-blue-500">Cash-Handler</span>
+                    <p>Transaction/ </p>
+                    <span class="font-semibold text-blue-500">Manage-Transactions</span>
                     </div>
                     <small><?php echo $currentDate ?></small>
                 </div>
-                <p class="text-xl text-black font-bold mb-2">Cash Handler</p>
+                <p class="text-xl text-black font-bold mb-2">TELLER TRANSACTIONS</p>
 		
 
 
@@ -137,92 +102,8 @@ if($_SESSION['roleID'] == 13){
 
 
 				<!-- table -->
-				<div class="bg-white px-3 py-3 max-w-full mt-3 w-full bg-white rounded-2xl shadow-md shadow-slate-100">
-					<input type = "hidden" id = "hiddenMobileNumber" />
-					<input type = "hidden" id = "hiddenAccountID" />
-					<input type = "hidden" id = "hiddenTransCode" />
-					<input type = "hidden" id = "hiddenNewBalanceID" />
-					<table class="table table-bordered" id="example" width="100%" cellspacing="0">
-						<thead>
-							<tr>
-								<th style="text-align:center;">#</th>
-								<th style="text-align:center;">Transaction Date</th>
-								<th style="text-align:center;">Transaction</th>
-								<th style="text-align:center;">Cashier</th>
-								<th style="text-align:center;">Transaction Code</th>
-								<th style="text-align:center;">Transaction Amount</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-							$totalCashin = 0;
-							$totalCashout = 0;
-							$totalCash = 0;
-							$qch = $mysqli->query("SELECT a.`transactionID`, a.`transactionCode`, a.`amount`, a.`transDate`, b.`username`, b.`cname` FROM `tblusertransactions`  a 
-												LEFT JOIN `tblusers` b ON a.userID = b.id 
-												WHERE a.cashHandlerID = '".$_SESSION['companyID']."' AND (a.transactionID = '1' OR a.transactionID = '8') ORDER BY a.id DESC");
-							if($qch->num_rows > 0){
-								$x= 1;
-								while($rch = $qch->fetch_assoc()){
-									$transactionID = $rch['transactionID'];
-									$amount = $rch['amount'];
-									$cashierName = $rch['username'] . "-".$rch['cname'];
-			
-									$transactionCode = $rch['transactionCode'];
-									if($transactionID == 1){
-										$totalCashin += $amount;
-										$transaction = "CASH IN";
-									}else if($transactionID == 8){
-										$totalCashout += $amount;
-										$transaction = "CASH OUT";
-									}
+				<div class="bg-white px-3 py-2 max-w-full w-full bg-white rounded-2xl shadow-md shadow-slate-100 flex items-center">
 									
-									echo '
-									<tr>
-										<td style="text-align:center;">'.$x.'</td>
-										<td style="text-align:center;">'.DATE('M d, Y h:i:s A', strtotime($rch['transDate'])).'</td>
-										<td style="text-align:center;">'.$transaction.'</td>
-										<td style="text-align:center;">'.$cashierName.'</td>
-										<td style="text-align:center;">'.$transactionCode.'</td>
-										<td style="text-align:center;">'.number_format($amount,2).'</td>
-									</tr>';
-									$x++;
-								}
-								if($totalCashout > $totalCashin){
-									$totalCash = $totalCashout - $totalCashin;
-								}else{
-									$totalCash = "Self Computation";
-								}
-								echo '
-									<tr>
-										<td colspan = "5">TOTAL CASH IN</td>		
-										<td style="text-align:center;">'.number_format($totalCashin,2).'</td>
-									</tr>';
-									echo '
-									<tr>
-										<td colspan = "5">TOTAL CASH OUT</td>		
-										<td style="text-align:center;">'.number_format($totalCashout,2).'</td>
-									</tr>';
-									
-									if($totalCashout > $totalCashin){
-										$totalCash = $totalCashout - $totalCashin;
-										echo '
-										<tr>
-											<td colspan = "5">TOTAL CASH: </td>		
-											<td style="text-align:center;">'.number_format($totalCash,2).'</td>
-										</tr>';
-									}else{
-										$totalCash = "Self Computation";
-										echo '
-										<tr>
-											<td colspan = "5">TOTAL CASH: </td>		
-											<td style="text-align:center;">'.$totalCash.'</td>
-										</tr>';
-									}
-							}
-							?>
-						</tbody>
-					</table>				
 				</div>
 					
 			</main>
@@ -230,41 +111,3 @@ if($_SESSION['roleID'] == 13){
 	</div>
 
 </div>	
-
-
-    <script src="design/vendor/jquery/jquery.min.js"></script>
-	<script src="design/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="design/vendor/datatables/jquery.dataTables.min.js"></script>
-	<script src="design/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-	<script src="design/js/demo/datatables-demo.js"></script>
-	<script src="design/js/sb-admin-2.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){		
-			$('#example').DataTable( {
-			});		
-		});
-
-		$(document).ready(function(){
-    $('#openBtn').click(function(){
-      $('#sidebar').toggleClass('hidden');
-    });
-
-    $('#closeBtn').click(function(){
-      $('#sidebar').addClass('hidden');
-    });
-
-
-    $('#sidebar').click(function(e){
-      if (e.target === this) {
-        $(this).addClass('hidden');
-      }
-    });
-  });
-	</script>
-	<?php
-		include("modalboxes.php");
-		include("adminModals.php");
-	?>
-</body>
-
-</html>

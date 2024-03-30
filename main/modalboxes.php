@@ -5,13 +5,13 @@ div#pageblocker {
 	top:0;
 	left:0;
 	z-index:1000;
-	
+
 	width:100%;
 	height:100%;
-	
+
 	background:#666;
 	opacity:.3;
-	
+
 	display:none;
 }
 table#modalbox_container {
@@ -19,23 +19,23 @@ table#modalbox_container {
 	top:0;
 	left:0;
 	z-index:2000;
-	
+
 	width:100%;
 	height:100%;
-	
+
 	display:none;
 }
 
 div.modal_display #modal_table{
-	border-radius:10px; 
+	border-radius:10px;
 	background:#EEE;
 	background-position:center;
 	background-repeat:no-repeat;
 	background-size:cover;*/
-	
+
 }
 div.modal_display table tr td#modal_title {
-	color:#FFF;
+	color:red;
 	padding:5px;
 	font-weight:bold;
 	border-radius:7px 7px 0 0;

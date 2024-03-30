@@ -15,6 +15,6 @@ if(!$_SESSION['roleID'] == 1 || !$_SESSION['roleID'] == 4){
 		}
 	}
 
-
+	}
 }
 ?>

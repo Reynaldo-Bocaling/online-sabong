@@ -77,21 +77,21 @@ if ($count > 0) {
 			</div>
 			<form class="user my-4 ">
 				<div class="form-group pr-4">
-					<input type="text" id="txtMobileUser" class="text-sm form-control fieldChecker rounded-xl py-6 shadow-md" placeholder="First Name"  maxlength="32" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false" >
+					<input type="text" id="addFirstname" class="text-sm  form-control fieldChecker rounded-xl py-6 shadow-md" onKeyUp="caps(this);" placeholder="First Name"  >
 				</div>
 				<div class="form-group pr-4">
-					<input type="text" id="txtMobileUser" class="text-sm form-control fieldChecker rounded-xl py-6 shadow-md" placeholder="Lastname"  maxlength="32" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false" >
+					<input type="text" id="addLastname" class="text-sm  form-control fieldChecker rounded-xl py-6 shadow-md" onKeyUp="caps(this);" placeholder="Lastname"  >
 				</div>
 				<div class="form-group pr-4">
-					<input type="text" id="txtMobileUser" class="text-sm form-control fieldChecker rounded-xl py-6 shadow-md" placeholder="Mobile Number / Username"  maxlength="32" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false" >
+					<input type="text" id="addMobileNum" class="text-sm  form-control fieldChecker rounded-xl py-6 shadow-md" placeholder="Mobile Number / Username"  >
 				</div>
 
 				<div class="form-group pr-4 flex gap-3">
-					<input type="password" id="txtPassword" class="text-sm form-control rounded-xl py-6  shadow-md" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false"  placeholder="Password">
-					<input type="password" id="txtPassword" class="text-sm form-control rounded-xl py-6  shadow-md" onpaste="return false;" onCopy="return false" onCut ="return false" onDrag="return false" onDrop="return false"  placeholder="Password">
+					<input type="password" id="addPassword" class="text-sm  form-control rounded-xl py-6  shadow-md"  placeholder="Password">
+					<input type="password" id="addRepeatPassword" class="text-sm  form-control rounded-xl py-6  shadow-md"  placeholder="Password">
 				</div>
 				<div class="flex items-center gap-3 mt-6">
-					<input type='button' id = "btnLogin" value = "Register" class="text-sm text-white font-medium rounded-xl py-[12px] bg-gradient-to-r from-violet-600 to-indigo-600 w-1/3"/>
+					<input type='button' id = "btnRegister" value = "Register" class="text-sm text-white font-medium rounded-xl py-[12px] bg-gradient-to-r from-violet-600 to-indigo-600 w-1/3"/>
 
 					<div class="w-1/1 text-sm flex items-center">
 					<p>Already have an account?</p>
@@ -105,63 +105,12 @@ if ($count > 0) {
 		</div>
 		<div class=" relative z-10">
 
-		<!-- </div>
-			<img src='./main/assets/images/login_model.png' class="absolute top-1/2 right-32 -translate-y-1/2 testt w-[420px] mt-10 ml-20 z-50"/>
-			<img src='./main/assets/images/transparent_loginImg.png' class="absolute -top-16 left-7  testt w-[520px] opacity-5 z-"/>
-
-
-	</div> -->
 
 
 
 
 
 
-  <!-- <div class="container mt-[200px]">
-
-    <div class="card o-hidden border-0 shadow-lg my-5">
-      <div class="card-body p-0">
-        <div class="row">
-          <div class="col-lg-2"></div>
-          <div class="col-lg-8">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-              </div>
-              <form class="user">
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="addFirstname" onKeyUp="caps(this);" placeholder="First Name">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="addLastname" onKeyUp="caps(this);" placeholder="Last Name">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input type="number" class="form-control form-control-user" id="addMobileNum" placeholder="Mobile Number">
-                </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="addPassword" placeholder="Password">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="addRepeatPassword" placeholder="Repeat Password">
-                  </div>
-                </div>
-                	<input type='button' id = "btnRegister" value = "Register Account" class="btn btn-primary btn-user btn-block"/>
-              </form>
-              <hr>
-              <div class="text-center">
-                <a class="small" href="index.php" style="font-size:20px;">Already have an account? Login!</a>
-              </div>
-            </div>
-          </div>
-		   <div class="col-lg-2"></div>
-        </div>
-      </div>
-    </div>
-
-  </div> -->
 
   <!-- Bootstrap core JavaScript-->
   <script src="main/design/vendor/jquery/jquery.min.js"></script>
@@ -246,7 +195,7 @@ if ($count > 0) {
 								closeOnConfirm: true
 							},
 							function(){
-								// location.reload();
+								location.reload();
 							});
 						}else{
 							swal({
@@ -259,7 +208,7 @@ if ($count > 0) {
 								closeOnConfirm: true
 							},
 							function(){
-								// location.reload();
+								location.reload();
 							});
 						}
 					});

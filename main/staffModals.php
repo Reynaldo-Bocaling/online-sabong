@@ -41,7 +41,7 @@
 			$("#modal_changePassword").modal("show");
 		});
 		
-		$("#cashin").click(function(){
+		$(".cashin").click(function(){
 			$("#modal_cashin").modal("show");
 		});
 		
@@ -52,7 +52,7 @@
 		});	
 		
 		$("#closeModalCashin").click(function(){
-			$("aside ul #cashin").children("a").removeClass("active");
+			$("aside ul .cashin").children("a").removeClass("active");
 		});
 		
 		$("#cashoutteller").click(function(){
@@ -80,7 +80,7 @@
 		});
 		
 		
-		$("#cashout").click(function(){
+		$(".cashout").click(function(){
 			$("#modal_cashout").modal("show");
 		});
 		
@@ -91,7 +91,7 @@
 		});	
 		
 		$("#closeModalCashout").click(function(){
-			$("aside ul #cashout").children("a").removeClass("active");
+			$("aside ul .cashout").children("a").removeClass("active");
 		});
 		
 		$("aside ul .panel").click(function(){
@@ -233,30 +233,16 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
+		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h4 class="modal-title" style="font-weight:bold;">Cash IN</h4><button type="button" class="btn btn-md btn-danger" id="closeModalCashin" data-dismiss="modal" >X</button>
+				<div class="flex items-center justify-between pt-3 px-3">
+					<h4 class="modal-title font-2xl text-black font-bold">Cash In</h4>
+					<button type="button" class="text-2xl font-bold text-red-500" id="closeModalCashin" data-dismiss="modal" >&times;</button>
 				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-lg-12 col-md-12">
-
-							<div class="well">
-								<div class="row" style="margin:1px;">
-									<div class="col-md-12">
-									<span style='font-weight:bolder; font-size:15px;'>Cash IN Amount:</span>
-									<input id="txtCashin" type="text" class="form-control auto" style="background-color:#1f364f; text-align:center; color:yellow; font-weight:bolder; font-size:15px;height:60px;" value = ""placeholder="ENTER AMOUNT HERE" AUTOCOMPLETE = "OFF" AUTOFOCUS>
-									</div>
-								</div>
-							</div>
-							<div class="row" style="margin:1px; text-align:center;">
-								<div class="col-md-12">
-									<input type="button" id = "btnCashin" class="btn btn-raised btn-success" value = "Submit Cash IN">
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="mt-4 px-4 pb-5 flex flex-col gap-2">
+					<p class="text-sm text-black font-bold">Cash In Amount:</p>
+					<input id="txtCashin" type="text" class="form-control auto" value = ""placeholder="ENTER AMOUNT HERE" AUTOCOMPLETE = "OFF" AUTOFOCUS>
+					<input type="button" id = "btnCashin" class="mt-4 text-base text-white font-semibold  w-full py-2 rounded-full bg-blue-500" value = "Submit Cash In">
 				</div>
 			</div>
 		</div>
@@ -477,45 +463,29 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
+		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h4 class="modal-title" style="font-weight:bold;">Cash OUT</h4><button type="button" class="btn btn-md btn-danger" id="closeModalCashout" data-dismiss="modal" >X</button>
+				<div class="flex items-center justify-between pt-3 px-3">
+					<h4 class="modal-title font-2xl text-black font-bold">Cash Out</h4>
+					<button type="button" class="text-2xl font-bold text-red-500" id="closeModalCashout" data-dismiss="modal" >&times;</button>
 				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-lg-12 col-md-12">
-
-							<div class="well">
-								<div class="row" style="margin:1px;">
-									<div class="col-md-12">
-										<select class="form-control" name="tellercashout" id = "tellercashout" REQUIRED>
-											<?php
-												$qteller = $mysqli->query("SELECT * FROM tblusers WHERE roleID = '2' AND isActive = '1'");
-												if($qteller->num_rows > 0){
-													echo '<option value = "">SELECT TELLER</option>';
-													while($rteller = $qteller->fetch_assoc()){
-														echo '<option value = "'.$rteller['id'].'">'.$rteller['username'].'</option>';
-													}
-												}else{
-													
-												}
-											?>
-										</select>
-									</div>
-									<div class="col-md-12">
-									<span style='font-weight:bolder; font-size:15px;'>Cash OUT Amount:</span>
-									<input id="txtCashout" type="text" class="form-control auto" style="background-color:#1f364f; text-align:center; color:yellow; font-weight:bolder; font-size:15px;height:60px;" value = ""placeholder="ENTER AMOUNT HERE" AUTOCOMPLETE = "OFF" AUTOFOCUS>
-									</div>
-								</div>
-							</div>
-							<div class="row" style="margin:1px; text-align:center;">
-								<div class="col-md-12">
-									<input type="button" id = "btnCashout" class="btn btn-raised btn-primary" value = "Save Cash OUT">
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="mt-4 px-4 pb-5 flex flex-col gap-2">
+					<select class="form-control" name="tellercashout" id = "tellercashout" REQUIRED>
+						<?php
+							$qteller = $mysqli->query("SELECT * FROM tblusers WHERE roleID = '2' AND isActive = '1'");
+							if($qteller->num_rows > 0){
+								echo '<option value = "">SELECT TELLER</option>';
+								while($rteller = $qteller->fetch_assoc()){
+									echo '<option value = "'.$rteller['id'].'">'.$rteller['username'].'</option>';
+								}
+							}else{
+								
+							}
+						?>
+					</select>
+					<p class="text-sm text-black font-bold">Cash Out Amount:</p>
+					<input id="txtCashout" type="text" class="form-control auto" value = ""placeholder="ENTER AMOUNT HERE" AUTOCOMPLETE = "OFF" AUTOFOCUS>
+					<input type="button" id = "btnCashout" class="mt-4 text-base text-white font-semibold  w-full py-2 rounded-full bg-blue-500" value = "Submit Cash Out">
 				</div>
 			</div>
 		</div>

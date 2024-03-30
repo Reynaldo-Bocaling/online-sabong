@@ -40,114 +40,190 @@ if($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4){
 	<link href="design/css/sb-admin-2.min.css" rel="stylesheet">
 	 <!-- Custom styles for this page -->
 	
-
+	 <script src="https://cdn.tailwindcss.com"></script>
+	  <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 </head>
 
 <body id="page-top">
-	<div id="wrapper">
-		<div id="content-wrapper" class="d-flex flex-column">
+<style>
 
-			<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-				<!-- Topbar Navbar -->
-				<ul class="navbar-nav ml-auto">		
-					<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">    
-						<br/>	<?php echo $_SESSION['cname']; ?>
-					</li>
-					<div class="topbar-divider d-none d-sm-block"></div>
+::-webkit-scrollbar {
+  width: 0;
+}
 
-					<!-- Nav Item - User Information -->
-					<li class="nav-item dropdown no-arrow">
-						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="mr-2 d-none d-lg-inline text-gray-600 small"><i class="fas fa-star"></i> <?php echo $_SESSION['systemName']; ?> <i class="fas fa-star"></i></span>
-							<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-								<i class="fa fa-star"></i><i class="fa fa-bars"></i><i class="fa fa-star"></i>
-							</button>
-						</a>
-						<!-- Dropdown - User Information -->
-						<?php
-							include('includes/header.php');
-						?>
-					</li>
-				</ul>
-			</nav>
-			<div class="container-fluid">
-			  <!-- DataTales Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<?php
-							echo '
-							<a href="adminManageSystem.php" class=""><button class="btn btn-sm btn-primary" id = "btnAddStaffAccount"><i class="fas fa-book"></i> System Users</button></a>
-							<a href="adminSystemSettings.php" class=""><button class="btn btn-lg btn-success" id = "btnAddFightControllerAccount"><i class="fas fa-book"> System Settings</i></button></a>';
-						?>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col-lg-4">
-								<div class="text-center">
-									<h1 class="h4 text-gray-900 mb-4" style="font-weight:bold;">CHANGE SYSTEM REFRESH PASSWORD</h1>
-								</div><br/>
-								<form class="user">
-										<div class="form-group">
-										  <input type="password" id="txtRefreshOldPassword" class="form-control form-control-user" style="font-size:20px; font-weight:bold; text-align:center;" placeholder="SYSTEM REFRESH OLD PASSWORD">
-										</div>
-										<hr style="height:5px;border-width:0;color:gray;background-color:gray">
-										<div class="form-group">
-										  <input type="password" id="txtRefreshNewPassword" class="form-control form-control-user" style="font-size:20px; font-weight:bold; text-align:center;" placeholder="SYSTEM REFRESH NEW PASSWORD" >
-										</div>
-										<hr style="height:5px;border-width:0;color:gray;background-color:gray">
-										<div class="form-group">
-										  <input type="password" id="txtRefreshConfirmNewPassword" class="form-control form-control-user" style="font-size:20px; font-weight:bold; text-align:center;" placeholder="SYSTEM REFRESH CONFIRM NEW PASSWORD">
-										</div>
-										<input type='button' id = "btnUpdateRefreshPassword" value = "UPDATE REFRESH PASSWORD" class="btn btn-primary  btn-block" style="font-size:25px;"/>
-								</form>
-							</div>
+</style>	
+<div id="wrapper" class="fixed top-0 left-0 w-screen h-screen overflow-y-auto">
+    <div id="content-wrapper" class="flex h-screen overflow-hidden">
 
-							
-							<div class="col-lg-1">
-							</div>
-							<div class="col-lg-3">
-								<h1 class="h4 text-gray-900 mb-4" style="font-weight:bold;">PAYOUT PRINT SETTINGS</h1>
-								<br/>
-								<div class="row">
-									<div class="col-md-12">
-										<span>Print 2 Copies of Payout Receipt?</span>
-										<p class="container">
-										<?php
-											$ppQuery = $mysqli->query("SELECT `systemPrint` FROM `tblsystem` ");
-											if($ppQuery->num_rows > 0){
-												$ppr = $ppQuery->fetch_assoc();
-												$systemPrintVal = $ppr['systemPrint'];
-												if($systemPrintVal == 1){
-													echo '
-													<label class="radio-inline">
-													  <input type="radio" name="printSettingID" class="handleClick" value="1" checked> YES
-													</label><br/>
-													<label class="radio-inline">
-														 <input type="radio"  name="printSettingID" class="handleClick" value="0" > NO
-													</label>';
-												}else{
-													echo '
-													<label class="radio-inline">
-													  <input type="radio" name="printSettingID" class="handleClick" value="1"> YES
-													</label><br/>
-													<label class="radio-inline">
-														 <input type="radio"  name="printSettingID" class="handleClick" value="0" checked> NO
-													</label>';
-												}
-											}
-										?>
-										</p>
-									</div>
-								</div>
-							</div>
-							
-						</div>
-						<hr style="height:5px;border-width:0;color:gray;background-color:gray">
+     <!-- sidebar for mobile -->
+	 	<div id="sidebar" class="hide-scrollbar overflow-hidden fixed z-50  w-screen h-screen bg-[rgba(0,0,0,0.3)] hidden transition-all">
+            <div class="relative h-screen bg-white border-r shadow-lg shadow-slate-100 px-[20px] py-10 transition-all w-[270px] overflow-y-auto">
+                <button id="closeBtn" class="text-red-500 text-3xl absolute top-0 right-0 m-4">&times;</button>
+                <span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+                <div class="flex flex-col  mt-9 px-2 overflow-y-auto">
+				<?php
+					$links = [
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ?
+						'<a class="text-sm text-gray-600  p-3 font-normal" href="administrator.php"><i class="fas fa-home mr-2 text-gray-400"></i>Home</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="dashboard.php"><i class="bx bxs-plus-circle text-gray-400 mr-2"></i>Betting Odds Display</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminDashboardEvent.php"><i class="bx bxs-dashboard mr-2 text-gray-400" ></i>Dashboard Configuration</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageBettings.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Bettings Management</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm  text-blue-500 bg-blue-50 rounded-lg  p-3 font-normal" href="adminManageSystem.php"><i class="fas fa-clipboard-list mr-2"></i>Users Management</a><a class="text-sm text-gray-600  p-3 font-normal" href="adminManageReports.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Reports Management</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminListAccounts.php"><i class="fas fa-users mr-2 text-gray-400"></i>Client Accounts</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="changePercentage text-sm text-gray-600  p-3 font-normal" id="changePercentage"><i class="fa fa-edit mr-2 text-gray-400"></i>Change Bet Percentage</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4 || $_SESSION['roleID'] == 5 || $_SESSION['roleID'] == 6) ? '<a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 9) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 10) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 12) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminReportsManagement.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Reports Management</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 13) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="cashHandler.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Cash INs and OUTs</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+					];
+					foreach ($links as $link) {
+						if (!empty($link)) {
+							echo $link;
+						}
+					}
+					?>
+                </div>
+            </div>
+        </div>
+
+        <!-- sidebar for desktop size -->
+        <div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col max-w-[270px] w-full h-screen">
+            <span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+            <div class="flex flex-col overflow-y-auto mt-9 px-2">
+				<?php
+					$links = [
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ?
+						'<a class="text-sm text-gray-600  p-3 font-normal" href="administrator.php"><i class="fas fa-home mr-2 text-gray-400"></i>Home</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="dashboard.php"><i class="bx bxs-plus-circle text-gray-400 mr-2"></i>Betting Odds Display</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminDashboardEvent.php"><i class="bx bxs-dashboard mr-2 text-gray-400" ></i>Dashboard Configuration</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageBettings.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Bettings Management</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm  text-blue-500 bg-blue-50 rounded-lg  p-3 font-normal" href="adminManageSystem.php"><i class="fas fa-clipboard-list mr-2"></i>Users Management</a><a class="text-sm text-gray-600  p-3 font-normal" href="adminManageReports.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Reports Management</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminListAccounts.php"><i class="fas fa-users mr-2 text-gray-400"></i>Client Accounts</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="changePercentage text-sm text-gray-600  p-3 font-normal" id="changePercentage"><i class="fa fa-edit mr-2 text-gray-400"></i>Change Bet Percentage</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4 || $_SESSION['roleID'] == 5 || $_SESSION['roleID'] == 6) ? '<a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 9) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 10) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 12) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminReportsManagement.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Reports Management</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 13) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="cashHandler.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Cash INs and OUTs</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+					];
+					foreach ($links as $link) {
+						if (!empty($link)) {
+							echo $link;
+						}
+					}
+					?>
+        	</div>
+    	</div>
+
+
+		<!-- main -->
+		<div id="content" class="flex-1 flex flex-col overflow-hiddenw gap-2 bg-[#F6F8FA]">
+			<header class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7 ">
+				<button id="openBtn" class="w-[30px] flex flex-col gap-[5px] border-none focus:outline-none md:hidden py-[10px]">
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+				</button>
+				<div class="text-base font-mdium text-gray-700 flex items-center gap-2 ">
+					<p class="hidden md:flex">Welcome, User</p>
+					<img src="./assets/images/waving.png" class="w-[50px] hidden md:flex" />
+				</div>
+				<span><i class='bx bx-calendar-star text-blue-500 text-lg'></i> <?php echo date('F j, Y') ?></span>
+
+			</header>
+
+
+
+
+			<main class="flex-1 overflow-x-auto overflow-y-auto p-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center text-sm mb-3 tracking-wide gap-1">
+                    <p>ManagementSystem/ </p>
+                    <span class="font-semibold text-blue-500">System-Settings</span>
+                    </div>
+                    <small><?php echo $currentDate ?></small>
+                </div>
+
+				<p class="text-xl text-black font-bold mb-4">System Settings</p>	
+				
+
+
+
+				<div class="flex items-center justify-start  w-full">
+					<div class="flex items-center  gap-7 ">
+						<a href="adminManageSystem.php" class="relative text-sm  font-semibold "> System Users</a>
+						<a href="adminSystemSettings.php" class="relative text-sm px-2 text-blue-500 after:w-full after:h-[2px] after:rounded-full after:bg-blue-500 after:absolute after:-bottom-2 after:left-0 font-semibold ">System Settings</a>
 					</div>
 				</div>
-			</div>
+
+					
+				<div class="flex items-start ml-4 gap-20">
+					<div class="mt-12">
+						<span>Print 2 Copies of Payout Receipt?</span>
+						<div class="flex items-center gap-3">
+							<?php
+								$ppQuery = $mysqli->query("SELECT `systemPrint` FROM `tblsystem` ");
+								if($ppQuery->num_rows > 0){
+									$ppr = $ppQuery->fetch_assoc();
+									$systemPrintVal = $ppr['systemPrint'];
+									if($systemPrintVal == 1){
+										echo '
+										<label class="radio-inline">
+											<input type="radio" name="printSettingID" class="handleClick" value="1" checked> YES
+										</label><br/>
+										<label class="radio-inline">
+												<input type="radio"  name="printSettingID" class="handleClick" value="0" > NO
+										</label>';
+									}else{
+										echo '
+										<label class="radio-inline">
+											<input type="radio" name="printSettingID" class="handleClick" value="1"> YES
+										</label><br/>
+										<label class="radio-inline">
+												<input type="radio"  name="printSettingID" class="handleClick" value="0" checked> NO
+										</label>';
+									}
+								}
+							?>
+						</div>
+					</div>
+					<form method="POST" target="_blank" action="print/printCancelTicketBetAdmin.php" id="frmCancelTicketBet" class="w-[450px] bg-white px-4 pt-4 pb-8 rounded-xl shadow-md shadow-slate-100 mt-6 flex flex-col gap-4  border">
+						<p class="text-lg text-black font-bold mb-2">Change System Refresh Password</p>						
+						<input type="password" id="txtRefreshOldPassword" class="form-control form-control-user w-full h-[50px]" placeholder="Enter Old Password"/>
+						<input type="password" id="txtRefreshNewPassword" class="form-control form-control-user w-full h-[50px]" placeholder="Enter New Password"/>
+						<input type="password" id="txtRefreshConfirmNewPassword" class="form-control form-control-user w-full h-[50px]" placeholder="Enter New Password"/>
+
+						<!-- biutton -->
+						<input type = "button" id = "btnUpdateRefreshPassword" class=" font-semibold text-white py-3 bg-blue-500 rounded-full" value="Update Password" />
+					</form>
+				</div>
+
+			</main>
 		</div>
 	</div>
+
+</div>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- script -->
     <!-- Bootstrap core JavaScript-->
   <script src="design/vendor/jquery/jquery.min.js"></script>
   <script src="design/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -239,6 +315,24 @@ if($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4){
 				});
 			});
 		});
+
+
+		$(document).ready(function(){
+    $('#openBtn').click(function(){
+      $('#sidebar').toggleClass('hidden');
+    });
+
+    $('#closeBtn').click(function(){
+      $('#sidebar').addClass('hidden');
+    });
+
+
+    $('#sidebar').click(function(e){
+      if (e.target === this) {
+        $(this).addClass('hidden');
+      }
+    });
+  });
 	</script>
 	<?php
 		include("modalboxes.php");

@@ -1,6 +1,9 @@
+
+<script src="https://cdn.tailwindcss.com"></script>
+
 <script>
 	$(document).ready(function(){
-		$("#changePassword").click(function(){
+		$(".changePassword").click(function(){
 			$("#passwordOld").val("");
 			$("#passwordNew").val("");
 			$("#passwordConfirm").val("");
@@ -10,9 +13,9 @@
 			//$("aside ul .panel a").removeClass("active");
 			$(this).children("a").addClass("active");
 		});
-		
+
 		$("#closeModalPassword").click(function(){
-			$("aside ul #changePassword").children("a").removeClass("active");
+			$("aside ul .changePassword").children("a").removeClass("active");
 		});
 	});
 </script>
@@ -25,7 +28,7 @@
 				pOld = $("#passwordOld").val();
 				pNew = $("#passwordNew").val();
 				pConfirm = $("#passwordConfirm").val();
-				
+
 				if(pOld == ""){
 					$("#passwordOld").focus();
 					swal("Old Password is required!", "", "error");
@@ -39,7 +42,7 @@
 					$("#passwordNew").focus();
 					swal("Passwords did not match!", "", "error");
 				}else if(pOld == pNew){
-					
+
 				}else{
 					$("#loader").show();
 					showModal();
@@ -57,8 +60,8 @@
 								closeOnConfirm: true
 							},
 							function(){
-								$("aside ul #changePassword").children("a").removeClass("active");
-								
+								$("aside ul .changePassword").children("a").removeClass("active");
+
 							});
 						}else if(res == 2){
 							$("#passwordOld").focus();
@@ -71,44 +74,28 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
+		<div class="modal-dialog max-w-[700px] w-full rounded-lg overflow-hidden">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h4 class="modal-title" style="font-weight:bold;">Change Password</h4><button type="button" class="btn btn-md btn-danger" id="closeModalPassword" data-dismiss="modal" >X</button>
+				<div class="modal-header modal-header-primary flex items-center justify-between">
+					<h3 class="modal-title text-sm font-semibold">Change Password </h3><button type="button" class="text-red-500 text-[1.5rem]" data-dismiss="modal" >&times;</button>
 				</div>
 				<div class="modal-body">
 
 					<div class="row">
-						<div class="col-lg-12 col-md-12">
-							<div class="well">
-								<div class="row" style="margin:1px;">
-									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Old Password:</span>
-										<input type="password" class="form-control" id="passwordOld" maxlength = "32" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)"  placeholder="Your Old Password Here..."/>
-									</div>
-								</div>
+						<div class="flex flex-col gap-5 w-full px-6 pb-6">
+							<div class="flex flex-col">
+								<span class="text-sm font-semibold text-black">Old Password:</span>
+								<input type="password" class="form-control py-[22px]" id="passwordOld" maxlength = "32" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)"  placeholder="Old Password"/>
 							</div>
-							<div class="well">
-								<div class="row" style="margin:1px;">
-									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>New Password:</span>
-										<input type="password" class="form-control" id="passwordNew" maxlength = "32" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)" placeholder="New Password Here..."/>
-									</div>
-								</div>
+							<div class="flex flex-col ">
+								<span class="text-sm font-semibold text-black">New Password:</span>
+								<input type="password" class="form-control py-[22px] " id="passwordNew" maxlength = "32" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)" placeholder="New Password "/>
 							</div>
-							<div class="well">
-								<div class="row" style="margin:1px;">
-									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Confirm New Password:</span>
-										<input type="password" class="form-control" id="passwordConfirm" maxlength = "32" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)" placeholder="Confirm New Password Here..."/>
-									</div>
-								</div>
+							<div class="flex flex-col ">
+								<span class="text-sm font-semibold text-black">Confirm New Password:</span>
+								<input type="password" class="form-control py-[22px] " id="passwordConfirm" maxlength = "32" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)" placeholder="Confirm New Password"/>
 							</div>
-							<div class="row" style="margin:1px; text-align:center;">
-								<div class="col-md-12">
-									<input type="button" id = "smbtPassword" class="btn btn-raised btn-success" value = "Change Password">
-								</div>
-							</div>
+							<input type="button" id = "smbtPassword" class="bg-blue-500 text-sm text-white font-semibold py-[12px] rounded-full tracking-wider" value = "Change Password">
 						</div>
 					</div>
 				</div>
@@ -166,7 +153,7 @@
 					$("#betConfirmAmount").html(betAmount);
 				}
 			});
-			
+
 			$("#btnBetWala").click(function(){
 				betType = $("#btnBetWala").val();
 				betAmount = $("#txtBetAmount").val();
@@ -191,13 +178,13 @@
 					$("#modal_isBet").modal("show");
 					$("#betConfirmAmount").html(betAmount);
 				}
-				
-			});	
+
+			});
 			$(".btnBetCancel").click(function(){
 				$("#txtBetAmount").val("");
 				$("#modal_placeBet").modal("hide");
 			});
-			
+
 		});
 	</script>
 		<div class="modal-dialog modal-md">
@@ -243,10 +230,10 @@
 					$("#txtBetAmount").val("");
 					$("#modal_placeBet").modal("hide");
 					$("#modal_isBet").modal("hide");
-					
+
 					if(res == 1){
-						
-						
+
+
 					//	$("#btnBetMeron").attr("disabled","false");
 						//$("#btnBetWala").attr("disabled","false");
 						swal({
@@ -260,19 +247,19 @@
 						},
 						function(){
 							location.reload();
-						});		
-					}else if(res == 0){	
-						$("#txtBetAmount").focus();		
-						swal("ERROR! Unable to place a bet for the current Fight. Refresh the page and try again.", "", "error");		
-					}else if(res == 2){	
-						$("#txtBetAmount").focus();		
-						swal("ERROR! Unable to place your bet due to Betting Status is already CLOSED. Refresh the page and try again.", "", "error");	
-					}else if(res == 3){
-						$("#txtBetAmount").focus();						
-						swal("ERROR! Unable to place your bet due to Betting Status is already DONE. Refresh the page and try again.", "", "error");	
-					}else if(res == 5){	
+						});
+					}else if(res == 0){
 						$("#txtBetAmount").focus();
-						swal("ERROR! Unable to place your bet due to FIGHT CANCELLATION. Refresh the page and try again.", "", "error");	
+						swal("ERROR! Unable to place a bet for the current Fight. Refresh the page and try again.", "", "error");
+					}else if(res == 2){
+						$("#txtBetAmount").focus();
+						swal("ERROR! Unable to place your bet due to Betting Status is already CLOSED. Refresh the page and try again.", "", "error");
+					}else if(res == 3){
+						$("#txtBetAmount").focus();
+						swal("ERROR! Unable to place your bet due to Betting Status is already DONE. Refresh the page and try again.", "", "error");
+					}else if(res == 5){
+						$("#txtBetAmount").focus();
+						swal("ERROR! Unable to place your bet due to FIGHT CANCELLATION. Refresh the page and try again.", "", "error");
 					}else if(res == 6){
 						$("#txtBetAmount").focus();
 						swal("ERROR! Unable to place your bet due to insufficient points. Refresh the page and try again.", "", "error");
@@ -286,9 +273,9 @@
 						$("#txtBetAmount").focus();
 						swal("ERROR! Fight Bettings for WALA is temporarily closed.", "", "error");
 					}
-					
+
 				});
-				
+
 			});
 			$(".btnIsBetCancel").click(function(){
 				$("#modal_isBet").modal("hide");
@@ -303,13 +290,13 @@
 					<h3 class="modal-title" style="font-weight:bold;">CONFIRM BET</h3><button type="button" class="btn btn-md btn-danger btnIsBetCancel">X</button>
 				</div>
 				<div class="modal-body">
-					
+
 					<div class="well" style="text-align:center;">
 						<h3 style="font-weight:bold;"><span>BET UNDER:</span><br/><span id = "txtBetTypeText" style="color:red;"></span></h3>
 						<h3 style="font-weight:bold;">BET AMOUNT:<br/><span id ="betConfirmAmount" style="color:red;"></span></h3>
 					</div>
-					
-					
+
+
 				</div>
 				<div class="modal-footer" style="text-align:center;">
 					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnIsBetYes" style="width:100%; font-weight:bold;">BET NOW</button>
@@ -338,10 +325,10 @@
 			});
 			$("#btnConfirmAddBalance").click(function(){
 				mobileNumberVal = $("#hiddenMobileNumber").val();
-				accountIDVal = $("#hiddenAccountID").val();			
+				accountIDVal = $("#hiddenAccountID").val();
 				pointsVal = $("#txtAddBalance").val();
 				pointsVal1 = parseFloat(pointsVal.replace(/,/g,""));
-				
+
 				if(pointsVal1 < 100){
 					$("#txtAddBalance").focus();
 					swal("Please Input Amount to Load! Minimum amount is 100 Points!","","error");
@@ -356,52 +343,48 @@
 						$("#loader").hide();
 						$("#modal_accountAddBalance").modal("hide");
 						if(res == 0){
-							swal("Error! Refresh the page and try again or system developer assistance is required!", "", "error");	
+							swal("Error! Refresh the page and try again or system developer assistance is required!", "", "error");
 						}else if(res == 2){
-							swal("Please logout and relogin your account!", "", "error");	
+							swal("Please logout and relogin your account!", "", "error");
 						}else if(res == 5){
-							swal("Error! System generation code error. Please refresh the page and try to deposit again!", "", "error");	
+							swal("Error! System generation code error. Please refresh the page and try to deposit again!", "", "error");
 						}else if(res == 7){
-							swal("Error! No Event for today!", "", "error");	
-						}else{								
+							swal("Error! No Event for today!", "", "error");
+						}else{
 							$("#modal_barcodeDeposit").modal("show");
 							$("#barcodeValDeposit").html(res);
-							
+
 						}
 					});
 				}
-				
-			});	
+
+			});
 			$("#btnCancelAddBalance").click(function(){
 				$("#modal_accountAddBalance").modal("hide");
 			});
-			
+
 		});
 	</script>
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">DEPOSIT POINTS </h3><button type="button" class="btn btn-md btn-danger" data-dismiss="modal" >X</button>
+				<div class="modal-header modal-header-primary flex items-center justify-between">
+					<h3 class="modal-title text-sm font-semibold">DEPOSIT POINTS </h3><button type="button" class="text-red-500 text-[1.5rem]" data-dismiss="modal" >&times;</button>
 				</div>
 				<div class="modal-body">
-					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<div class="row">
-									<div class="col-md-12">
-										<h5>CURRENT POINTS: &nbsp;<span id = "spanAddBalance" style="font-weight:bold;"></span> </h5>
-										<h5>NAME: &nbsp;<span id = "spanAddFname"  style="font-weight:bold;"></span> <span id = "spanAddLname" style="font-weight:bold;"></span></h5>
-										<h5>MOBILE NUMBER: &nbsp;<span id = "spanAddMobileNumber"  style="font-weight:bold;"></span></h5>
-										<input id="txtAddBalance" type="text" class="form-control auto" style="background-color:#1f364f; text-align:center; color:yellow; font-weight:bolder; font-size:20px; letter-spacing:2px;" value = "" placeholder = "AMOUNT TO DEPOSIT" AUTOCOMPLETE = "OFF">
+								<div class=" flex flex-col gap-4 py-3 px-2">
+										<h5 class="flex items-center justify-between w-full text-sm font-semibold">CURRENT POINTS: &nbsp;<span id = "spanAddBalance" style="font-weight:bold;"></span> </h5>
+										<h5 class="flex items-center justify-between w-full text-sm font-semibold">NAME: &nbsp; <div><span id = "spanAddFname"  style="font-weight:bold;"></span> <span id = "spanAddLname" style="font-weight:bold;">✖</span></div></h5>
+										<h5 class="flex items-center justify-between w-full text-sm font-semibold">MOBILE NUMBER: &nbsp;<span id = "spanAddMobileNumber"  style="font-weight:bold;"></span></h5>
+										<input id="txtAddBalance" type="text" class="text-[12px] form-control auto py-6 rounded-xl mt-2" value = "" placeholder = "AMOUNT TO DEPOSIT" AUTOCOMPLETE = "OFF">
+										<button type = "button" class="text-sm text-white font-semibold bg-blue-500 py-[12px] mt-2 shadow-xl shadow-blue-100 rounded-full" id = "btnConfirmAddBalance">SUBMIT DEPOSIT REQUEST</button>
+
 									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmAddBalance" style="width:100%; font-weight:bold;">SUBMIT DEPOSIT REQUEST</button>
-                </div>
+
 			</div>
 		</div>
 	</div>
@@ -411,7 +394,7 @@
 	<div class="modal fade" id="modal_accountWithdrawBalance" role="dialog" data-backdrop="static" data-keyboard="false">
 	<script>
 		$(document).ready(function(){
-			
+
 			input = document.getElementById("txtWithdrawBalance");
 
 			// Execute a function when the user releases a key on the keyboard
@@ -424,10 +407,10 @@
 					document.getElementById("btnConfirmWithdrawBalance").click();
 				}
 			});
-			
+
 			$("#btnConfirmWithdrawBalance").click(function(){
 				mobileNumberVal = $("#hiddenMobileNumber").val();
-				accountIDVal = $("#hiddenAccountID").val();			
+				accountIDVal = $("#hiddenAccountID").val();
 				pointsVal = $("#txtWithdrawBalance").val();
 				pointsVal1 = parseFloat(pointsVal.replace(/,/g,""));
 				if(pointsVal == ""){
@@ -436,58 +419,56 @@
 				}else{
 					$.post("accounts/withdrawBalance.php", {accountID:accountIDVal, points:pointsVal1}, function(res){
 						$("#modal_accountWithdrawBalance").modal("hide");
-						
+
 						if(res == 0){
-							swal("Error! Refresh the page and try again or system developer assistance is required!", "", "error");	
+							swal("Error! Refresh the page and try again or system developer assistance is required!", "", "error");
 						}else if(res == 2){
-							swal("Error! Please logout and relogin your account!", "", "error");	
+							swal("Error! Please logout and relogin your account!", "", "error");
 						}else if(res == 3){
 							$("#txtWithdrawBalance").val("");
-							swal("Error! Points to withdraw is greater than your current balance.", "", "error");	
+							swal("Error! Points to withdraw is greater than your current balance.", "", "error");
 						}else if(res == 4){
-							swal("Error! You have an existing withdrawal request please proceed to cashier for assistance.", "", "error");	
+							swal("Error! You have an existing withdrawal request please proceed to cashier for assistance.", "", "error");
 						}else if(res == 5){
-							swal("Error! System generation code error. Please refresh the page and try to withdraw again!", "", "error");	
+							swal("Error! System generation code error. Please refresh the page and try to withdraw again!", "", "error");
 						}else if(res == 7){
-							swal("Error! No Event for today!", "", "error");	
-						}else{								
+							swal("Error! No Event for today!", "", "error");
+						}else{
 							$("#modal_barcodeWithdraw").modal("show");
 							$("#barcodeValWithdraw").html(res);
 						}
 					});
-					
+
 				}
-				
-			});	
+
+			});
 			$(".btnCancelWithdrawBalance").click(function(){
 				$("#modal_accountWithdrawBalance").modal("hide");
 			});
-			
+
 		});
 	</script>
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">WITHDRAW POINTS</h3><button type="button" class="btn btn-md btn-danger btnCancelWithdrawBalance">X</button>
+				<div class="modal-header modal-header-primary flex items-center justify-between">
+					<h3 class="modal-title text-sm font-semibold">WITHDRAW POINTS </h3><button type="button" class="text-red-500 text-[1.5rem]" data-dismiss="modal" >&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<div class="row">
-									<div class="col-md-12">
-										<h6>CURRENT POINTS: <span id = "spanWithdrawBalance" style="font-weight:bold;"></span> </h6>
-										<h6>NAME: <span id = "spanWithdrawLname" style="font-weight:bold;"></span>, <span id = "spanWithdrawFname"  style="font-weight:bold;"></span> </h6>
-										<h6>MOBILE NUMBER: <span id = "spanWithdrawMobileNumber"  style="font-weight:bold;"></span></h6>
-										<input id="txtWithdrawBalance" type="text" class="form-control auto" style="background-color:#1f364f; text-align:center; color:yellow; font-weight:bolder; font-size:20px; letter-spacing:2px;" value = "" placeholder = "AMOUNT TO WITHDRAW" AUTOCOMPLETE = "OFF">
+									<div class="flex flex-col gap-4 py-3 px-2">
+										<h6 class="flex items-center justify-between w-full text-sm font-semibold">CURRENT POINTS: <span id = "spanWithdrawBalance" style="font-weight:bold;"></span> </h6>
+										<h6 class="flex items-center justify-between w-full text-sm font-semibold">NAME: <div><span id = "spanWithdrawLname" style="font-weight:bold;"></span>, <span id = "spanWithdrawFname"  style="font-weight:bold;"></span></div> </h6>
+										<h6 class="flex items-center justify-between w-full text-sm font-semibold">MOBILE NUMBER: <span id = "spanWithdrawMobileNumber"  style="font-weight:bold;"></span></h6>
+										<input id="txtWithdrawBalance" type="text" class="text-[12px] form-control auto py-6 rounded-xl mt-2"  value = "" placeholder = "AMOUNT TO WITHDRAW" AUTOCOMPLETE = "OFF">
+										<button type = "button" class="text-sm text-white font-semibold bg-blue-500 py-[12px] mt-2 shadow-xl shadow-blue-100 rounded-full" id = "btnConfirmWithdrawBalance" style="width:100%;">SUBMIT WITHDRAWAL REQUEST</button>
+
 									</div>
-								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-md btn-raised btn-primary" id = "btnConfirmWithdrawBalance" style="width:100%;">SUBMIT WITHDRAWAL REQUEST</button>
                 </div>
 			</div>
 		</div>
@@ -502,7 +483,7 @@
 				$("#frmPrintQrCode").submit();
 				window.location.reload(true);
 			});
-			
+
 			$("#closeModalQrCode").click(function(){
 				window.location.reload(true);
 			});
@@ -513,10 +494,10 @@
 				<div class="modal-header modal-header-primary">
 					<h2 class="modal-title">PRINT QR CODE</h2>
 					<button type="button" class="close" id="closeModalQrCode" data-dismiss="modal">&times;</button>
-					
+
 				</div>
 				<div class="modal-body" style="text-align:center;">
-					<h3 id="h1QrCodeVal"></h3><br/>	
+					<h3 id="h1QrCodeVal"></h3><br/>
 					<div id="qrcode" style="display: flex; justify-content: center; text-align: center;" ></div><br/><br/>
 					<div style="display: flex; justify-content: center; text-align: center;" >
 						<form method="POST" class="form-inline" target="_blank" action="bets/betsPrintQrCode.php" id="frmPrintQrCode">

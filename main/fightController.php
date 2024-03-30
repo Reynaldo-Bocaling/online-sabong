@@ -107,289 +107,412 @@ $percentToLess = $rowPercent['percentToLess'];
 
 	<!-- Custom styles for this template-->
 	<link href="design/css/sb-admin-2.min.css" rel="stylesheet">
-
+	<script src="https://cdn.tailwindcss.com"></script>
+	  <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 </head>
 
 <body id="page-top">
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+<style>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+::-webkit-scrollbar {
+  width: 0;
+}
 
-      <!-- Main Content -->
-		<div id="content">
+</style>
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-            <!-- Topbar Navbar -->
-			<ul class="navbar-nav ml-auto">		
-				<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">    
-					<br/>	<?php echo $_SESSION['cname']; ?>
-				</li>
-				<div class="topbar-divider d-none d-sm-block"></div>
 
-				<!-- Nav Item - User Information -->
-				<li class="nav-item dropdown no-arrow">
-					<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="mr-2 d-none d-lg-inline text-gray-600 small"><i class="fas fa-star"></i> <?php echo $_SESSION['systemName']; ?> <i class="fas fa-star"></i></span>
-						<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-							<i class="fa fa-star"></i><i class="fa fa-bars"></i><i class="fa fa-star"></i>
-						</button>
-					</a>
-					<!-- Dropdown - User Information -->
-					<?php
-					include('includes/header.php');
-					?>
-					
-				</li>
 
-			</ul>
-        </nav>
-        <div class="container">
-			<div class="row">
+<div id="wrapper" class="fixed top-0 left-0 w-screen h-screen overflow-y-auto">
+    <div id="content-wrapper" class="flex h-screen overflow-hidden">
+
+        <!-- sidebar for mobile -->
+        <div id="sidebar" class="hide-scrollbar overflow-hidden fixed z-50  w-screen h-screen bg-[rgba(0,0,0,0.3)] hidden transition-all">
+            <div class="relative h-screen bg-white border-r shadow-lg shadow-slate-100 px-[20px] py-10 transition-all w-[270px] overflow-y-auto">
+                <button id="closeBtn" class="text-red-500 text-3xl absolute top-0 right-0 m-4">&times;</button>
+                <span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+                <div class="flex flex-col  mt-9 px-2 overflow-y-auto">
+               		<?php
+						$links = [
+							($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ?
+							'<a class="text-sm text-blue-500 bg-blue-50 rounded-lg  p-3 font-normal" href="administrator.php"><i class="fas fa-home mr-2"></i>Home</a>' : '',
+							($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="dashboard.php"><i class="bx bxs-plus-circle text-gray-400 mr-2"></i>Betting Odds Display</a>' : '',
+							($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminDashboardEvent.php"><i class="bx bxs-dashboard text-gray-400 mr-2" ></i>Dashboard Configuration</a>' : '',
+							($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a>' : '',
+							($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageBettings.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Bettings Management</a>' : '',
+							($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageSystem.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Users Management</a><a class="text-sm text-gray-600  p-3 font-normal" href="adminManageReports.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Reports Management</a>' : '',
+							($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminListAccounts.php"><i class="fas fa-users mr-2 text-gray-400"></i>Client Accounts</a>' : '',
+							($_SESSION['roleID'] == 1) ? '<a class="changePercentage text-sm text-gray-600  p-3 font-normal" id="changePercentage"><i class="fa fa-edit mr-2 text-gray-400"></i>Change Bet Percentage</a>' : '',
+							($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4 || $_SESSION['roleID'] == 5 || $_SESSION['roleID'] == 6) ? '<a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+							($_SESSION['roleID'] == 9) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+							($_SESSION['roleID'] == 10) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+							($_SESSION['roleID'] == 12) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminReportsManagement.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Reports Management</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+							($_SESSION['roleID'] == 13) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="cashHandler.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Cash INs and OUTs</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						];
+						foreach ($links as $link) {
+							if (!empty($link)) {
+								echo $link;
+							}
+						}
+
+						?>
+                </div>
+            </div>
+        </div>
+
+        <!-- sidebar for desktop size -->
+        <div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col max-w-[270px] w-full h-screen">
+            <span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+            <div class="flex flex-col overflow-y-auto mt-9 px-2">
+				
+
 				<?php
-				if($display == 1){
-				echo '	
-				<div class="col-xl-12 col-md-6 mb-4">
-					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-						
-							<div class="card-body" >
-								<div class="row no-gutters align-items-center">
-									<div class="col mr-2">
-										<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">DATE / BETTING STATUS / FIGHT NO.:</div>
-										<div class="h6 mb-0 font-weight-bold; text-gray-800">
-										'.DATE('M d, Y', strtotime($curdate)) . ' | ' . $isBettingText . ' | ' . $currentFightNumber .'
-										
-										<input type = "hidden" id = "hiddenPayoutMeron" value = "'.number_format((float)$payoutMeron, 2, '.', '').'" />
-										<input type = "hidden" id = "hiddenPayoutWala" value = "'.number_format((float)$payoutWala, 2, '.', '').'" />
-										</div>
-									</div>
-								</div>
+					$links = [
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ?
+						'<a class="text-sm text-blue-500 bg-blue-50 rounded-lg  p-3 font-normal" href="administrator.php"><i class="fas fa-home mr-2"></i>Home</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="dashboard.php"><i class="bx bxs-plus-circle text-gray-400 mr-2"></i>Betting Odds Display</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminDashboardEvent.php"><i class="bx bxs-dashboard text-gray-400 mr-2" ></i>Dashboard Configuration</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageBettings.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Bettings Management</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageSystem.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Users Management</a><a class="text-sm text-gray-600  p-3 font-normal" href="adminManageReports.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Reports Management</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminListAccounts.php"><i class="fas fa-users mr-2 text-gray-400"></i>Client Accounts</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="changePercentage text-sm text-gray-600  p-3 font-normal" id="changePercentage"><i class="fa fa-edit mr-2 text-gray-400"></i>Change Bet Percentage</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4 || $_SESSION['roleID'] == 5 || $_SESSION['roleID'] == 6) ? '<a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 9) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 10) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 12) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminReportsManagement.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Reports Management</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 13) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="cashHandler.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Cash INs and OUTs</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+					];
+					foreach ($links as $link) {
+						if (!empty($link)) {
+							echo $link;
+						}
+					}
+					?>
+        	</div>
+    	</div>
+
+
+		<!-- main -->
+		<div id="content" class="flex-1 flex flex-col overflow-hiddenw gap-2 bg-[#F6F8FA]">
+			<nav class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7 ">
+				<button id="openBtn" class="w-[30px] flex flex-col gap-[5px] border-none focus:outline-none md:hidden py-[10px]">
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+				</button>
+				<div class="text-base font-mdium text-gray-700 flex items-center gap-2 ">
+					<p class="hidden md:flex">Welcome, User</p>
+					<img src="./assets/images/waving.png" class="w-[50px] hidden md:flex" />
+				</div>
+				<span><i class='bx bx-calendar-star text-blue-500 text-lg'></i> <?php echo date('F j, Y') ?></span>
+
+			</nav>
+
+
+
+
+        	<main class="flex-1 overflow-x-hidden overflow-y-auto p-3">
+			<div class="flex items-center justify-between">
+				<div class="flex items-center text-sm mb-3 tracking-wide gap-1">
+				<p>Dashboard/ </p>
+				<span class="font-semibold text-blue-500">Overview</span>
+				</div>
+				<small><?php echo $currentDate ?></small>
+			</div>
+
+
+
+
+			
+			<!-- content -->
+				<!-- <div class="flex flex-col md:flex-row gap-3  w-full">
+					<div class=" w-full md:w-[28%] flex flex-col gap-7	bg-gradient-to-r from-red-400 to-red-500 px-4 py-3 rounded-2xl shadow-xl shadow-red-50">
+						<div class="flex items-center justify-between">
+							<div class="flex flex-col gap-1">
+								<small class="text-white">Total bets</small>
+								<span class="text-white text-4xl font-semibold">&#8369 <?php echo number_format($meronTotalBetAmount) ?></span>
 							</div>
-							<div class="table-responsive" id = "betsContainer">
-								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-									<thead>
-										<tr style="text-align:center;">
-											<th style="font-weight:bold;">Bet Type</th>
-											<th style="font-weight:bold;">Total Bets</th>
-											<th style="font-weight:bold;">Payout</th>
-											<th style="font-weight:bold;">RESULT</th>';
-											
-										echo '	
-										
-										</tr>
-									</thead>
-									<tbody>
-										<tr style="text-align:center;">
-											<td style="background-color:#f34141; color:#FFF; font-weight:bold; font-size:11px;">
-												MERON
-											</td>
-											<td style="background-color:#f34141; color:#FFF; font-weight:bold; font-size:11px;">
-												'.number_format($meronTotalBetAmount).'
-											</td>
-											<td style="background-color:#f34141; color:#FFF; font-weight:bold; font-size:11px;">
-												'.number_format($payoutMeron).'
-											</td>
-											<td style="background-color:#f34141; color:#FFF; font-weight:bold; font-size:11px;">';
-											
-											if($isBetting == 3 || $isBetting == 6){
-												if($isBettingWinner == 1){
-													echo 'WIN';
-												}else if($isBettingWinner == 2){
-													echo 'LOST';
-												}else{
-													echo 'DRAW';
-												}
-											}else if($isBetting == 5){
-												echo 'CANCELLED';
-											}else{
-												echo 'UNSETTLED';
-											}
-											echo '
-											</td>
-										</tr>
-										<tr style="text-align:center;">
-											<td style="background-color:#4e73df; color:#FFF; font-weight:bold; font-size:11px;">
-												WALA
-											</td>
-											<td style="background-color:#4e73df; color:#FFF; font-weight:bold; font-size:11px;">
-												'.number_format($walaTotalBetAmount).'
-											</td>
-											<td style="background-color:#4e73df; color:#FFF; font-weight:bold; font-size:11px;">
-												'.number_format($payoutWala).'
-											</td>
-											<td style="background-color:#4e73df; color:#FFF; font-weight:bold; font-size:11px;">';
-											
-											if($isBetting == 3 || $isBetting == 6){
-												if($isBettingWinner == 1){
-													echo 'LOST';
-												}else if($isBettingWinner == 2){
-													echo 'WIN';
-												}else{
-													echo 'DRAW';
-												}
-											}else if($isBetting == 5){
-												echo 'CANCELLED';
-											}else{
-												echo 'UNSETTLED';
-											}
-											echo '
-											</td>
-										</tr>
-									</tbody>
-								</table>
+							<p class="py-1 px-4 bg-red-100 rounded-full text-red-500 text-xs font-medium">Meron</p>
+						</div>
+
+
+						<div class="flex justify-start  items-start w-full">
+							<div class="flex flex-col gap-1 w-1/2">
+								<small class="text-xs text-white">Payout</small>
+								<span class="text-white text-xl font-semibold"> <?php echo number_format($payoutMeron) ?></span>
+							</div>
+							<div class="flex flex-col gap-1 w-1/2">
+								<small class="text-xs text-white">Result</small>
+								<span class="text-white text-xl font-semibold">
+									<?php
+									if ($isBetting == 3 || $isBetting == 6) {
+										if ($isBettingWinner == 1) {
+											echo 'WIN';
+										} else if ($isBettingWinner == 2) {
+											echo 'LOST';
+										} else {
+											echo 'DRAW';
+										}
+									} else if ($isBetting == 5) {
+										echo 'CANCELLED';
+									} else {
+										echo 'UNSETTLED';
+									}?>
+								</span>
 							</div>
 						</div>
 					</div>
-				</div>';
-				?>
-				<div class="col-xl-12 col-md-6 mb-4">
-					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">FIGHT CONTROL OPTIONS</h6>
-						</div>
-						<div class="card-body">
-							<?php
-							if($isBetting == 1){ // 1 for BETTING STATUS = OPEN
-								echo '
-								<button class="btn btn-info btn-lg" id = "btnBettingLast">
-									<i class="fas fa-info-circle"> LAST CALL </i>
-								</button>&nbsp;
-								<button class="btn btn-danger btn-lg" id = "btnBettingCancel">
-									<i class="fas fa-exclamation-triangle"> CANCEL FIGHT </i>
-								</button>';
-							}else if($isBetting == 4){// 4 for BETTING STATUS = LAST CALL
-								if($meronTotalBetAmount > 100 && $walaTotalBetAmount > 100){
-								echo '
-									<button class="btn btn-success btn-lg" id = "btnBettingClose">
-										<i class="fas fa-times-circle"> CLOSE BETTINGS </i>
-									</button>
-									<button class="btn btn-danger btn-lg" id = "btnBettingCancel">
-										<i class="fas fa-exclamation-triangle"> CANCEL FIGHT </i>
-									</button>';
-								}else{
-									echo '
-									<button class="btn btn-danger btn-lg" id = "btnBettingCancel">
-										<i class="fas fa-exclamation-triangle"> CANCEL FIGHT </i>
-									</button>';
-								}
-							}else if($isBetting == 2 ){// 2 for BETTING STATUS = CLOSE
-								echo '
-								<button class="btn btn-success btn-lg" id = "btnBettingWinner">
-									<i class="fas fa-check"> DECLARE FIGHT WINNER </i>
-								</button>';
-							}else if($isBetting == 3 ){// 2 for BETTING STATUS = FOR PAYOUT
-								echo '
-								<button class="btn btn-primary btn-lg" id = "btnBettingPayout">
-									<i class="fas fa-check"> &nbsp;RELEASED PAYOUT </i>
-								</button>';
-							}else if($isBetting == 5 ){// 5 for BETTING STATUS = CANCELLED
-								echo '
-								<button class="btn btn-primary btn-lg" id = "btnBettingNew">
-									<i class="fas fa-plus"> &nbsp;START NEW FIGHT </i>
-								</button>
-								';
-							}else if($isBetting == 6){
-								echo '
-								<button class="btn btn-primary btn-lg" id = "btnBettingNew">
-									<i class="fas fa-plus"> &nbsp;START NEW FIGHT </i>
-								</button>
-								';
-							}
-							
-							echo'
-							</div>
-						</div>
-					</div>';
-						if($isBetting == 1 OR $isBetting == 4){
-						echo '
-					<div class="col-xl-12 col-md-6 mb-4">
-						<div class="card shadow mb-4">
-							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">FIGHT BETTING OPTIONS</h6>
-							</div>
-							<div class="card-body">';
-							if($isBetting == 1){ // 1 for BETTING STATUS = OPEN
-								if($closeWala == 0){
-									echo '
-									<button class="btn btn-primary btn-lg" id = "btnCloseWala">
-										<i class="fa fa-lock"> CLOSE WALA BETTINGS </i>
-									</button>&nbsp;';
-								}else{
-									echo '
-									<button class="btn btn-primary btn-lg" id = "btnOpenWala">
-										<i class="fa fa-lock-open"> OPEN WALA BETTINGS </i>
-									</button>&nbsp;';
-								}
-								
-								if($closeMeron == 0){
-									echo '
-									<button class="btn btn-danger btn-lg" id = "btnCloseMeron">
-										<i class="fa fa-lock"> CLOSE MERON BETTINGS </i>
-									</button><br/>';
-								}else{
-									echo '
-									<button class="btn btn-danger btn-lg" id = "btnOpenMeron">
-										<i class="fa fa-lock-open"> OPEN MERON BETTINGS </i>
-									</button><br/>';
-								}	
-							}else if($isBetting == 4){// 4 for BETTING STATUS = LAST CALL
-								if($closeWala == 0){
-									echo '
-									<button class="btn btn-primary btn-lg" id = "btnCloseWala">
-										<i class="fa fa-lock"> CLOSE WALA BETTINGS </i>
-									</button>&nbsp;';
-								}else{
-									echo '
-									<button class="btn btn-primary btn-lg" id = "btnOpenWala">
-										<i class="fa fa-lock-open"> OPEN WALA BETTINGS </i>
-									</button>&nbsp;';
-								}
-								
-								if($closeMeron == 0){
-									echo '
-									<button class="btn btn-danger btn-lg" id = "btnCloseMeron">
-										<i class="fa fa-lock"> CLOSE MERON BETTINGS </i>
-									</button><br/>';
-								}else{
-									echo '
-									<button class="btn btn-danger btn-lg" id = "btnOpenMeron">
-										<i class="fa fa-lock-open"> OPEN MERON BETTINGS </i>
-									</button><br/>';
-								}
-							}
-							echo '
-								</div>
-							</div>
-						</div>';
-						}
 
-				}else{
-					echo '
-					<div class="col-xl-12 col-md-6 mb-4">
-						<div class="card shadow mb-4">
-							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">FIGHT CONTROL OPTIONS</h6>
+					<div class="max-w-full w-full md:w-[28%] flex flex-col gap-7 bg-gradient-to-r from-blue-400 to-blue-500 px-4 py-3 rounded-2xl shadow-xl shadow-blue-50">
+						<div class="flex items-center justify-between">
+							<div class="flex flex-col gap-1">
+								<small class="text-white">Total bets</small>
+								<span class="text-white text-4xl font-semibold">&#8369 <?php echo number_format($walaTotalBetAmount) ?></span>
 							</div>
-							<div class="card-body">
-								<a href="#" class="btn btn-primary btn-lg" id = "btnBettingNew">
-									<i class="fas fa-plus"> &nbsp;START NEW FIGHT </i>
-								</a>
+							<p class="py-1 px-4 bg-blue-100 rounded-full text-blue-500 text-xs font-medium">Wala</p>
+						</div>
+
+
+						<div class="flex items-start w-full">
+							<div class="flex flex-col gap-1 w-1/2">
+								<small class="text-xs text-white">Payout</small>
+								<span class="text-white text-xl font-semibold"><?php echo number_format($payoutWala) ?></span>
+							</div>
+							<div class="flex flex-col gap-1 w-1/2">
+								<small class="text-xs text-white">Result</small>
+								<span class="text-white text-xl font-semibold">
+									<?php
+									if ($isBetting == 3 || $isBetting == 6) {
+										if ($isBettingWinner == 1) {
+											echo 'WIN';
+										} else if ($isBettingWinner == 2) {
+											echo 'LOST';
+										} else {
+											echo 'DRAW';
+										}
+									} else if ($isBetting == 5) {
+										echo 'CANCELLED';
+									} else {
+										echo 'UNSETTLED';
+									}?>
+								</span>
 							</div>
 						</div>
-					</div>';		
-				}
-				?>		
-			</div>
+					</div>
+
+
+					<div class="bg-white px-3 py-2 max-w-full w-full md:w-[44%] bg-white rounded-2xl shadow-md shadow-slate-100 flex items-center">
+						<input type = "hidden" id = "hiddenPayoutMeron" value = "' . number_format((float) $payoutMeron, 2, '.', '') . '" />
+						<input type = "hidden" id = "hiddenPayoutWala" value = "' . number_format((float) $payoutWala, 2, '.', '') . '" />
+						<table class="w-full">
+							<thead>
+								<tr class="h-12">
+									<th class="font-bold text-sm text-center border-r">Fight #</th>
+									<th class="font-bold text-sm text-center border-r">Betting Status</th>
+									<th class="font-bold text-sm text-center">Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="h-12 mt-2">
+									<td class="text-center text-sm border-r"><?php echo $currentFightNumber ?></td>
+									<td class="text-center text-sm border-r"><?php echo $isBettingText ?></td>
+									<td class="text-center text-sm"><?php echo DATE('M d, Y', strtotime($curdate)) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div> -->
+
+
+
+				<?php
+if($display == 1) {
+    echo '
+    <div class="flex flex-col md:flex-row gap-3  w-full">
+        <div class=" w-full md:w-[28%] flex flex-col gap-7	bg-gradient-to-r from-red-400 to-red-500 px-4 py-3 rounded-2xl shadow-xl shadow-red-50">
+            <div class="flex items-center justify-between">
+                <div class="flex flex-col gap-1">
+                    <small class="text-white">Total bets</small>
+                    <span class="text-white text-4xl font-semibold">&#8369; ' . number_format($meronTotalBetAmount) . '</span>
+                </div>
+                <p class="py-1 px-4 bg-red-100 rounded-full text-red-500 text-xs font-medium">Meron</p>
+            </div>
+
+            <div class="flex justify-start  items-start w-full">
+                <div class="flex flex-col gap-1 w-1/2">
+                    <small class="text-xs text-white">Payout</small>
+                    <span class="text-white text-xl font-semibold"> &#8369; ' . number_format($payoutMeron) . '</span>
+                </div>
+                <div class="flex flex-col gap-1 w-1/2">
+                    <small class="text-xs text-white">Result</small>
+                    <span class="text-white text-xl font-semibold">
+                        ' . ($isBetting == 3 || $isBetting == 6 ? ($isBettingWinner == 1 ? "WIN" : ($isBettingWinner == 2 ? "LOST" : "DRAW")) : ($isBetting == 5 ? "CANCELLED" : "UNSETTLED")) . '
+                    </span>
+                </div>
+            </div>
         </div>
-        <!-- /.container-fluid -->
-      </div>
-      <!-- End of Main Content -->
+
+        <div class="max-w-full w-full md:w-[28%] flex flex-col gap-7 bg-gradient-to-r from-blue-400 to-blue-500 px-4 py-3 rounded-2xl shadow-xl shadow-blue-50">
+            <div class="flex items-center justify-between">
+                <div class="flex flex-col gap-1">
+                    <small class="text-white">Total bets</small>
+                    <span class="text-white text-4xl font-semibold">&#8369; ' . number_format($walaTotalBetAmount) . '</span>
+                </div>
+                <p class="py-1 px-4 bg-blue-100 rounded-full text-blue-500 text-xs font-medium">Wala</p>
+            </div>
+
+            <div class="flex items-start w-full">
+                <div class="flex flex-col gap-1 w-1/2">
+                    <small class="text-xs text-white">Payout</small>
+                    <span class="text-white text-xl font-semibold">&#8369; ' . number_format($payoutWala) . '</span>
+                </div>
+                <div class="flex flex-col gap-1 w-1/2">
+                    <small class="text-xs text-white">Result</small>
+                    <span class="text-white text-xl font-semibold">
+                        ' . ($isBetting == 3 || $isBetting == 6 ? ($isBettingWinner == 1 ? "WIN" : ($isBettingWinner == 2 ? "LOST" : "DRAW")) : ($isBetting == 5 ? "CANCELLED" : "UNSETTLED")) . '
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white px-3 py-2 max-w-full w-full md:w-[44%] bg-white rounded-2xl shadow-md shadow-slate-100 flex items-center">
+            <input type="hidden" id="hiddenPayoutMeron" value="' . number_format((float) $payoutMeron, 2, '.', '') . '" />
+            <input type="hidden" id="hiddenPayoutWala" value="' . number_format((float) $payoutWala, 2, '.', '') . '" />
+            <table class="w-full">
+                <thead>
+                    <tr class="h-12">
+                        <th class="font-bold text-sm text-center border-r">Fight #</th>
+                        <th class="font-bold text-sm text-center border-r">Betting Status</th>
+                        <th class="font-bold text-sm text-center">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="h-12 mt-2">
+                        <td class="text-center text-sm border-r">' . $currentFightNumber . '</td>
+                        <td class="text-center text-sm border-r">' . $isBettingText . '</td>
+                        <td class="text-center text-sm">' . DATE("M d, Y", strtotime($curdate)) . '</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <!-- End of Content Wrapper -->
-  </div>
+    ';
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="flex flex-col md:flex-row md:items-start mt-7 bg-white rounded-xl border max-w-full w-full py-2 px-3">
+					<!-- FIGHT CONTROL OPTIONS -->
+					<div class="w-full md:w-1/2 md:border-r p-3">
+						<p class=" text-sm font-medium  text-blue-500">FIGHT CONTROL OPTIONS</p>
+						<div class=" mt-6">
+							<?php if ($isBetting == 1): ?>
+								<div class="flex items-center gap-1">
+									<button class="text-sm text-white px-[25px] py-[10px] font-semibold rounded-full flex items-center bg-gradient-to-r from-purple-500 to-purple-700 " id="btnBettingLast"><i class='bx bx-rotate-right text-xl'></i> Last Call</button>&nbsp;
+									<button class="text-sm text-white px-[25px] py-[10px] font-semibold rounded-full flex items-center bg-red-500" id="btnBettingCancel"><i class='bx bx-chevron-left text-xl'></i> CANCEL FIGHT </button>
+								</div>
+							<?php elseif ($isBetting == 4): ?>
+								<div class="flex items-center gap-3">
+								<?php if ($meronTotalBetAmount > 100 && $walaTotalBetAmount > 100): ?>
+									<button class="text-sm text-white px-[25px] py-[10px] font-semibold rounded-full flex items-center bg-blue-500" id="btnBettingClose"><i class='bx bx-chevron-left text-xl'></i> Close Bettings</button>
+								<?php endif;?>
+								<button class="text-sm text-white px-[25px] py-[10px] font-semibold rounded-full flex items-center bg-red-500" id="btnBettingCancel"><i class='bx bx-chevron-left text-xl'></i> CANCEL FIGHT </button>
+								</div>
+
+							<?php elseif ($isBetting == 2): ?>
+								<button class="text-sm text-white px-[25px] py-[10px] font-semibold rounded-full flex items-center bg-blue-500" id="btnBettingWinner"><i class="fas fa-check mr-2"> </i> DECLARE FIGHT WINNER</button>
+							<?php elseif ($isBetting == 3): ?>
+								<button class="text-sm text-white px-[25px] py-[10px] font-semibold rounded-full flex items-center bg-blue-500" id="btnBettingPayout"><i class="fas fa-check mr-2"> </i> &nbsp;RELEASED PAYOUT </button>
+							<?php elseif ($isBetting == 5 || $isBetting == 6): ?>
+								<button class="text-sm text-white px-[25px] py-[10px] font-semibold rounded-full flex items-center bg-blue-500" id="btnBettingNew"><i class="fas fa-plus mr-2"></i> &nbsp;START NEW FIGHT</button>
+							<?php endif;?>
+						</div>
+
+
+					</div>
+
+
+
+					<!-- FIGHT BETTING OPTIONS -->
+					<div class="w-full md:w-1/2 p-3">
+						<?php if ($isBetting == 1 || $isBetting == 4): ?>
+
+						<p class=" text-sm font-medium  text-blue-500">FIGHT BETTING OPTIONS</p>
+
+						<div class="flex items-center gap-2 mt-6">
+							
+							<?php if ($closeWala == 0): ?>
+								<button class=" text-white px-[25px] py-[10px] rounded-full flex items-center gap-2 bg-blue-500" id="btnCloseWala"><i class="fa fa-lock"> </i> Close Wala Bettings</button>&nbsp;
+							<?php else: ?>
+								<button class=" text-white px-[25px] py-[10px] rounded-full flex items-center gap-2 bg-blue-500" id="btnOpenWala"><i class="fa fa-lock-open"> </i> Open Wala Bettings </button>&nbsp;
+							<?php endif;?>
+							<?php if ($closeMeron == 0): ?>
+								<button class=" text-white px-[25px] py-[10px] rounded-full flex items-center gap-2 bg-red-500" id="btnCloseMeron"><i class="fa fa-lock"></i> Close Meron Bettings </button>
+							<?php else: ?>
+								<button class=" text-white px-[25px] py-[10px] rounded-full flex items-center gap-2 bg-red-500" id="btnOpenMeron"><i class="fa fa-lock-open"></i> Open Meron Bettings </button>
+							<?php endif;?>
+						</div>
+
+						<?php else: ?>
+
+							<p class=" text-sm font-medium  text-blue-500">FIGHT CONTROL OPTIONS</p>
+							<div class="card-body">
+								<a href="#" class="text-white px-[25px] py-[10px] rounded-full flex items-center gap-2 bg-blue-500 w-[230px]" id="btnBettingNew"><i class="fas fa-plus"> </i> &nbsp;START NEW FIGHT</a>
+							</div>
+						<?php endif;?>
+					</div>
+				</div>
+        	</main>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <!-- End of Page Wrapper -->
   <!-- Bootstrap core JavaScript-->
   <script src="design/vendor/jquery/jquery.min.js"></script>

@@ -1,6 +1,6 @@
 <script>
 	$(document).ready(function(){
-		$("#changePassword").click(function(){
+		$(".changePassword").click(function(){
 			$("#passwordOld").val("");
 			$("#passwordNew").val("");
 			$("#passwordConfirm").val("");
@@ -12,9 +12,9 @@
 		});
 		
 		$("#closeModalPassword").click(function(){
-			$("aside ul #changePassword").children("a").removeClass("active");
+			$("aside ul .changePassword").children("a").removeClass("active");
 		});
-		$("#changePercentage").click(function(){
+		$(".changePercentage").click(function(){
 			$("#modal_changePercentage").modal("show");
 		});
 		$("#modal_changePercentage").on('shown.bs.modal', function () {
@@ -65,7 +65,7 @@
 								closeOnConfirm: true
 							},
 							function(){
-								$("aside ul #changePassword").children("a").removeClass("active");
+								$("aside ul .changePassword").children("a").removeClass("active");
 								
 							});
 						}else if(res == 2){
@@ -79,44 +79,41 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
+		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h4 class="modal-title" style="font-weight:bold;">Change Password</h4><button type="button" class="btn btn-md btn-danger" id="closeModalPassword" data-dismiss="modal" >X</button>
+				<div class="flex items-center justify-between px-3 pt-3">
+					<h4 class="modal-title text-lg  text-black font-bold">Change Password</h4>
+					<button type="button" class="text-3xl text-red-500 font-bold" id="closeModalPassword" data-dismiss="modal" >&times;</button>
 				</div>
 				<div class="modal-body">
 
 					<div class="row">
 						<div class="col-lg-12 col-md-12">
 							<div class="well">
-								<div class="row" style="margin:1px;">
+								<div class="mb-3 mt-1" style="margin:1px;">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Old Password:</span>
+										<p class="text-sm text-black font-bold mb-1">Old Password:</p>
 										<input type="password" class="form-control" id="passwordOld" maxlength = "64" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)" placeholder="Your Old Password Here..."/>
 									</div>
 								</div>
 							</div>
 							<div class="well">
-								<div class="row" style="margin:1px;">
+								<div class="my-4" style="margin:1px;">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>New Password:</span>
+										<p class="text-sm text-black font-bold mb-1">New Password:</p>
 										<input type="text" class="form-control" id="passwordNew" maxlength = "64" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)" placeholder="New Password Here..."/>
 									</div>
 								</div>
 							</div>
 							<div class="well">
-								<div class="row" style="margin:1px;">
+								<div class="my-3" style="margin:1px;">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Confirm New Password:</span>
+										<p class="text-sm text-black font-bold mb-1">Confirm New Password:</p>
 										<input type="text" class="form-control" id="passwordConfirm" maxlength = "64" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122)" placeholder="Confirm New Password Here..."/>
 									</div>
 								</div>
 							</div>
-							<div class="row" style="margin:1px; text-align:center;">
-								<div class="col-md-12">
-									<input type="button" id = "smbtPassword" class="btn btn-raised btn-success" value = "Change Password">
-								</div>
-							</div>
+							<input type="button" id = "smbtPassword" class="text-base text-white font-semibold w-full py-[12px] rounded-full mt-3 mb-3 bg-blue-600" value = "Change Password">
 						</div>
 					</div>
 				</div>
@@ -193,39 +190,46 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
+		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h5 class="modal-title" style="font-weight:bold;">Change Bet Percentage</h5><button type="button" class="btn btn-md btn-danger" data-dismiss="modal">X</button>
+				<div class="p-3 flex items-center justify-between">
+					<h5 class="modal-title text-lg text-black font-bold">Change Bet Percentage</h5>
+					<button type="button" class="text-3xl text-red-500 font-bold" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-lg-12 col-md-12">
+						<div class="col-lg-12 col-md-12 -mt-4">
 							<div class="well">
-								<div class="row" style="margin:1px;">
-									<div class="col-md-12">
-										<?php
+								<div class="row pl-3 flex justify-cnter">
+									<div class="">
+									<?php
 										$qperc = $mysqli->query("SELECT `percentToLess` FROM `tblpercentless` ORDER BY id DESC LIMIT 1");
 										if($qperc->num_rows > 0){
 											$rperc = $qperc->fetch_assoc();
-											$curPercentage = $rperc['percentToLess'];
-											echo '<span style="font-weight:bolder; font-size:15px;">Current Bet Percentage: </span><span style="font-weight:bolder; font-size:15px;"> '.$curPercentage.' %</span>';
+											$curPercentage = $rperc['percentToLess'] * 100;
+											if(floor($curPercentage) == $curPercentage) {
+												echo '<div class="text-lg text-black font-semibold">Current Bet Percentage: <span class="text-blue-500 font-bold">'.number_format($curPercentage).'%</span></div>';
+											} else {
+												echo '<div class="text-lg text-black font-semibold">Current Bet Percentage: <span class="text-blue-500 font-bold">'.number_format($curPercentage, 2).'%</span></div>';
+											}
 										}
-										?>
+									?>
+
+
 										
 									</div>
 								</div><br/>
-								<div class="row" style="margin:1px;">
-									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>New Bet Percentage:</span>
-										<input type="text" class="form-control" id="txtPercentage" style="text-align:center; font-size:20px;" maxlength = "5" onkeypress="return isNumberKey(this, event);" placeholder="New Bet Percentage"/>
+								<div class="row">
+									<div class="col-md-12 px-4">
+										<p class="text-sm text-black font-bold mb-2">New Bet Percentage:</p>
+										<input type="text" class="form-control py-4" id="txtPercentage"  maxlength = "5" onkeypress="return isNumberKey(this, event);" placeholder="New Bet Percentage"/>
 									</div>
 								</div>
 							</div>
 							
 							<div class="row" style="margin-top:10px; text-align:center;">
 								<div class="col-md-12">
-									<input type="button" id = "smbtPercentage" class="btn btn-raised btn-success" value = "Save New Bet Percentage">
+									<input type="button" id = "smbtPercentage" class="text-base text-white font-semibold w-full py-[12px] my-3 rounded-full bg-blue-500" value = "Save New Bet Percentage">
 								</div>
 							</div>
 						</div>
@@ -235,6 +239,9 @@
 		</div>
 	</div>
 </div>
+
+
+
 
 <div class="container" >
 	<div class="modal fade" id="modalMessage" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -309,28 +316,29 @@
 	</script>
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">Add Staff Account</h3><button type="button" class="btn btn-md btn-danger btnBetCancel">X</button>
+				<div class="p-3 flex items-center justify-between">
+					<h3 class="modal-title" style="font-weight:bold;">Add Staff Account</h3>
+					<button type="button" class="text-2xl text-red-500 font-bold btnBetCancel">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="well">
-						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<div class="row" style="margin:5px;">
+						<div class="row -mt-3">
+							<div class="flex flex-col justify-center gap-4 px-7">
+								<div class="row" class="mx-4 my-4">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Username</span>
-										<input type="text" class="form-control" id="addStaffUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off">
+										<p class="text-sm text-black font-bold mb-1">Username</p>
+										<input type="text" class="form-control py-4" id="addStaffUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off" placeholder="Enter Username">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								<div class="row" class="mx-3 py-3">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Fullname</span>
-										<input type="text" class="form-control" id="addStaffSystemname" maxlength = "32" onKeyUp="caps(this);">
+										<p class="text-sm text-black font-bold mb-1">Fullname</p>
+										<input type="text" class="form-control py-4" id="addStaffSystemname" maxlength = "32" onKeyUp="caps(this);" placeholder="Enter Fullname">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								<div class="row" class="mx-3 py-3">
 									<div class="col-md-12">
-										<span style="font-weight:bolder; font-size:15px;">Handled Bet Type (Cashier for Bet Meron or Bet Wala)</span>
+										<span  class="text-sm text-black font-bold mb-1">Handled Bet Type (Cashier for Bet Meron or Bet Wala)</span>
 										<select  class="form-control" id = "addStaffBetType">
 										<?php
 											$qb = $mysqli->query("SELECT * FROM `tblbettypes`");
@@ -345,17 +353,17 @@
 										</select>
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								<div  class="-mt-5 ">
 									<div class="col-md-12"><br/>
-										<span style='font-weight:bolder; font-size:15px; color:red;'>Teller Default Password is account username, please change account password upon login!</span>
+										<span class="text-red-500 text-sm font-bold">Teller Default Password is account username, please change account password upon login!</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type="button" id = "smbtAddStaffAccount" class="btn btn-primary" style="font-weight:bold; width:100%;">Save Staff Account Credentials</button>
+				<div class="mt-3 px-4 pb-5" style="text-align:center;">
+					<button type="button" id = "smbtAddStaffAccount" class="text-base text-white bg-blue-500 w-full py-[12px] rounded-full " style="font-weight:bold; width:100%;">Save Staff Account Credentials</button>
                 </div>
 			</div>
 		</div>
@@ -409,38 +417,40 @@
 	</script>
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">Add Ticket Handler Account</h3><button type="button" class="btn btn-md btn-danger btnBetCancel">X</button>
+				<div class="p-3 flex items-center justify-between">
+					<h3 class="modal-title" style="font-weight:bold;">Add Ticket Handler Account</h3>
+					<button type="button" class="text-2xl text-red-500 font-bold btnBetCancel">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="well">
-						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<div class="row" style="margin:5px;">
+						<div class="row -mt-3">
+							<div class="flex flex-col justify-center gap-4 px-7">
+								<div class="row" class="mx-4 my-4">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Username</span>
-										<input type="text" class="form-control" id="addAdminUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off">
+										<p class="text-sm text-black font-bold mb-1">Username</p>
+										<input type="text" class="form-control py-4" id="addAdminUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off" placeholder="Enter Username">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								<div class="row" class="mx-3 py-3">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Fullname</span>
-										<input type="text" class="form-control" id="addAdminSystemname" maxlength = "32" onKeyUp="caps(this);">
+										<p class="text-sm text-black font-bold mb-1">Fullname</p>
+										<input type="text" class="form-control py-4" id="addAdminSystemname" maxlength = "32" onKeyUp="caps(this);" placeholder="Enter Fullname">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								
+								<div  class="-mt-5 ">
 									<div class="col-md-12"><br/>
-										<span style='font-weight:bolder; font-size:15px; color:red;'>Ticket Handler Default Password is account username, change account password upon login!</span>
+										<span class="text-red-500 text-sm font-bold">Teller Default Password is account username, please change account password upon login!</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type="button" id = "smbtAddTicketAccount" class="btn btn-primary" style="font-weight:bold; width:100%;">Save Ticket Handler Credentials</button>
+				<div class="mt-3 px-4 pb-5" style="text-align:center;">
+					<button type="button" id = "smbtAddTicketAccount" class="text-base text-white bg-blue-500 w-full py-[12px] rounded-full " style="font-weight:bold; width:100%;">Save Ticket Handler Credentials</button>
                 </div>
-			</div>
+			</div>		
 		</div>
 	</div>
 </div>
@@ -490,41 +500,46 @@
 			});
 		});
 	</script>
+
+
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">Add Fight Controller Account</h3><button type="button" class="btn btn-md btn-danger btnBetCancel">X</button>
+				<div class="p-3 flex items-center justify-between">
+					<h3 class="modal-title" style="font-weight:bold;">Add Fight Controller Accountt</h3>
+					<button type="button" class="text-2xl text-red-500 font-bold btnBetCancel">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="well">
-						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<div class="row" style="margin:5px;">
+						<div class="row -mt-3">
+							<div class="flex flex-col justify-center gap-4 px-7">
+								<div class="row" class="mx-4 my-4">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Username</span>
-										<input type="text" class="form-control" id="addFightControllerUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off">
+										<p class="text-sm text-black font-bold mb-1">Username</p>
+										<input type="text" class="form-control py-4" id="addFightControllerUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off" placeholder="Enter Username">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								<div class="row" class="mx-3 py-3">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>FullName</span>
-										<input type="text" class="form-control" id="addFightControllerFullname" maxlength = "32" onKeyUp="caps(this);" >
+										<p class="text-sm text-black font-bold mb-1">Fullname</p>
+										<input type="text" class="form-control py-4" id="addFightControllerFullname" maxlength = "32" onKeyUp="caps(this);" placeholder="Enter Fullname">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								
+								<div  class="-mt-5 ">
 									<div class="col-md-12"><br/>
-										<span style='font-weight:bolder; font-size:15px; color:red;'>Fight Controller Default Password is account username, change account password upon login!</span>
+										<span class="text-red-500 text-sm font-bold">Teller Default Password is account username, please change account password upon login!</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type="button" id = "smbtAddFightControllerAccount" class="btn btn-success" style="font-weight:bold; width:100%;">Save Fight Controller Credentials</button>
+				<div class="mt-3 px-4 pb-5" style="text-align:center;">
+					<button type="button" id = "smbtAddFightControllerAccount" class="text-base text-white bg-blue-500 w-full py-[12px] rounded-full " style="font-weight:bold; width:100%;">Save Fight Controller Credentials</button>
                 </div>
-			</div>
+			</div>		
 		</div>
+
 	</div>
 </div>
 
@@ -573,41 +588,46 @@
 			});
 		});
 	</script>
+
+
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">Add Cash Handler Account</h3><button type="button" class="btn btn-md btn-danger btnCashoutCancel">X</button>
+				<div class="p-3 flex items-center justify-between">
+					<h3 class="modal-title" style="font-weight:bold;">Add Cash Handler Account</h3>
+					<button type="button" class="text-2xl text-red-500 font-bold btnCashoutCancel">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="well">
-						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<div class="row" style="margin:5px;">
+						<div class="row -mt-3">
+							<div class="flex flex-col justify-center gap-4 px-7">
+								<div class="row" class="mx-4 my-4">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Username</span>
-										<input type="text" class="form-control" id="addCashoutHandlerUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off">
+										<p class="text-sm text-black font-bold mb-1">Username</p>
+										<input type="text" class="form-control py-4" id="addCashoutHandlerUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off" placeholder="Enter Username">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								<div class="row" class="mx-3 py-3">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>FullName</span>
-										<input type="text" class="form-control" id="addCashoutHandlerFullname" maxlength = "64" onKeyUp="caps(this);" >
+										<p class="text-sm text-black font-bold mb-1">Fullname</p>
+										<input type="text" class="form-control py-4" id="addCashoutHandlerFullname" maxlength = "32" onKeyUp="caps(this);" placeholder="Enter Fullname">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								
+								<div  class="-mt-5 ">
 									<div class="col-md-12"><br/>
-										<span style='font-weight:bolder; font-size:15px; color:red;'>Cash Handler Account Default Password is account username, change account password upon login!</span>
+										<span class="text-red-500 text-sm font-bold">Teller Default Password is account username, please change account password upon login!</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type="button" id = "smbtAddCashoutHandler" class="btn btn-success" style="font-weight:bold; width:100%;">Save Cash Handler Credentials</button>
+				<div class="mt-3 px-4 pb-5" style="text-align:center;">
+					<button type="button" id = "smbtAddCashoutHandler" class="text-base text-white bg-blue-500 w-full py-[12px] rounded-full " style="font-weight:bold; width:100%;">Save Cash Handler Credentials</button>
                 </div>
-			</div>
+			</div>		
 		</div>
+
 	</div>
 </div>
 
@@ -658,39 +678,43 @@
 	</script>
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">Add Report Supervisor Account</h3><button type="button" class="btn btn-md btn-danger btnBetCancel">X</button>
+				<div class="p-3 flex items-center justify-between">
+					<h3 class="modal-title" style="font-weight:bold;">Add Report Supervisor Account</h3>
+					<button type="button" class="text-2xl text-red-500 font-bold btnBetCancel">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="well">
-						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<div class="row" style="margin:5px;">
+						<div class="row -mt-3">
+							<div class="flex flex-col justify-center gap-4 px-7">
+								<div class="row" class="mx-4 my-4">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>Username</span>
-										<input type="text" class="form-control" id="addReportSupervisorUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off">
+										<p class="text-sm text-black font-bold mb-1">Username</p>
+										<input type="text" class="form-control py-4" id="addReportSupervisorUsername" maxlength="32" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete="off" placeholder="Enter Username">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								<div class="row" class="mx-3 py-3">
 									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>FullName</span>
-										<input type="text" class="form-control" id="addReportSupervisorFullname" maxlength = "32" onKeyUp="caps(this);" >
+										<p class="text-sm text-black font-bold mb-1">Fullname</p>
+										<input type="text" class="form-control py-4" id="addReportSupervisorFullname" maxlength = "32" onKeyUp="caps(this);" placeholder="Enter Fullname">
 									</div>
 								</div>
-								<div class="row" style="margin:5px;">
+								
+								<div  class="-mt-5 ">
 									<div class="col-md-12"><br/>
-										<span style='font-weight:bolder; font-size:15px; color:red;'>Report Supervisor Default Password is account username, change account password upon login!</span>
+										<span class="text-red-500 text-sm font-bold">Teller Default Password is account username, please change account password upon login!</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type="button" id = "smbtAddReportSupervisorAccount" class="btn btn-success" style="font-weight:bold; width:100%;">Save Report Supervisor Credentials</button>
+				<div class="mt-3 px-4 pb-5" style="text-align:center;">
+					<button type="button" id = "smbtAddReportSupervisorAccount" class="text-base text-white bg-blue-500 w-full py-[12px] rounded-full " style="font-weight:bold; width:100%;">Save Report Supervisor Credentials</button>
                 </div>
-			</div>
+			</div>		
 		</div>
+
+
 	</div>
 </div>
 
@@ -730,8 +754,9 @@
 	</script>
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h3 class="modal-title" style="font-weight:bold;">Add Event</h3><button type="button" class="btn btn-md btn-danger btnBetCancel">X</button>
+				<div class="p-3 flex items-center justify-between">
+					<h3 class="modal-title" style="font-weight:bold;">Add Event</h3>
+					<button type="button" class="text-2xl text-red-500 font-bold btnBetCancel">&times;</button>
 				</div>
 				<form class="user">
 				<div class="modal-body">
@@ -739,17 +764,16 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-12">
 								<div class="row" style="margin:5px;">
-									<div class="col-md-12">
-										<span style='font-weight:bolder; font-size:15px;'>User/Client Access to System</span>
-										
-											<p class="container" style="font-size:20px;">
-											<label class="radio-inline">
-											  <input type="radio" name="optUserAccess" checked> OPEN
-											</label><br/>
-											<label class="radio-inline">
-												 <input type="radio" name="optUserAccess"> CLOSE
-											</label>
-										</p>
+									<div class="col-md-12 -mt-4">
+										<span class="text-base text-black font-bold">User/Client Access to System</span>
+											<div class="container mt-3 text-base font-semibold ">
+												<label class="radio-inline">
+												<input type="radio" name="optUserAccess" checked> OPEN
+												</label><br/>
+												<label class="radio-inline">
+													<input type="radio" name="optUserAccess"> CLOSE
+												</label>
+											</div>
 										
 									</div>
 								</div>
@@ -758,8 +782,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type="button" id = "btnSaveEvent" class="btn btn-primary" style="font-weight:bold; width:100%;">CREATE EVENT</button>
+				<div class="mt-2 mb-4 mx-4" style="text-align:center;">
+					<button type="button" id = "btnSaveEvent" class="text-base text-white font-semibold py-[13px] w-full rounded-full bg-blue-500" style="font-weight:bold; width:100%;">CREATE EVENT</button>
                 </div>
 				</form>
 			</div>
@@ -954,19 +978,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content  w-full py-4 px-3">
+				<div>	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
-					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">CALL FOR LAST BETTING?</h3>
+				<div>	
+					<div class="mt-4" style="text-align:center;">
+						<h3 class="text-2xl font-bold text-black">CALL FOR LAST BETTING?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmLastCall">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="flex justify-center items-center gap-3 mt-12 mb-2" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold bg-blue-500 rounded-full px-8 py-2" id = "btnConfirmLastCall">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold bg-red-500 rounded-full px-9 py-2" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1018,19 +1042,20 @@
 		});
 	</script>
 		<div class="modal-dialog modal-md">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+			<div class="modal-content w-full py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
+				<div class="mt-4">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">To CONFIRM the CANCELLATION of FIGHT, you must enter your password for security purposes.</h3>
-						<input type = "password" id="txtConfirmPassword" class="form-control" style="background-color:#1f364f; text-align:center; color:yellow; font-weight:bolder; font-size:20px; letter-spacing:2px;" placeholder = "PASSWORD HERE..."/>
+						<h3 class="text-xl font-bold text-black">To Confirm the Cancellation of Fight</h3>
+						<span class="text-sm text-black tracking-wide">you must enter your password for security purposes.</span>
+						<input type = "password" id="txtConfirmPassword" class="form-control text-sm py-4 mt-4 rounded-lg max-w-[400px] w-full mx-auto" placeholder = "PASSWORD HERE..."/>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmCancelBets">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold bg-blue-500 rounded-full px-8 py-2 " id = "btnConfirmCancelBets">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold bg-red-500 rounded-full px-8 py-2" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1078,19 +1103,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
-					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">Close the fight betting?</h3>
+				<div class="">	
+					<div class="mt-4" style="text-align:center;">
+						<h3 class="text-2xl font-bold text-black">Close the fight betting?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmClose">CLOSE</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-12" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold bg-blue-500 px-8 py-2 rounded-full" id = "btnConfirmClose">CLOSE</button>
+					<button type="button" class="text-base text-white font-semibold bg-red-500 px-8 py-2 rounded-full" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1248,20 +1273,21 @@
 			
 		});
 	</script>
-		<div class="modal-dialog modal-md">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h6 class="modal-title" style="font-weight:bold;">WINNER DECLARATION</h6><button type="button" class="btn btn-md btn-danger btnCloseCancel">X</button>
+		<div class="modal-dialog ">
+			<div class="modal-content py-3 px-3">
+				<div class="lw-full flex items-center justify-between mb-3">
+					<h6 class="modal-title text-base">WINNER DECLARATION</h6>
+					<button type="button" class="text-3xl font-bold text-red-500 btnCloseCancel ">&times;</button>
 				</div>
-				<div class="modal-body">
+				<div class="">
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">CLICK THE FIGHT WINNER</h3>
+						<h3 class="text-2xl font-bold text-black">CLICK THE FIGHT WINNER</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg" id = "btnWinnerMeron" style= "background-color:#f34141; color:#FFF;" value = "1" >WINNER MERON</button>
-					<button type="button" class="btn btn-lg btn-warning" id = "btnWinnerDraw" value = "3">DRAW</button>
-					<button type="button" class="btn btn-lg" id = "btnWinnerWala" style= "background-color:#4e73df; color:#FFF;" value = "2">WINNER WALA</button>
+				<div class="mt-9 mb-4 flex items-center justify-center gap-3" style="text-align:center;">
+					<button type = "button" class="text-sm text-white font-semibold py-2 px-7 rounded-full bg-red-500" id = "btnWinnerMeron"  value = "1" >WINNER MERON</button>
+					<button type="button" class="text-sm text-white font-semibold py-2 px-7 rounded-full bg-yellow-500 btn-warning" id = "btnWinnerDraw" value = "3">DRAW</button>
+					<button type="button" class="text-sm text-white font-semibold py-2 px-7 rounded-full bg-blue-500" id = "btnWinnerWala"  value = "2">WINNER WALA</button>
                 </div>
 			</div>
 		</div>
@@ -1317,19 +1343,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog ">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
 				<div class="modal-body">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">Confirm Payout?</h3>
+						<h3 class="text-2xl font-bold text-black">Confirm Payout?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmReleasePayout">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 flex items-center justify-center gap-2" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmReleasePayout">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1371,19 +1397,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
-					<div class="well" style="text-align:center;">
+				<div class="mt-2">	
+					<div class="text-2xl font-bold text-black" style="text-align:center;">
 						<h3 style="font-weight:bold;">Start a new fight?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmNew">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 flex items-center justify-center gap-2" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmNew">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1575,19 +1601,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
+				<div class="mt-3">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">Close this event?</h3>
+						<h3 class="text-2xl text-black font-bold">Close this event?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmCloseEvent">CLOSE</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 mb-3 flex items-center justify-center gap-2" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmCloseEvent">CLOSE</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1624,19 +1650,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
 				<div class="modal-body">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">Close the system for client/user access?</h3>
+						<h3 class="text-2xl font-bold text-black">Close the system for client/user access?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmCloseSystem">CLOSE</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 flex items-center justify-center gap-3" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmCloseSystem">CLOSE</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1691,20 +1717,18 @@
 	</script>
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header modal-header-primary">
-					<h4 class="modal-title pull-left">Add Event Name</h4>
-					<button type="button" class="btn-danger pull-right" id = "closeBanner">&times;</button>
+				<div class="flex items-center justify-between p-3">
+					<h4 class="modal-title text-lg text-black font-bold">Add Event Name</h4>
+					<button type="button" class="text-3xl text-red-500 font-bold" id = "closeBanner">&times;</button>
 				</div>
-				<div class="modal-body" id = "modal_bodyBanner">
+				<div id = "modal_bodyBanner ">
 				
-					<div class="widget-body">
+					<div class="widget-body px-5 py-3">
 						<div class="form-group">
-							<div class="col-sm-12" style="padding:5px;">
-								<div class="input-group">
-									<input type="text" class="form-control" id="txtBanner" oninput="this.value = this.value.replace(/[^a-zA-Z-'0-9 ]/g, '');" maxlength= "70" placeholder="Event Name Here" AUTOFOCUS>
-								</div>
+							<div class="input-group">
+								<input type="text" class="form-control py-4" id="txtBanner" oninput="this.value = this.value.replace(/[^a-zA-Z-'0-9 ]/g, '');" maxlength= "70" placeholder="Event Name Here" AUTOFOCUS>
 							</div>
-							<button id="btnSaveBanner" class="btn btn-success btn-lg text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900" style="width:100%;">Save Event Name</button>
+							<button id="btnSaveBanner" class="text-base text-white font-semibold w-full py-[12px] rounded-full bg-blue-500 mt-3" style="width:100%;">Save Event Name</button>
 						</div>
 					</div>
 				</div>
@@ -1760,7 +1784,29 @@
 			
 		});
 	</script>
-		<div class="modal-dialog modal-md">
+
+<div class="modal-dialog modal-md">
+			<div class="modal-content">
+				<div class="flex items-center justify-between p-3">
+					<h4 class="modal-title text-lg text-black font-bold">Add Event Promote</h4>
+					<button type="button" class="text-3xl text-red-500 font-bold" id = "closePromoter">&times;</button>
+				</div>
+				<div id = "modal_body " id="modal_bodyPromoter">
+				
+					<div class="widget-body px-5 py-3">
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" class="form-control py-4" id="txtPromoter" oninput="this.value = this.value.replace(/[^a-zA-Z-'0-9 ]/g, '');" maxlength= "70" placeholder="Event Name Here" AUTOFOCUS>
+							</div>
+							<button id="btnSavePromoter" class="text-base text-white font-semibold w-full py-[12px] rounded-full bg-blue-500 mt-3" style="width:100%;">Save Event Promoter</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- <div class="modal-dialog modal-md">
 			<div class="modal-content">
 				<div class="modal-header modal-header-primary">
 					<h4 class="modal-title pull-left">Add Event Promoter</h4>
@@ -1780,7 +1826,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </div>
 
@@ -1825,19 +1871,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
+				<div class="mt-3">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">CLOSE THE BETTINGS FOR<br/>WALA?</h3>
+						<h3 class="text-2xl font-bold text-black">CLOSE THE BETTINGS FOR<br/>WALA?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmCloseWala">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 flex items-center justify-center gap-2" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmCloseWala">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1886,19 +1932,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
+				<div class="momt-3">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">CLOSE THE BETTINGS FOR<br/>MERON?</h3>
+						<h3 class="text-2xl font-bold text-black">CLOSE THE BETTINGS FOR<br/>MERON?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmCloseMeron">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 flex items-center justify-center gap-2" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmCloseMeron">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -1947,19 +1993,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
+				<div class="mt-3">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">OPEN THE BETTINGS FOR<br/>WALA?</h3>
+						<h3 class="text-2xl font-bold text-black">OPEN THE BETTINGS FOR<br/>WALA?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmOpenWala">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 flex items-center justify-center gap-2" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmOpenWala">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>
@@ -2008,19 +2054,19 @@
 			});
 		});
 	</script>
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header modal-header-primary">	
+		<div class="modal-dialog ">
+			<div class="modal-content py-4 px-3">
+				<div class="">	
 					<h4 class="modal-title">Confirmation</h4>
 				</div>
-				<div class="modal-body">	
+				<div class="mt-3">	
 					<div class="well" style="text-align:center;">
-						<h3 style="font-weight:bold;">OPEN THE BETTINGS FOR<br/>MERON?</h3>
+						<h3 class="text-2xl font-bold text-black">OPEN THE BETTINGS FOR<br/>MERON?</h3>
 					</div>
 				</div>
-				<div class="modal-footer" style="text-align:center;">
-					<button type = "button" class="btn btn-lg btn-raised btn-primary" id = "btnConfirmOpenMeron">CONFIRM</button>
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">CANCEL</button>
+				<div class="mt-9 flex items-center justify-center gap-3" style="text-align:center;">
+					<button type = "button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-blue-500" id = "btnConfirmOpenMeron">CONFIRM</button>
+					<button type="button" class="text-base text-white font-semibold px-8 py-2 rounded-full bg-red-500" data-dismiss="modal">CANCEL</button>
                 </div>
 			</div>
 		</div>

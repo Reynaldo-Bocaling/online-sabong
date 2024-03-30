@@ -97,128 +97,144 @@
 
 	<!-- Custom styles for this template-->
 	<link href="design/css/sb-admin-2.min.css" rel="stylesheet">
-
+	<script src="https://cdn.tailwindcss.com"></script>
+	  <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 </head>
 <body id="page-top">
-  <!-- Page Wrapper -->
-	<div id="wrapper">
 
-    <!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column">
+<style>
 
-      <!-- Main Content -->
-		<div id="content">
+::-webkit-scrollbar {
+  width: 0;
+}
+#userDropdown, #btnRefreshPage{
+	outline:none
+}
+</style>
 
-        <!-- Topbar -->
-			<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-				<!-- Topbar Navbar -->
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item dropdown no-arrow mx-1" style="text-align:center; font-weight:bold; font-size:15px;">
-						<?php echo $_SESSION['username']; ?>
-					</li>
-					 <div class="topbar-divider d-none d-sm-block"></div>
-
-					<!-- Nav Item - User Information -->
-					<li class="nav-item dropdown no-arrow">
-						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="mr-2 d-none d-lg-inline text-gray-600 small"><i class="fas fa-star"></i> <?php echo $_SESSION['systemName']; ?> <i class="fas fa-star"></i></span>
-						<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-							MENU
-						</button>
-					</a>
-				  <!-- Dropdown - User Information -->
-					  <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-						<a class="dropdown-item" id = "changePassword">
-							<i class="fa fa-lock mr-2 text-gray-400"></i>
-							Change Password
-						</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="includes/logout.php">
-							<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-							Logout
-						</a>
-					  </div>
-					</li>
-				</ul>
-			</nav>
+<div id="content" class="flex-1 flex flex-col overflow-hidden gap-2 bg-white ">
+	<header class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7 ">
 		
-				 <!-- Begin Page Content -->
-				<div class="container-fluid">
-					<input type = "hidden" id = "hiddenBetFightNumber" value = "<?php echo $currentFightNumber; ?>" />
-					<input type = "hidden" id = "hiddenBetFightID" value = "<?php echo $currentFightID; ?>" />
-					<input type = "hidden" id = "hiddenBetType"/>
-					<input type = "hidden" id = "hiddenWinnerID"/>
-				  <?php
-					if($display == 1){
-						if($isBetting == 1 || $isBetting == 4){
-						echo'
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">PLACE BETS: BET AMOUNT</h6>
-								</div>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-3">
-												<div class="form-group">
-													<form>
-														<input id="txtBetAmount" type="text" class="form-control auto" style="background-color:#1f364f; text-align:center; color:yellow; font-weight:bolder; font-size:20px;height:60px; letter-spacing:2px;" value = ""placeholder="ENTER AMOUNT HERE" AUTOCOMPLETE = "OFF" AUTOFOCUS>	
-													</form>		
-													<br/>
-													<button class = "btn btn-lg" id = "btnBetWala"  style="width:100%; background-color:#4e73df; color:#FFF; font-weight:bold; font-size:25px;" value = "WALA"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;BET WALA</button>
-													<br/><br/>
-													<button class = "btn btn-lg" id = "btnBetMeron" style="width:100%; background-color:green; color:#FFF; font-weight:bold; font-size:25px;" value = "MERON"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;BET MERON</button>
-																
-													
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>';
-						}else{
-						
-						}
-					}
-					?>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card shadow mb-4">
-								<div class="card-body">
-									<div class="row">
-										<div class="col-md-3">
-											<button class = "btn btn-lg btn-danger" id = "btnRefreshPage" style="width:100%;  font-weight:bold; font-size:25px;">&nbsp;REFRESH PAGE</button><br/><br/>
-											
-											<button class = "btn btn-lg btn-warning" id = "cashin" style="width:100%;  font-weight:bold; font-size:25px;"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Cash IN</button><br/><br/>
-											
-											<button class = "btn btn-lg btn-danger" id = "cashout" style="width:100%;  font-weight:bold; font-size:25px;"><i class="fa fa-minus-circle" aria-hidden="true"></i>&nbsp;Cash OUT</button><br/><br/>
-											
-											
-											<form method="POST" target="_blank" action="print/printMoneyonhandCollector.php" id="frmgeneratereport">
-												<input type="hidden" name="hiddenTellerUserID" value = "<?php echo $_SESSION['companyID']; ?>">
-												<input type = "submit" name = "generate_summaryreport" id = "generate_summaryreport" style = "display:none;" value = "GENERATE">
-												<button type = "button" class="btn btn-primary btn-lg" id = "sbmtSummaryReport" style="font-size:15px; font-weight:bold; width:100%;"> <i class="fa fa-print mr-2 text-gray-400"></i><br/> MONEY ON HAND</button>
-											</form><br/><br/>
-											<button class = "btn btn-lg btn-warning" id = "changePassword" style="width:100%;  font-weight:bold; font-size:25px;"><i class="fa fa-lock mr-2 text-gray-400"></i>&nbsp;Change Password</button>
-										</div>
-									</div>
-									<iframe  width="100%" height="100%" name="frame_report" id="frame_report" style="display:none;"></iframe>
+		<div class="text-base font-mdium text-gray-700 flex items-center gap-2 ">
+			<p class=" md:flex md:gap-2">Welcome, <span class="capitalize text-black font-semibold"><?php echo $_SESSION['username']; ?></span></p>
+			<img src="./assets/images/waving.png" class="w-[50px]  md:flex" />
+		</div>
+		
+		<div class="flex items-center gap-3">
+			<div class="hidden md:flex itms-center gap-3 mr-7">
+				<button class="cashin text-sm text-blue-500 font-bold px-6 py-[5px] rounded-full bg-blue-100 tracking-wide" id = "cashin">&plus; Cash In</button>
+				<button class="cashout text-sm text-red-500 font-bold px-6 py-[5px] rounded-full bg-red-100 tracking-wide mr-10" id = "cashout">&minus; Cash Out</button>
+				
+				<!-- money -->
+				<form method="POST" target="_blank" action="print/printMoneyonhandCollector.php" id="frmgeneratereport">
+					<input type="hidden" name="hiddenTellerUserID" value = "<?php echo $_SESSION['companyID']; ?>">
+					<input type = "submit" name = "generate_summaryreport" id = "generate_summaryreport" style = "display:none;" value = "GENERATE">
+					<button type = "button" class="sbmtSummaryReport text-sm text-green-500 font-bold px-6 py-[5px] rounded-full bg-green-100 tracking-wide mr-10" id = "sbmtSummaryReport">&dollar; MONEY ON HAND</button>
+				</form>
+			</div>
 
-									 <form method="POST" class="form-inline" target="frame_report" action="print/printBetCollector.php" id="frmGenerateBarcode">
-											  <input type="hidden" name="barcode_text">
-											  <input type="hidden" name="txtBetAmountBarcode" id = "txtBetAmountBarcode">
-											  <input type="hidden" name="hiddenBetTypeBarcode" id="hiddenBetTypeBarcode" >
-											  <input type="hidden" name="hiddenBetFightNumberBarcode" id="hiddenBetFightNumberBarcode">
-											  <input type="hidden" name="hiddenBetFightIDBarcode" id="hiddenBetFightIDBarcode">
-											  <input type="submit" name="generate_barcode" id = "sbmtGenerateBarcode" style="display:none;"value="GENERATE">
-											 </form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<button class="md:outline-none noneOutlineBtn" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class='bx bx-menu-alt-right text-3xl' ></i>
+			</button>
+			<!-- Dropdown - User Information -->
+			<div class="dropdown-menu dropdown-menu-right shadow mt-2" aria-labelledby="userDropdown">
+				<a class="dropdown-item" id = "changePassword">
+					<i class="fa fa-lock mr-2 text-gray-400"></i>
+					Change Password
+				</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="includes/logout.php">
+					<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+					Logout
+				</a>
 			</div>
 		</div>
-	</div>
+
+	</header>
+
+
+
+
+	<main class="flex-1 overflow-x-auto overflow-y-auto p-3 h-[90vh] w-screen">
+		<div class="flex items-center justify-between mr-4">
+			<div class="flex items-center text-sm mb-3 tracking-wide gap-1">
+			<p>Bet/ </p>
+			<span class="font-semibold text-blue-500">Place-Bet's </span>
+			</div>
+			<small><?php echo $currentDate ?></small>
+		</div>
+		
+		<div class="w-full flex items-center justify-between mb-3 px-4">
+			<p class="text-xl text-black font-bold mb-2">Bet Collector</p>
+			<button class = "noneOutlineBtn text-lg text-blue-500 font-bold flex items-center gap- mr-4" id = "btnRefreshPage" >
+				<i class='bx bx-rotate-right text-xl' ></i>	
+				Refresh
+			</button>
+		</div>
+
+
+
+
+
+		<?php
+			if($display == 1){
+				if($isBetting == 1 || $isBetting == 4){
+				echo'<div class=" h-full w-full flex items-center justify-center">
+						<input type = "hidden" id = "hiddenBetFightNumber" value = "<?php echo $currentFightNumber; ?>" />
+						<input type = "hidden" id = "hiddenBetFightID" value = "<?php echo $currentFightID; ?>" />
+						<input type = "hidden" id = "hiddenBetType"/>
+						<input type = "hidden" id = "hiddenWinnerID"/>
+					
+						<div class="max-w-[500px] w-full py-10 px-4 rounded-xl shadow-md shadow-slate-200 border bg-white rounded-2xl flex flex-col gap-2">
+							<p class="text-center text-xl font-bold text-black mb-4">Bet Amount</p>
+					
+							<form>
+								<input id="txtBetAmount" type="text" class="form-control auto text-sm font-medium py-6" value = ""placeholder="Enter Amount Here.." AUTOCOMPLETE = "OFF" AUTOFOCUS>	
+							</form>		
+							<div class="w-full flex flex-col md:flex-row items-center justify-center gap-3 mt-4 mb-1">
+								<button class = "text-base text-white font-bold w-full md:w-1/2 h-[45px] rounded-full bg-blue-500 flex items-center justify-center gap-1" id = "btnBetWala"  value = "WALA">
+									<i class="bx bx-plus text-xl" ></i>
+									BET WALA
+								</button>
+								<button class = "text-base text-white font-bold w-full md:w-1/2 h-[45px] rounded-full bg-red-500 flex items-center justify-center gap-1" id = "btnBetMeron" value = "MERON">
+									<i class="bx bx-plus text-xl" ></i>
+									BET MERON</button>
+							</div>
+						</div>			
+					</div>
+					';
+				}else{
+				
+				}
+			}
+		?>
+			<div class="flex flex-col mt-4 mb-4 gap-3 md:hidden">
+				<button class="cashin md:hidden text-sm text-blue-500 font-bold w-full py-3 rounded-full bg-blue-100 tracking-wide" id="cashin">&plus; Cash In</button>
+				<button class="cashout md:hidden text-sm text-red-500 font-bold w-full py-3 rounded-full bg-red-100 tracking-wide mr-10" id="cashout">&minus; Cash Out</button>
+				<!-- money -->
+				<form method="POST" target="_blank" action="print/printMoneyonhandCollector.php" id="frmgeneratereport">
+					<input type="hidden" name="hiddenTellerUserID" value = "<?php echo $_SESSION['companyID']; ?>">
+					<input type = "submit" name = "generate_summaryreport" id = "generate_summaryreport" style = "display:none;" value = "GENERATE">
+					<button type = "button" class="sbmtSummaryReport md:hidden text-sm text-green-500 font-bold w-full py-3 rounded-full bg-green-100 tracking-wide mr-10" id = "sbmtSummaryReport">&dollar; MONEY ON HAND</button>
+				</form>
+			</div>
+
+		
+		
+			
+	</main>
+</div>
+
+
+
+
+
+
+
+
+
+
 	 
     <!-- Bootstrap core JavaScript-->
   <script src="design/vendor/jquery/jquery.min.js"></script>
@@ -368,7 +384,7 @@
 				});
 			});
 			
-			$("#sbmtSummaryReport").click(function(){
+			$(".sbmtSummaryReport").click(function(){
 				$("#generate_summaryreport").click();
 		
 			});

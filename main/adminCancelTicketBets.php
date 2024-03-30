@@ -1,10 +1,10 @@
 <?php
 session_start();
-require('includes/connection.php');
-if($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4){
-	
-}else{
-	header("location: ../index.php");
+require 'includes/connection.php';
+if ($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) {
+
+} else {
+    header("location: ../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -44,8 +44,8 @@ html, body {
 			<div id="content">
 				<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 					<!-- Topbar Navbar -->
-					<ul class="navbar-nav ml-auto">		
-						<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">    
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">
 							<br/>	<?php echo $_SESSION['cname']; ?>
 						</li>
 						<div class="topbar-divider d-none d-sm-block"></div>
@@ -60,8 +60,8 @@ html, body {
 							</a>
 							<!-- Dropdown - User Information -->
 							<?php
-								include('includes/header.php');
-							?>
+include 'includes/header.php';
+?>
 						</li>
 					</ul>
 				</nav>
@@ -111,11 +111,11 @@ html, body {
 		jQuery(function($) {
 			$('.auto').autoNumeric('init');
 		});
-		function reloadPage(){ 
+		function reloadPage(){
 			location.reload();
 		}
 		$(document).ready(function(){
-				
+
 			$("#btnCancelTicketBet").click(function(){
 				$("#frmCancelTicketBet").submit();
 				location.reload();
@@ -134,13 +134,13 @@ html, body {
 					}
 				}
 			});
-			
+
 		});
 	</script>
 	<?php
-		include("modalboxes.php");
-		include("adminModals.php");
-	?>
+include "modalboxes.php";
+include "adminModals.php";
+?>
 </body>
 
 </html>

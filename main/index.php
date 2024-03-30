@@ -133,40 +133,81 @@ if ($_SESSION['roleID'] == 3) {
 	<link href="design/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<script src="design/dist/sweetalert.js"></script>
 	<link href="design/css/sb-admin-2.min.css" rel="stylesheet">
+	<link href="./assets/styles/main.css" rel="stylesheet">
 	<link href="design/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body id="page-top">
-<div id="wrapper" class="fixed top-0 left-0 w-screen">
+<div id="wrapper" class="fixed top-0 left-0 w-screen h-screen overflow-y-auto">
 	<div id="content-wrapper" class="flex h-screen overflow-hidden">
-		<!-- sidebar -->
-	<div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col w-[270px]">
+		<!-- sidebar for mobile -->
+		<div id="sidebar" class="hide-scrollbar overflow-hidden fixed z-50  w-screen h-screen bg-[rgba(0,0,0,0.3)] hidden transition-all">
+			<div class="relative h-screen bg-white border-r shadow-lg shadow-slate-100 px-[20px] py-10 transition-all w-[270px] overflow-y-auto">
+				<button id="closeBtn" class="text-red-500 text-3xl absolute top-0 right-0 m-4">&times;</button>
+				<span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+				<div class="flex flex-col gap-3 mt-9 px-2 ">
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal bg-blue-50 rounded-lg" href="index.php">
+					<i class="fas fa-home mr-2 text-blue-500"></i>
+					<span class="text-blue-500">Dashboard</span>
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountBetAddPoints.php">
+					<i class="fas fa-plus mr-2 text-gray-400"></i>
+					Add Points
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountBetWithdrawPoints.php">
+					<i class="fas fa-minus mr-2 text-gray-400"></i>
+					Withdraw Points
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountBetHistory.php">
+					<i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
+					Bets History
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountLogs.php">
+					<i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
+					Account Logs
+				</a>
+				<a  class="changePassword text-sm text-gray-600 p-3 font-normal" id="changePassword">
+					<i class="fa fa-lock mr-2 text-gray-400"></i>
+					Change Password
+				</a>
+				<div class="dropdown-divider"></div>
+				<a class="text-sm text-gray-600 p-3 font-normal" href="includes/logout.php">
+					<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+					Logout
+				</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- sidebar for desktop size -->
+
+		<div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col w-[270px] h-screen">
 		<span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
-		<div class="flex flex-col gap-5 mt-9 px-2">
-			<a class="text-sm text-gray-600  p-3 font-normal bg-blue-50 rounded-lg" href="index.php">
-				<i class="fas fa-home mr-2 text-blue-500"></i>
-				<span class="text-blue-500">Dashboard</span>
-			</a>
-			<a class="text-sm text-gray-600  p-3 font-normal" href="accountBetAddPoints.php">
-				<i class="fas fa-plus mr-2 text-gray-400"></i>
-				Add Points
-			</a>
-			<a class="text-sm text-gray-600  p-3 font-normal" href="accountBetWithdrawPoints.php">
-				<i class="fas fa-minus mr-2 text-gray-400"></i>
-				Withdraw Points
-			</a>
-			<a class="text-sm text-gray-600  p-3 font-normal" href="accountBetHistory.php">
-				<i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
-				Bets History
-			</a>
-			<a class="text-sm text-gray-600  p-3 font-normal" href="accountLogs.php">
-				<i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
-				Account Logs
-			</a>
-			<a class="text-sm text-gray-600  p-3 font-normal" id = "changePassword">
-				<i class="fa fa-lock mr-2 text-gray-400"></i>
-				Change Password
-			</a>
+		<div class="flex flex-col gap-3 mt-9 px-2">
+			<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal bg-blue-50 rounded-lg" href="index.php">
+					<i class="fas fa-home mr-2 text-blue-500"></i>
+					<span class="text-blue-500">Dashboard</span>
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountBetAddPoints.php">
+					<i class="fas fa-plus mr-2 text-gray-400"></i>
+					Add Points
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountBetWithdrawPoints.php">
+					<i class="fas fa-minus mr-2 text-gray-400"></i>
+					Withdraw Points
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountBetHistory.php">
+					<i class="fas fa-clipboard-list mr-2 text-gray-400"></i>
+					Bets History
+				</a>
+				<a  id="closeBtn"  class="text-sm text-gray-600 p-3 font-normal" href="accountLogs.php">
+					<i class="fas fa-money-bill-alt mr-2 text-gray-400"></i>
+					Account Logs
+				</a>
+				<a  class="changePassword text-sm text-gray-600 p-3 font-normal" id="changePassword">
+					<i class="fa fa-lock mr-2 text-gray-400"></i>
+					Change Password
+				</a>
 			<div class="dropdown-divider"></div>
 			<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php">
 				<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -177,34 +218,39 @@ if ($_SESSION['roleID'] == 3) {
 
 
 
-		<div id="content" class="flex-1 flex flex-col overflow-hidden gap-2 bg-[#F6F8FA]">
-			<nav class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7">
-
-				<p class="text-base font-mdium text-gray-700 flex items-center gap-2">
-					Welcome,
+		<div id="content" class="flex-1 flex flex-col overflow-hiddenw gap-2 bg-[#F6F8FA]">
+			<nav class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7 ">
+				<button id="openBtn" class="w-[30px] flex flex-col gap-[5px] border-none focus:outline-none md:hidden py-[10px]">
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+				</button>
+				<div class="text-base font-mdium text-gray-700 flex items-center gap-2">
+					<p class="hidden md:flex">Welcome,</p>
 					<span class="text-black tracking-tighter font-semibold"><?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?> </span>
-					<img src="./assets/images/waving.png" class="w-[50px]" />
-				</p>
+					<img src="./assets/images/waving.png" class="w-[50px] hidden md:flex" />
+				</div>
 
-				<small><?php echo $currentDate ?></small>
 				<div class=" flex items-center gap-2">
 					<p class="text-sm text-gray-700">Your Points:</pc>
 					<p class="<?php echo ($points < 10) ? 'text-red-500' : 'text-green-500'; ?> text-sm font-semibold">&#8369;<?php echo number_format($points, 2); ?></p>
 				<div>
-
-
 			</nav>
 
 
 
 
 			<main class="flex-1 overflow-x-hidden overflow-y-auto p-3">
-				<div class="flex items-center text-sm mb-3 tracking-wide gap-1">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center text-sm mb-3 tracking-wide gap-1">
 					<p>Dashboard/ </p>
 					<span class="font-semibold text-blue-500">Overview</span>
 				</div>
-				<div class="flex gap-3 w-full">
-					<div class="w-[28%] flex flex-col gap-7	bg-gradient-to-r from-red-400 to-red-500 px-4 py-3 rounded-2xl shadow-xl shadow-red-50">
+				<small><?php echo $currentDate ?></small>
+
+				</div>
+
+				<div class="flex flex-col md:flex-row gap-3  w-full">
+					<div class=" w-full md:w-[28%] flex flex-col gap-7	bg-gradient-to-r from-red-400 to-red-500 px-4 py-3 rounded-2xl shadow-xl shadow-red-50">
 						<div class="flex items-center justify-between">
 							<div class="flex flex-col gap-1">
 								<small class="text-white">Total bets</small>
@@ -223,25 +269,25 @@ if ($_SESSION['roleID'] == 3) {
 								<small class="text-xs text-white">Result</small>
 								<span class="text-white text-xl font-semibold">
 									<?php
-if ($isBetting == 3 || $isBetting == 6) {
-    if ($isBettingWinner == 1) {
-        echo 'WIN';
-    } else if ($isBettingWinner == 2) {
-        echo 'LOST';
-    } else {
-        echo 'DRAW';
-    }
-} else if ($isBetting == 5) {
-    echo 'CANCELLED';
-} else {
-    echo 'UNSETTLED';
+										if ($isBetting == 3 || $isBetting == 6) {
+											if ($isBettingWinner == 1) {
+												echo 'WIN';
+											} else if ($isBettingWinner == 2) {
+												echo 'LOST';
+											} else {
+												echo 'DRAW';
+											}
+										} else if ($isBetting == 5) {
+											echo 'CANCELLED';
+										} else {
+											echo 'UNSETTLED';
 }?>
 								</span>
 							</div>
 						</div>
 					</div>
 
-					<div class="w-[28%] flex flex-col gap-7 bg-gradient-to-r from-blue-400 to-blue-500 px-4 py-3 rounded-2xl shadow-xl shadow-blue-50">
+					<div class="max-w-full w-full md:w-[28%] flex flex-col gap-7 bg-gradient-to-r from-blue-400 to-blue-500 px-4 py-3 rounded-2xl shadow-xl shadow-blue-50">
 						<div class="flex items-center justify-between">
 							<div class="flex flex-col gap-1">
 								<small class="text-white">Total bets</small>
@@ -279,7 +325,7 @@ if ($isBetting == 3 || $isBetting == 6) {
 					</div>
 
 
-					<div class="bg-white px-3 py-2 w-[44%] bg-white rounded-2xl shadow-md shadow-slate-100 flex items-center">
+					<div class="bg-white px-3 py-2 max-w-full w-full md:w-[44%] bg-white rounded-2xl shadow-md shadow-slate-100 flex items-center">
 						<table class="w-full">
 							<thead>
 								<tr class="h-12">
@@ -304,15 +350,15 @@ if ($isBetting == 3 || $isBetting == 6) {
 
 
 				<!-- last table -->
-				<div class="bg-white px-3 py-5 w-full bg-white rounded-2xl shadow-md shadow-slate-200 flex flex-col items-start justify-center mt-4">
+				<div class=" px-3 py-5  bg-white rounded-2xl shadow-md shadow-slate-200 flex flex-col items-start justify-center mt-4">
 					<p class="mx-auto text-sm font-medium mb-7 text-blue-500">Your current bets for this fight</p>
 					<table class="w-full">
 					<thead>
 						<tr style="text-align:center;">
-							<th class="text-sm text-center font-bold border-r w-[25%]">Bet Under</th>
-							<th class="text-sm text-center font-bold border-r w-[25%]">Bet Amount</th>
-							<th class="text-sm text-center font-bold border-r w-[25%]">Possible Winning Amount</th>
-							<th class="text-sm text-center font-bold border-r w-[25%]">Result</th>
+							<th class="text-xs md:text-sm text-center font-bold border-r w-[25%]">Bet Under</th>
+							<th class="text-xs md:text-sm text-center font-bold border-r w-[25%]">Bet Amount</th>
+							<th class="text-xs md:text-sm text-center font-bold border-r w-[25%]">Possible Winning Amount</th>
+							<th class="text-xs md:text-sm text-center font-bold border-r w-[25%]">Result</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -334,10 +380,10 @@ if ($display == 1) {
                 }
 
                 echo '
-																		<td class="text-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
-																		<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
-																		<td class="text-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
-																		<td class="text-sm text-center font-bold border-r w-[25%]">';
+																		<td class="text-xs md:text-sm text-center font-bold border-r w-[25%]">' . $rbets2['betType'] . '</td>
+																		<td class="text-xs md:text-sm text-center font-bold border-r w-[25%]">' . number_format($rbets2['betAmount']) . '</td>
+																		<td class="text-xs md:text-sm text-center font-bold border-r w-[25%]">' . number_format($possibleWinning) . '</td>
+																		<td class="text-xs md:text-sm text-center font-bold border-r w-[25%]">';
 
                 if ($isBetting == 3 || $isBetting == 6) {
                     if ($isBettingWinner == 1) {
@@ -435,6 +481,7 @@ if ($display == 1) {
 		</div>
     </div>
     <!-- End of Content Wrapper -->
+
 </div>
   <!-- End of Page Wrapper -->
   <!-- Bootstrap core JavaScript-->
@@ -471,6 +518,7 @@ if ($display == 1) {
 			}
 
 		}
+
 		$(document).ready(function(){
 			$("#btnPlaceBet").click(function(){
 				$('#modal_placeBet').modal("show");
@@ -491,11 +539,28 @@ if ($isBetting == 1 || $isBetting == 2 || $isBetting == 4) {
 			<?php
 } else {
     ?>
-				checkRefresh();
-			<?php
+								checkRefresh();
+							<?php
 }
 ?>
 		});
+
+	$(document).ready(function(){
+    $('#openBtn').click(function(){
+      $('#sidebar').toggleClass('hidden');
+    });
+
+    $('#closeBtn').click(function(){
+      $('#sidebar').addClass('hidden');
+    });
+
+
+    $('#sidebar').click(function(e){
+      if (e.target === this) {
+        $(this).addClass('hidden');
+      }
+    });
+  });
 	</script>
 	<?php
 include "modalboxes.php";

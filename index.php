@@ -1,29 +1,29 @@
 <?php
-	session_start();
-	require('main/includes/connection.php');	
-	$qcs = $mysqli->query("CALL checkSystem(); ");
-	$count = $qcs->num_rows;
-	if($count > 0){
-		while($rcs = $qcs->fetch_assoc()){
-			$systemName = $rcs['systemName'];
-			$systemLocation = $rcs['systemLocation'];
-			$systemAdministrator = $rcs['systemAdministrator'];
-			$tellerWala = $rcs['tellerWala'];
-			$tellerMeron = $rcs['tellerMeron'];
-			
-			if(($systemName == "") || ($systemLocation == "") || ($systemAdministrator == 0) || ($tellerWala == 0) || ($tellerMeron == 0)){
-				header('location: systemMessage.php');
-			}else{
-				$_SESSION['systemName'] = $systemName;
-				$_SESSION['systemLocation'] = $systemLocation;
-				$_SESSION['systemAdministrator'] = $systemAdministrator;
-				$_SESSION['tellerWala'] = $tellerWala;	
-				$_SESSION['tellerMeron'] = $tellerMeron;
-			}
-		}
-	}else{
-		header('location: systemMessage.php');
-	}
+session_start();
+require 'main/includes/connection.php';
+$qcs = $mysqli->query("CALL checkSystem(); ");
+$count = $qcs->num_rows;
+if ($count > 0) {
+    while ($rcs = $qcs->fetch_assoc()) {
+        $systemName = $rcs['systemName'];
+        $systemLocation = $rcs['systemLocation'];
+        $systemAdministrator = $rcs['systemAdministrator'];
+        $tellerWala = $rcs['tellerWala'];
+        $tellerMeron = $rcs['tellerMeron'];
+
+        if (($systemName == "") || ($systemLocation == "") || ($systemAdministrator == 0) || ($tellerWala == 0) || ($tellerMeron == 0)) {
+            header('location: systemMessage.php');
+        } else {
+            $_SESSION['systemName'] = $systemName;
+            $_SESSION['systemLocation'] = $systemLocation;
+            $_SESSION['systemAdministrator'] = $systemAdministrator;
+            $_SESSION['tellerWala'] = $tellerWala;
+            $_SESSION['tellerMeron'] = $tellerMeron;
+        }
+    }
+} else {
+    header('location: systemMessage.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,13 +35,13 @@
 	<meta name="author" content="">
 	<script src="https://cdn.tailwindcss.com"></script>
 	<title>
-		<!-- <?php 
-			if($systemName != "" ){ 
-				echo $systemName; 
-			}else{ 
-				echo "Sabong";
-			}
-		?> -->
+		<!-- <?php
+if ($systemName != "") {
+    echo $systemName;
+} else {
+    echo "Sabong";
+}
+?> -->
 	</title>
 	<link href="main/design/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="main/design/dist/sweetalert.css">
@@ -49,20 +49,21 @@
 	<link href="main/assets/styles/main.css" rel="stylesheet">
 	<link href="main/assets/styles/login.css" rel="stylesheet">
 </head>
-<body class="login_background relative flex items-center justify-center h-screen z-10 overflow-hidden">
-	<div class="absolute top-2 max-w-[80%] w-full flex items-center justify-between">
+<body class="login_background relative flex flex-col h-screen z-10 overflow-x-hidden">
+	<div class="mx-auto mt-4 max-w-[80%] w-full flex items-start justify-between">
 		<div class=" text-xl text-black font-bold tracking-tight">
 			<span class="text-2xl text-red-600">$</span>ABONG
-		</div>	
-		<div class="flex items-center gap-4">
-			<span class=" text-sm text-black font-medium"><?php echo $systemName?></span>
-			<img src="./main/assets/images/facebook.png" class="w-[20px]" />
-			<img src="./main/assets/images/gmail.png" class="w-[20px]" />
+		</div>
+		<div class="flex flex-col md:flex-row md:items-center gap-4">
+			<span class=" text-sm text-black font-medium"><?php echo $systemName ?></span>
+			<div class="flex items-center gap-3"><img src="./main/assets/images/facebook.png" class="w-[20px]" />
+			<img src="./main/assets/images/gmail.png" class="w-[20px]" /></div>
 		</div>
 	</div>
 
-	<div class="testtt container flex items-center justify-start bg-red- w-full pl-24 mt-5">
-		<div class="w-[370px] relative z-10">
+	<div>
+<div class="testtt container flex flex-col md:flex-row items-center justify-around bg-red-5d00 w-full mt-5 overflow-y-auto overflow-x-hidden  px-6">
+		<div class="w-[370px] relative z-10 ml-6">
 			<div>
 				<h1 class="text-black text-xl font-extrabold ">Welcome Back!</h1>
 				<small class="text-sm text-gray-600 tracking-wide" >Login to continue</small>
@@ -76,7 +77,7 @@
 				</div>
 				<div class="flex items-center gap-5 mt-6">
 					<input type='button' id = "btnLogin" value = "Login" class="text-sm text-white font-medium rounded-xl py-[12px] bg-gradient-to-r from-violet-600 to-indigo-600 w-1/2"/>
-				
+
 					<a href="register.php" class="w-1/2">
 						 Create an Account!
 					</a>
@@ -87,13 +88,15 @@
 			</p>
 		</div>
 		<div class=" relative z-10">
-
+			<img src='./main/assets/images/login_model.png' class=" testt w-[420px] mt-10 z-50"/>
 		</div>
-			<img src='./main/assets/images/login_model.png' class="absolute top-1/2 right-32 -translate-y-1/2 testt w-[420px] mt-10 ml-20 z-50"/>
-			<img src='./main/assets/images/transparent_loginImg.png' class="absolute -top-16 left-7  testt w-[520px] opacity-5 z-"/>
-	
-							
+
+		<!-- floating icon -->
+		<img src='./main/assets/images/transparent_loginImg.png' class="absolute -top-16 left-7  testt w-[520px] opacity-5 z-"/>
+
+
 	</div>
+</div>
 
 	<script src="main/design/vendor/jquery/jquery.min.js"></script>
 	<script src="main/design/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -101,7 +104,7 @@
 	<script src="main/design/js/sb-admin-2.min.js"></script>
 	<script type="text/javascript" src="main/design/dist/sweetalert.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function(){	
+		$(document).ready(function(){
 			$("#txtMobileUser").focus();
 			input = document.getElementById("txtPassword");
 			// Execute a function when the user releases a key on the keyboard
@@ -114,7 +117,7 @@
 					document.getElementById("btnLogin").click();
 				}
 			});
-			
+
 			$('.fieldChecker').keypress(function (e) {
 				var regex = new RegExp("^[a-zA-Z0-9]+$");
 				var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
@@ -168,7 +171,7 @@
 		});
 	</script>
 	<?php
-		include("modalboxes.php");
-	?>
+include "modalboxes.php";
+?>
 </body>
 </html>

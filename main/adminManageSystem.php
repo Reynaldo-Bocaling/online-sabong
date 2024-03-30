@@ -39,158 +39,247 @@ if($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4){
 	<!-- Custom styles for this template-->
 	<link href="design/css/sb-admin-2.min.css" rel="stylesheet">
 	 <!-- Custom styles for this page -->
-	
+	 <script src="https://cdn.tailwindcss.com"></script>
+	  <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
 </head>
 
 <body id="page-top">
-	<div id="wrapper">
-		<div id="content-wrapper" class="d-flex flex-column">
 
-			<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-				<!-- Topbar Navbar -->
-				<ul class="navbar-nav ml-auto">		
-					<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">    
-						<br/>	<?php echo $_SESSION['cname']; ?>
-					</li>
-					<div class="topbar-divider d-none d-sm-block"></div>
+<style>
 
-					<!-- Nav Item - User Information -->
-					<li class="nav-item dropdown no-arrow">
-						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="mr-2 d-none d-lg-inline text-gray-600 small"><i class="fas fa-star"></i> <?php echo $_SESSION['systemName']; ?> <i class="fas fa-star"></i></span>
-							<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-								<i class="fa fa-star"></i><i class="fa fa-bars"></i><i class="fa fa-star"></i>
-							</button>
-						</a>
-						<!-- Dropdown - User Information -->
-						<?php
-							include('includes/header.php');
-						?>
-					</li>
-				</ul>
-			</nav>
-			<div class="container-fluid">
-			  <!-- DataTales Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<?php
-							echo '
-							<a href="adminManageSystem.php" class=""><button class="btn btn-lg btn-primary"><i class="fas fa-book"></i> System Users</button></a>
-							<a href="adminSystemSettings.php" class=""><button class="btn btn-md btn-success"><i class="fas fa-book"> System Settings</i></button></a>';
-						?>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="table-responsive">
-									<input type = "hidden" id = "hiddenAccountID" />	
-									<?php
-									echo '
-										<button class="btn btn-sm btn-primary" id = "btnAddStaffAccount"><i class="fas fa-plus"></i> Add Staff Account</button>
-										<button class="btn btn-sm btn-danger" id = "btnAddTicketAccount"><i class="fas fa-plus"></i> Add Ticket Handler Account</button>
-										<button class="btn btn-sm btn-success" id = "btnAddFightControllerAccount"><i class="fas fa-plus"></i> Add Fight Controller</button>
-										<button class="btn btn-sm btn-warning" id = "btnAddCashoutHandler"><i class="fas fa-plus"></i> Add Cash Handler</button>
-										<button class="btn btn-sm btn-info" id = "btnAddReportSupervisorAccount"><i class="fas fa-plus"></i> Add Report Supervisor Account</button><br/><br/>';
-									?>
-									
-									<table class="table table-bordered" id="example" width="100%" cellspacing="0">
-										<thead>
-											<tr>
-												<th style="text-align:center;">#</th>
-												<th style="text-align:left;">Role</th>
-												<th style="text-align:left;">Username</th>
-												<th style="text-align:left;">Fullname</th>
-												<th style="text-align:left;">Handled Bet Type</th>
-												<th style="text-align:left;">Payout Only</th>
-												<th style="text-align:left;">Actions</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-											if($query->num_rows > 0){
-												$x = 1;
-												while($row = $query->fetch_assoc()){
-													$payoutSettings = $row['payoutSettings'];
-													$specialTeller = $row['specialTeller'];
-													if($row['id'] == $_SESSION['companyID']){
-													}else{
-														echo '
-														<tr class="row_example">
-															<td style="text-align:center;">'.$x.'</td>
-															<td style="text-align:left;">'.$row['role'].'</td>
-															<td style="text-align:left;">'.$row['username'].'</td>
-															<td style="text-align:left;">'.$row['cname'].'</td>';
-															
-															if($row['specialTeller'] == 1){
-																echo '<td style="text-align:left;">MERON AND WALA</td>';
-															}else{
-																echo '<td style="text-align:left;">'.$row['betType'].'</td>';
-															}
-															echo'
-															
-															<td style="text-align:left;" class="sel_example">';
-															
-															if($payoutSettings == 1 AND $row['role'] == "STAFF"){
-																echo '
-																<label class="radio-inline btn btn-primary">
-																  <input type="radio" name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="1" checked> YES
-																</label>&nbsp;&nbsp;
-																<label class="radio-inline btn btn-danger">
-																	 <input type="radio"  name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="0" > NO
-																</label>';
-															}else{
-																if($row['role'] == "STAFF"){
-																	echo '
-																	<label class="radio-inline  btn btn-primary">
-																	  <input type="radio" name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="1"> YES
-																	</label>&nbsp;&nbsp;
-																	<label class="radio-inline btn btn-danger">
-																		 <input type="radio"  name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="0" checked> NO
-																	</label>';
-																}
-															}
-															echo '
-															</td>
-															<td style="text-align:left;">';
-															if($row['roleID'] == 1 OR $row['roleID'] == 4 OR $row['roleID'] == 5  OR $row['roleID'] == 8 OR $row['roleID'] == 9 OR $row['roleID'] == 11){
-															}else{
-																echo	
-																'<button class="btn btn-primary actStaffStatus"  value = "'.$row['id'].'">DEACTIVATE</button>
-																<button class="btn btn-danger actStaffReset" value = "'.$row['id'].'">RESET PASSWORD</button>';
-																
-																if($specialTeller == 1){
-																	
-																}else{
-																	if($row['roleID'] == 2){
-																	echo '
-																	<button class="btn btn-success actStaffSpecialTeller" value = "'.$row['id'].'">ASSIGN AS SPECIAL TELLER</button>';
-																	}else{
-																		
-																	}
-																}
-															}
-															echo'
-															</td>
-														</tr>';
-													}
-													$x++;
-												}
-											}else{
-													
-											}
-										?>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
+::-webkit-scrollbar {
+  width: 0;
+}
+
+</style>	
+<div id="wrapper" class="fixed top-0 left-0 w-screen h-screen overflow-y-auto">
+    <div id="content-wrapper" class="flex h-screen overflow-hidden">
+
+     <!-- sidebar for mobile -->
+	 	<div id="sidebar" class="hide-scrollbar overflow-hidden fixed z-50  w-screen h-screen bg-[rgba(0,0,0,0.3)] hidden transition-all">
+            <div class="relative h-screen bg-white border-r shadow-lg shadow-slate-100 px-[20px] py-10 transition-all w-[270px] overflow-y-auto">
+                <button id="closeBtn" class="text-red-500 text-3xl absolute top-0 right-0 m-4">&times;</button>
+                <span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+                <div class="flex flex-col  mt-9 px-2 overflow-y-auto">
+				<?php
+					$links = [
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ?
+						'<a class="text-sm text-gray-600  p-3 font-normal" href="administrator.php"><i class="fas fa-home mr-2 text-gray-400"></i>Home</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="dashboard.php"><i class="bx bxs-plus-circle text-gray-400 mr-2"></i>Betting Odds Display</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminDashboardEvent.php"><i class="bx bxs-dashboard mr-2 text-gray-400" ></i>Dashboard Configuration</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageBettings.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Bettings Management</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm  text-blue-500 bg-blue-50 rounded-lg  p-3 font-normal" href="adminManageSystem.php"><i class="fas fa-clipboard-list mr-2"></i>Users Management</a><a class="text-sm text-gray-600  p-3 font-normal" href="adminManageReports.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Reports Management</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminListAccounts.php"><i class="fas fa-users mr-2 text-gray-400"></i>Client Accounts</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="changePercentage text-sm text-gray-600  p-3 font-normal" id="changePercentage"><i class="fa fa-edit mr-2 text-gray-400"></i>Change Bet Percentage</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4 || $_SESSION['roleID'] == 5 || $_SESSION['roleID'] == 6) ? '<a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 9) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 10) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 12) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminReportsManagement.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Reports Management</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 13) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="cashHandler.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Cash INs and OUTs</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+					];
+					foreach ($links as $link) {
+						if (!empty($link)) {
+							echo $link;
+						}
+					}
+					?>
+                </div>
+            </div>
+        </div>
+
+        <!-- sidebar for desktop size -->
+        <div class="bg-white border-r shadow-lg shadow-slate-100  px-[20px] py-10 transition-all hidden md:flex md:flex-col max-w-[270px] w-full h-screen">
+            <span class="text-sm font-bold mx-auto"><?php echo $_SESSION['systemName']; ?></span>
+            <div class="flex flex-col overflow-y-auto mt-9 px-2">
+				<?php
+					$links = [
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ?
+						'<a class="text-sm text-gray-600  p-3 font-normal" href="administrator.php"><i class="fas fa-home mr-2 text-gray-400"></i>Home</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="dashboard.php"><i class="bx bxs-plus-circle text-gray-400 mr-2"></i>Betting Odds Display</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminDashboardEvent.php"><i class="bx bxs-dashboard mr-2 text-gray-400" ></i>Dashboard Configuration</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminManageBettings.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Bettings Management</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="text-sm  text-blue-500 bg-blue-50 rounded-lg  p-3 font-normal" href="adminManageSystem.php"><i class="fas fa-clipboard-list mr-2"></i>Users Management</a><a class="text-sm text-gray-600  p-3 font-normal" href="adminManageReports.php"><i class="fas fa-clipboard-list mr-2 text-gray-400"></i>Reports Management</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminListAccounts.php"><i class="fas fa-users mr-2 text-gray-400"></i>Client Accounts</a>' : '',
+						($_SESSION['roleID'] == 1) ? '<a class="changePercentage text-sm text-gray-600  p-3 font-normal" id="changePercentage"><i class="fa fa-edit mr-2 text-gray-400"></i>Change Bet Percentage</a>' : '',
+						($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4 || $_SESSION['roleID'] == 5 || $_SESSION['roleID'] == 6) ? '<a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 9) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 10) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminTicketCancellation.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Ticket Cancellation</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 12) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="adminReportsManagement.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Reports Management</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+						($_SESSION['roleID'] == 13) ? '<a class="text-sm text-gray-600  p-3 font-normal" href="cashHandler.php"><i class="fas fa-trash mr-2 text-gray-400"></i>Cash INs and OUTs</a><a class="changePassword text-sm text-gray-600  p-3 font-normal" id="changePassword"><i class="fa fa-lock mr-2 text-gray-400"></i>Change Password</a><div class="dropdown-divider"></div><a class="text-sm text-gray-600  p-3 font-normal" href="includes/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>' : '',
+					];
+					foreach ($links as $link) {
+						if (!empty($link)) {
+							echo $link;
+						}
+					}
+					?>
+        	</div>
+    	</div>
+
+
+		<!-- main -->
+		<div id="content" class="flex-1 flex flex-col overflow-hiddenw gap-2 bg-[#F6F8FA]">
+			<header class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7 ">
+				<button id="openBtn" class="w-[30px] flex flex-col gap-[5px] border-none focus:outline-none md:hidden py-[10px]">
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+					<div class="w-full h-[3px] rounded-full bg-black"></div>
+				</button>
+				<div class="text-base font-mdium text-gray-700 flex items-center gap-2 ">
+					<p class="hidden md:flex">Welcome, User</p>
+					<img src="./assets/images/waving.png" class="w-[50px] hidden md:flex" />
+				</div>
+				<span><i class='bx bx-calendar-star text-blue-500 text-lg'></i> <?php echo date('F j, Y') ?></span>
+
+			</header>
+
+
+
+
+			<main class="flex-1 overflow-x-auto overflow-y-auto p-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center text-sm mb-3 tracking-wide gap-1">
+                    <p>ManagementSystem/ </p>
+                    <span class="font-semibold text-blue-500">User-Management-System</span>
+                    </div>
+                    <small><?php echo $currentDate ?></small>
+                </div>
+
+				<p class="text-xl text-black font-bold mb-4">System Users</p>	
+				
+
+
+
+				<div class="flex items-center justify-start  w-full">
+					<div class="flex items-center  gap-7 ">
+						<a href="adminManageSystem.php" class="relative text-sm px-2 text-blue-500 after:w-full after:h-[2px] after:rounded-full after:bg-blue-500 after:absolute after:-bottom-2 after:left-0 font-semibold "> System Users</a>
+						<a href="adminSystemSettings.php" class="relative text-sm font-semibold ">System Settings</a>
 					</div>
 				</div>
-			</div>
+
+					
+				<div class="flex items-center justify-start gap-2 mt-4">
+					<input type = "hidden" id = "hiddenAccountID" />	
+					<?php
+					echo '
+						<button class="text-xs text-white px-3 py-2 rounded-full bg-blue-500 " id = "btnAddStaffAccount"><i class="fas fa-plus"></i> Add Staff Account</button>
+						<button class="text-xs text-white px-3 py-2 rounded-full bg-blue-500" id = "btnAddTicketAccount"><i class="fas fa-plus"></i> Add Ticket Handler Account</button>
+						<button class="text-xs text-white px-3 py-2 rounded-full bg-blue-500 " id = "btnAddFightControllerAccount"><i class="fas fa-plus"></i> Add Fight Controller</button>
+						<button class="text-xs text-white px-3 py-2 rounded-full bg-blue-500" id = "btnAddCashoutHandler"><i class="fas fa-plus"></i> Add Cash Handler</button>
+						<button class="text-xs text-white px-3 py-2 rounded-full bg-blue-500 " id = "btnAddReportSupervisorAccount"><i class="fas fa-plus"></i> Add Report Supervisor Account</button><br/><br/>';
+					?>
+				</div>
+
+				<!-- table  -->
+				<div class="p-3 rounded-lg border shadow-md shadow-slate-100 bg-white mt-3 overflow-x-auto  max-w-full">
+					<table class="table table-bordered" id="example" width="100%" cellspacing="0">
+						<thead>
+							<tr>
+								<th class="text-sm" style="text-align:center;">#</th>
+								<th class="text-sm" style="text-align:left;">Role</th>
+								<th class="text-sm" style="text-align:left;">Username</th>
+								<th class="text-sm" style="text-align:left;">Fullname</th>
+								<th class="text-sm" style="text-align:left;">Handled Bet Type</th>
+								<th class="text-sm" style="text-align:left;">Payout Only</th>
+								<th class="text-sm" style="text-align:left;">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							if($query->num_rows > 0){
+								$x = 1;
+								while($row = $query->fetch_assoc()){
+									$payoutSettings = $row['payoutSettings'];
+									$specialTeller = $row['specialTeller'];
+									if($row['id'] == $_SESSION['companyID']){
+									}else{
+										echo '
+										<tr class="row_example">
+											<td class="text-sm" style="text-align:center;">'.$x.'</td>
+											<td class="text-sm" style="text-align:left;">'.$row['role'].'</td>
+											<td class="text-sm" style="text-align:left;">'.$row['username'].'</td>
+											<td class="text-sm" style="text-align:left;">'.$row['cname'].'</td>';
+											
+											if($row['specialTeller'] == 1){
+												echo '<td class="text-sm" style="text-align:left;">MERON AND WALA</td>';
+											}else{
+												echo '<td class="text-sm" style="text-align:left;">'.$row['betType'].'</td>';
+											}
+											echo'
+											
+											<td class="text-sm" style="text-align:left;" class="sel_example">';
+											
+											if($payoutSettings == 1 AND $row['role'] == "STAFF"){
+												echo '
+												<label class="">
+													<input type="radio" name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="1" checked> 
+													<small>YES</small>
+												</label>&nbsp;&nbsp;
+
+												<label class="">
+														<input type="radio"  name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="0" > NO
+												</label>';
+											}else{
+												if($row['role'] == "STAFF"){
+													echo '
+													<label class="">
+														<input type="radio" name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="1"> 
+														<small>YES</small>
+													</label>&nbsp;&nbsp;
+													<label class="">
+															<input type="radio"  name="payoutSettingID{'.$row['id'].'}" class="payoutClick" data-tellerID = "'.$row['id'].'" value="0" checked> NO
+													</label>';
+												}
+											}
+											echo '
+											</td>
+											<td class="text-sm" style="text-align:left;">';
+											if($row['roleID'] == 1 OR $row['roleID'] == 4 OR $row['roleID'] == 5  OR $row['roleID'] == 8 OR $row['roleID'] == 9 OR $row['roleID'] == 11){
+											}else{
+												echo	
+												'<button class="text-xs text-white font-medium bg-blue-500 px-3 py-2 rounded-full actStaffStatus"  value = "'.$row['id'].'">DEACTIVATE</button>
+												<button class="text-xs text-white font-medium bg-red-500 px-3 py-2 rounded-full actStaffReset" value = "'.$row['id'].'">RESET PASSWORD</button>';
+												
+												if($specialTeller == 1){
+													
+												}else{
+													if($row['roleID'] == 2){
+													echo '
+													<button class="btn btn-success actStaffSpecialTeller" value = "'.$row['id'].'">ASSIGN AS SPECIAL TELLER</button>';
+													}else{
+														
+													}
+												}
+											}
+											echo'
+											</td>
+										</tr>';
+									}
+									$x++;
+								}
+							}else{
+									
+							}
+						?>
+						</tbody>
+					</table>
+				</di>
+
+			</main>
 		</div>
 	</div>
-    <!-- Bootstrap core JavaScript-->
+
+</div>	
+
+
+
+
+
+
+	<!-- Bootstrap core JavaScript-->
   <script src="design/vendor/jquery/jquery.min.js"></script>
   <script src="design/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -390,6 +479,24 @@ if($_SESSION['roleID'] == 1 || $_SESSION['roleID'] == 4){
 			
 			
 		});
+
+
+		$(document).ready(function(){
+    $('#openBtn').click(function(){
+      $('#sidebar').toggleClass('hidden');
+    });
+
+    $('#closeBtn').click(function(){
+      $('#sidebar').addClass('hidden');
+    });
+
+
+    $('#sidebar').click(function(e){
+      if (e.target === this) {
+        $(this).addClass('hidden');
+      }
+    });
+  });
 	</script>
 	<?php
 		include("modalboxes.php");

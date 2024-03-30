@@ -27,62 +27,78 @@ if($_SESSION['roleID'] == 5){
 	<!-- Custom styles for this template-->
 	<link href="design/css/sb-admin-2.min.css" rel="stylesheet">
 	 <!-- Custom styles for this page -->
-	
+	 <script src="https://cdn.tailwindcss.com"></script>
+	  <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
 </head>
 
 <body id="page-top">
-	<div id="wrapper">
-		<div id="content-wrapper" class="d-flex flex-column">
+	
+<style>
 
-			<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-				<!-- Topbar Navbar -->
-				<ul class="navbar-nav ml-auto">		
-					<li class="nav-item dropdown no-arrow mx-1" style="text-align:center;">    
-						<br/>	<?php echo $_SESSION['cname'] ?>
-					</li>
-					<div class="topbar-divider d-none d-sm-block"></div>
-					<li class="nav-item dropdown no-arrow" style="text-align:center;">    
-						<br/>
-						<a class="dropdown-item" id = "changePassword">
-							<i class="fa fa-lock mr-2 text-gray-400"></i>
-							Change Password
-						</a>
-					</li>
-					<div class="topbar-divider d-none d-sm-block"></div>
-					<li class="nav-item dropdown no-arrow" style="text-align:center;">    
-						<br/>
-						<a class="dropdown-item" href="includes/logout.php">
-							<i class="fas fa-sign-out-alt  mr-2 text-gray-400"></i>
-							Logout
-						</a>
-					</li>
+::-webkit-scrollbar {
+  width: 0;
+}
+#userDropdown, #btnRefreshPage{
+	outline:none
+}
+</style>
 
-				</ul>
-			</nav>
-			<div class="container-fluid">
-			  <!-- DataTales Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<h6 class="m-0 font-weight-bold text-primary">SYSTEM SETUP MODULE</h6>
-					</div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<form class="user">
-								<div class="form-group">
-								  <input type="text" id="txtUsername" class="form-control form-control-user" style="font-size:15px; text-align:center;" aria-describedby="emailHelp" placeholder="Username">
-								</div>
-								<div class="form-group">
-								  <input type="password" id="txtPassword" class="form-control form-control-user" style="font-size:20px; text-align:center;" placeholder="Password">
-								</div>
-								<input type='button' id = "btnLogin" value = "Login" class="btn btn-primary btn-user btn-block"/>
-							</form>
-						</div>
-					</div>
-				</div>
+<div id="content" class="flex-1 flex flex-col overflow-hidden gap-2 bg-white ">
+	<header class="header h-[60px] bg-white shadow-md shadow-slate-100 flex items-center justify-between px-7 ">
+		
+		<div class="text-base font-mdium text-gray-700 flex items-center gap-2 ">
+			<p class=" md:flex md:gap-2">Welcome, <span class="capitalize text-black font-semibold"><?php echo $_SESSION['username']; ?></span></p>
+			<img src="./assets/images/waving.png" class="w-[50px]  md:flex" />
+		</div>
+		
+		<button class="md:outline-none noneOutlineBtn" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class='bx bx-menu-alt-right text-3xl' ></i>
+		</button>
+		<!-- Dropdown - User Information -->
+		<div class="dropdown-menu dropdown-menu-right shadow mt-2" aria-labelledby="userDropdown">
+			<a class="dropdown-item" id = "changePassword">
+				<i class="fa fa-lock mr-2 text-gray-400"></i>
+				Change Password
+			</a>
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="includes/logout.php">
+				<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+				Logout
+			</a>
+		</div>
+
+	</header>
+
+
+
+
+	<main class="flex-1 overflow-x-auto overflow-y-auto p-3 h-[90vh] w-screen">
+		<div class="flex items-center justify-between mr-4">
+			<div class="flex items-center text-sm mb-3 tracking-wide gap-1">
+			<p>Setup/ </p>
+			<span class="font-semibold text-blue-500">System-Module </span>
 			</div>
 		</div>
-	</div>
+		
+	
+		<form class="mt-14 max-w-[400px] w-full py-12 px-6 rounded-xl bg-white border mx-auto flex flex-col gap-3">
+			<p class="text-xl text-black font-bold mb-3">System Setup Module</p>
+			<input type="text" id="txtUsername" placeholder="Username" aria-describedby="emailHelp" class="text-sm text-black  w-full rounded-xl form-control bg-white py-6"  />
+			<input type="password" id="txtPassword" placeholder="Password" class="text-sm text-black  w-full rounded-xl form-control bg-white py-6" />
+			<input type="button"  id = "btnLogin" value = "Login" class="text-base btn-user btn-block text-white  font-semibold  w-full h-12 rounded-full tracking-wide form-control bg-blue-500" />
+		</form>
+		
+	</main>
+</div>
+
+
+
+
+
+
+
     <!-- Bootstrap core JavaScript-->
   <script src="design/vendor/jquery/jquery.min.js"></script>
   <script src="design/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
